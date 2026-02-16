@@ -1,5 +1,5 @@
 import dash
-from dash import html, page_container, page_registry
+from dash import html, dcc, page_container, page_registry, clientside_callback, Input, Output
 import dash_bootstrap_components as dbc
 from dotenv import load_dotenv
 
@@ -26,9 +26,21 @@ navbar = dbc.Navbar(
 )
 
 app.layout = dbc.Container([
-    navbar,
-    dbc.Container(page_container, fluid=True, className="mt-4")
+    html.Div(id="navbar-container", children=[navbar]),
+    html.Div(page_container, id="page-content", className="mt-4")
 ], fluid=True, className="p-0")
+
+from dash import callback
+
+@callback(
+    Output('navbar-container', 'style'),
+    Input('_pages_location', 'pathname')
+)
+def toggle_navbar(pathname):
+    if pathname == '/tv':
+        return {'display': 'none'}
+    return {'display': 'block'}
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8050)

@@ -1,0 +1,88 @@
+/* Dark date picker - modern react-dates classes */
+.DateInput_input {
+    background-color: #2a2a2a !important;
+    color: white !important;
+    border-bottom: 2px solid #555 !important;
+    font-size: 0.85rem !important;
+}
+
+.DateInput {
+    background-color: #2a2a2a !important;
+    width: 100% !important;
+}
+
+.SingleDatePickerInput {
+    background-color: #2a2a2a !important;
+    border: 1px solid #555 !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+}
+
+.SingleDatePickerInput_calendarIcon {
+    color: white !important;
+}
+
+.DateInput_input__focused {
+    border-bottom: 2px solid #1565C0 !important;
+}
+
+/* Calendar popup */
+.DayPicker,
+.DayPicker__withBorder {
+    background-color: #1e1e1e !important;
+    border: 1px solid #444 !important;
+    border-radius: 8px !important;
+}
+
+.CalendarMonthGrid,
+.CalendarMonth {
+    background-color: #1e1e1e !important;
+}
+
+.CalendarMonth_caption {
+    color: white !important;
+    padding-top: 18px !important;
+}
+
+.DayPickerNavigation_button__default {
+    background-color: #333 !important;
+    border: 1px solid #555 !important;
+    color: white !important;
+}
+
+.DayPickerNavigation_svg__horizontal {
+    fill: white !important;
+}
+
+.CalendarDay__default {
+    background-color: #2a2a2a !important;
+    color: #ddd !important;
+    border: 1px solid #3a3a3a !important;
+}
+
+.CalendarDay__default:hover {
+    background-color: #1565C0 !important;
+    color: white !important;
+}
+
+.CalendarDay__selected,
+.CalendarDay__selected:hover {
+    background-color: #1565C0 !important;
+    color: white !important;
+    border: 1px solid #1565C0 !important;
+}
+
+.CalendarDay__blocked_out_of_range,
+.CalendarDay__blocked_out_of_range:hover {
+    background-color: #1a1a1a !important;
+    color: #444 !important;
+}
+
+.DayPicker_weekHeader {
+    color: #888 !important;
+}
+
+/* Dropdown arrow */
+.SingleDatePickerInput_clearDate {
+    color: white !important;
+}

@@ -1,0 +1,22 @@
+﻿# Duplicated from your .gitignore
+venv/
+__pycache__/
+.env
+.DS_Store
+*.pyc
+keys/
+cache/
+
+# Extra secret protection (recommended by Cursor docs)
+**/.env
+**/.env.*
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+**/.aws/
+**/.ssh/
+**/credentials*
+**/secrets*
+**/*key*
+**/*secret*

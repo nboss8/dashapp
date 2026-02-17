@@ -10,7 +10,7 @@ app = dash.Dash(
     use_pages=True,
     external_stylesheets=[dbc.themes.DARKLY],
     suppress_callback_exceptions=True,
-    title="Columbia Fruit Analytics"
+    title="Columbia Fruit Analytics",
 )
 
 navbar = dbc.Navbar(
@@ -43,4 +43,4 @@ def toggle_navbar(pathname):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8050)
+    app.run(debug=True, dev_tools_ui=False, host="0.0.0.0", port=8050)

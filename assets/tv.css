@@ -1,3 +1,305 @@
+/* Dash Dev Tools bar - make black/dark to blend with theme */
+._dash-devtools,
+[class*="devtools"],
+[class*="DevTools"] {
+    background-color: #1a1a1a !important;
+    color: #555 !important;
+    border-color: #333 !important;
+}
+._dash-devtools *,
+[class*="devtools"] *,
+[class*="DevTools"] * {
+    color: #555 !important;
+    background-color: transparent !important;
+    border-color: #333 !important;
+}
+._dash-devtools a,
+._dash-devtools button,
+._dash-devtools svg,
+[class*="devtools"] svg,
+[class*="DevTools"] svg {
+    color: #555 !important;
+    fill: #555 !important;
+    opacity: 0.6;
+}
+._dash-devtools img,
+[class*="devtools"] img {
+    opacity: 0.5 !important;
+}
+
+/* TV root: fit typical TV (e.g. 1920x1080), no scrollbars */
+.tv-root {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden !important;
+}
+.tv-root * {
+    box-sizing: border-box;
+}
+/* Hide all scrollbars within TV display */
+.tv-root,
+.tv-root * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+.tv-root ::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Hide Plotly mode bar, logo, and edit/chart studio links */
+.tv-root .modebar,
+.tv-root .plotly .modebar,
+.tv-root a[href*="plotly.com"],
+.tv-root .plotlyjsicon {
+    display: none !important;
+}
+
+/* Main content fills vertical space, no scrollbars; smooth tick-over on refresh */
+.tv-root #tv-main-block {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: opacity 0.15s ease;
+}
+.tv-root #tv-main-block > * {
+    transition: opacity 0.15s ease;
+}
+.tv-root .tv-chart-row,
+.tv-root .tv-runs-section {
+    overflow: hidden;
+}
+
+/* Charts grow to fill space - taller on TV */
+.tv-root .tv-chart-row {
+    flex: 1 1 0;
+    min-height: 280px;
+}
+
+.tv-root .tv-chart-row .js-plotly-plot,
+.tv-root .tv-chart-row .plotly {
+    height: 100% !important;
+    min-height: 280px;
+}
+
+.tv-root .tv-runs-section {
+    flex-shrink: 0;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 8px;
+}
+
+.tv-root .tv-runs-table {
+    flex: 0 1 auto;
+    overflow: hidden;
+    min-height: 0;
+    width: 100%;
+}
+
+/* Native date select: dark background, white text - always visible */
+.tv-root .tv-date-select,
+.tv-date-select,
+#tv-date-dropdown {
+    background-color: #222 !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+.tv-root .tv-date-select option,
+.tv-date-select option {
+    background-color: #222 !important;
+    color: #fff !important;
+}
+
+/* Run table colored cells - must override any table styling */
+.tv-root .tv-runs-table table td.tv-cell-green,
+.tv-root .tv-runs-table td.tv-cell-green {
+    background-color: #C8E6C9 !important;
+    color: #000 !important;
+}
+.tv-root .tv-runs-table table td.tv-cell-yellow,
+.tv-root .tv-runs-table td.tv-cell-yellow {
+    background-color: #FFF9C4 !important;
+    color: #000 !important;
+}
+.tv-root .tv-runs-table table td.tv-cell-red,
+.tv-root .tv-runs-table td.tv-cell-red {
+    background-color: #FFCDD2 !important;
+    color: #000 !important;
+}
+
+/* Run table base - dark theme without Bootstrap table-dark override */
+.tv-root .tv-runs-table table {
+    color: #fff;
+}
+
+/* Run table fixed column widths */
+.tv-root .tv-runs-table table.tv-runs-fixed-cols {
+    table-layout: fixed;
+}
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(1),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(1) { width: 10%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(2),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(2) { width: 12%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(3),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(3) { width: 8%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(4),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(4) { width: 10%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(5),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(5) { width: 15%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(6),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(6) { width: 15%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(7),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(7) { width: 15%; }
+.tv-root .tv-runs-table table.tv-runs-fixed-cols th:nth-child(8),
+.tv-root .tv-runs-table table.tv-runs-fixed-cols td:nth-child(8) { width: 15%; }
+.tv-root .tv-runs-table table td {
+    color: #ccc;
+}
+.tv-root .tv-runs-table table tbody tr:nth-child(odd) td:not(.tv-cell-green):not(.tv-cell-yellow):not(.tv-cell-red) {
+    background-color: rgba(255,255,255,0.03);
+}
+
+/* Legacy: Dropdown (dcc.Dropdown) - dark background and white text */
+/* Nuclear: force ALL text in dropdown to white - targets placeholder, value, input */
+.tv-root .tv-dropdown-white,
+.tv-root .tv-dropdown-white *,
+.tv-root .tv-dropdown-white input,
+.tv-root .tv-dropdown-white input::placeholder,
+#tv-date-dropdown,
+#tv-date-dropdown *,
+#tv-date-dropdown input,
+#tv-date-dropdown input::placeholder {
+    color: #fff !important;
+}
+.tv-root .tv-dropdown-white input::placeholder,
+#tv-date-dropdown input::placeholder {
+    opacity: 1 !important;
+}
+
+/* Fallback for react-select v5+ (different class names) */
+.tv-root .tv-dropdown-white [class*="placeholder"],
+#tv-date-dropdown [class*="placeholder"],
+.tv-root .tv-dropdown-white [class*="Placeholder"],
+#tv-date-dropdown [class*="Placeholder"] {
+    color: #fff !important;
+}
+
+.tv-root .tv-date-dropdown .Select-control,
+.tv-root .tv-date-dropdown .Select-control:hover,
+.tv-root .tv-date-dropdown .Select-control:focus,
+#tv-date-dropdown .Select-control,
+#tv-date-dropdown .Select-control:hover,
+#tv-date-dropdown .Select-control:focus {
+    background-color: #1a1a1a !important;
+    border: 1px solid #555 !important;
+    color: #fff !important;
+}
+
+.tv-root .tv-date-dropdown .Select-control *,
+.tv-root .tv-date-dropdown .Select-value-label,
+.tv-root .tv-date-dropdown .Select-single-value,
+.tv-root .tv-date-dropdown .Select-input,
+.tv-root .tv-date-dropdown .Select-input input,
+#tv-date-dropdown .Select-control *,
+#tv-date-dropdown .Select-value-label,
+#tv-date-dropdown .Select-single-value,
+#tv-date-dropdown .Select-input,
+#tv-date-dropdown .Select-input input {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.tv-root .tv-date-dropdown .Select-placeholder,
+#tv-date-dropdown .Select-placeholder {
+    color: #fff !important;
+}
+
+/* Input placeholder - react-select may use input::placeholder */
+.tv-root #tv-date-dropdown input::placeholder,
+#tv-date-dropdown input::placeholder {
+    color: #fff !important;
+    opacity: 1;
+}
+
+/* Force all text in dropdown control to white (override inline blue) */
+.tv-root #tv-date-dropdown .Select-control,
+.tv-root #tv-date-dropdown .Select-control *,
+#tv-date-dropdown .Select-control,
+#tv-date-dropdown .Select-control *,
+.tv-root #tv-date-dropdown input,
+#tv-date-dropdown input {
+    color: #fff !important;
+}
+
+/* Force selected value to white (override default blue) */
+.tv-root .tv-date-dropdown .Select-value-label a,
+#tv-date-dropdown .Select-value-label a,
+.tv-root .tv-date-dropdown .Select-single-value a,
+#tv-date-dropdown .Select-single-value a,
+.tv-root .tv-date-dropdown .Select--single > .Select-control .Select-value,
+#tv-date-dropdown .Select--single > .Select-control .Select-value {
+    color: #fff !important;
+}
+
+.tv-root .tv-date-dropdown .Select-arrow,
+#tv-date-dropdown .Select-arrow {
+    border-top-color: #fff !important;
+}
+
+/* Opened menu: black/dark to match */
+.tv-root .tv-date-dropdown .Select-menu-outer,
+#tv-date-dropdown .Select-menu-outer,
+.tv-root .tv-dropdown-white .Select-menu-outer,
+.tv-dropdown-white .Select-menu-outer {
+    background-color: #1a1a1a !important;
+    border: 1px solid #555 !important;
+}
+
+/* Menu inner, search input, and all menu content - black */
+.tv-root .tv-date-dropdown .Select-menu,
+#tv-date-dropdown .Select-menu,
+.tv-root .tv-date-dropdown .Select-input input,
+#tv-date-dropdown .Select-input input,
+.tv-root .tv-dropdown-white .Select-menu-outer *,
+.tv-dropdown-white .Select-menu-outer *,
+#tv-date-dropdown .Select-menu-outer * {
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+    border-color: #555 !important;
+}
+
+.tv-root .tv-date-dropdown .Select-option,
+#tv-date-dropdown .Select-option {
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+}
+
+/* Search input in open menu - dark background */
+.tv-root .tv-date-dropdown .Select-search-prompt,
+#tv-date-dropdown .Select-search-prompt,
+.tv-root .tv-date-dropdown .Select-search,
+#tv-date-dropdown .Select-search {
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+}
+
+.tv-root .tv-date-dropdown .Select-option:hover,
+.tv-root .tv-date-dropdown .Select-option:focus,
+#tv-date-dropdown .Select-option:hover,
+#tv-date-dropdown .Select-option:focus {
+    background-color: #1565C0 !important;
+    color: white !important;
+}
+
+.tv-root .tv-date-dropdown .Select-option.is-selected,
+#tv-date-dropdown .Select-option.is-selected {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
 /* Dark date picker - modern react-dates classes */
 .DateInput_input {
     background-color: #2a2a2a !important;

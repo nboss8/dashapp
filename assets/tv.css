@@ -38,13 +38,13 @@
 .tv-root * {
     box-sizing: border-box;
 }
-/* Hide all scrollbars within TV display */
-.tv-root,
-.tv-root * {
+/* Hide all scrollbars within TV display (exclude pidk-root so PIDK page can scroll) */
+.tv-root:not(.pidk-root),
+.tv-root:not(.pidk-root) * {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
 }
-.tv-root ::-webkit-scrollbar {
+.tv-root:not(.pidk-root) ::-webkit-scrollbar {
     display: none !important;
 }
 
@@ -113,19 +113,101 @@
     color: #fff !important;
 }
 
+/* PIDK: Power BI–style distinct table cards (each table its own visual) */
+.pidk-table-card {
+    background-color: #222 !important;
+    border: 1px dashed #444 !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+.pidk-card-header {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #444 !important;
+    text-align: center !important;
+}
+.pidk-card-body {
+    padding: 0 !important;
+}
+.pidk-table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+    min-width: 0;
+}
+/* Allow flex children to shrink so overflow triggers when viewport is small */
+.pidk-root .row,
+.pidk-root .col,
+.pidk-root .card,
+.pidk-root .card-body,
+.pidk-root .container {
+    min-width: 0;
+}
+/* Allow horizontal scrollbar on table wrappers */
+.pidk-root .pidk-table-wrapper {
+    scrollbar-width: thin !important;
+    scrollbar-color: #444 #2a2a2a;
+    -ms-overflow-style: auto;
+}
+.pidk-root .pidk-table-wrapper::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    display: block !important;
+}
+.pidk-root .pidk-table-wrapper::-webkit-scrollbar-track {
+    background: #2a2a2a;
+}
+.pidk-root .pidk-table-wrapper::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 3px;
+}
+.pidk-table-wrapper table {
+    margin: 0 !important;
+}
+/* PIDK page: allow scrolling when content overflows (override tv-root) */
+.tv-root.pidk-root {
+    overflow: auto !important;
+}
+.pidk-root {
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+}
+.pidk-root::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: block;
+}
+.pidk-root::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+.pidk-root::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+.pidk-root {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #1a1a1a;
+}
+
 /* Run table colored cells - must override any table styling */
+/* Also for Production Intra Day KPIs (.pidk-table-wrapper) */
 .tv-root .tv-runs-table table td.tv-cell-green,
-.tv-root .tv-runs-table td.tv-cell-green {
+.tv-root .tv-runs-table td.tv-cell-green,
+.pidk-table-wrapper td.tv-cell-green {
     background-color: #C8E6C9 !important;
     color: #000 !important;
 }
 .tv-root .tv-runs-table table td.tv-cell-yellow,
-.tv-root .tv-runs-table td.tv-cell-yellow {
+.tv-root .tv-runs-table td.tv-cell-yellow,
+.pidk-table-wrapper td.tv-cell-yellow {
     background-color: #FFF9C4 !important;
     color: #000 !important;
 }
 .tv-root .tv-runs-table table td.tv-cell-red,
-.tv-root .tv-runs-table td.tv-cell-red {
+.tv-root .tv-runs-table td.tv-cell-red,
+.pidk-table-wrapper td.tv-cell-red {
     background-color: #FFCDD2 !important;
     color: #000 !important;
 }
@@ -162,141 +244,87 @@
     background-color: rgba(255,255,255,0.03);
 }
 
-/* Legacy: Dropdown (dcc.Dropdown) - dark background and white text */
-/* Nuclear: force ALL text in dropdown to white - targets placeholder, value, input */
-.tv-root .tv-dropdown-white,
-.tv-root .tv-dropdown-white *,
-.tv-root .tv-dropdown-white input,
-.tv-root .tv-dropdown-white input::placeholder,
+/* ═══ Dash 4.0 Dropdown Dark Theme ═══
+   Dash 4 uses .dash-dropdown-* classes and --Dash-* CSS variables.
+   Override variables scoped to our dropdown wrappers. */
+
+/* Dark CSS variable overrides for all our dropdowns */
 #tv-date-dropdown,
-#tv-date-dropdown *,
-#tv-date-dropdown input,
-#tv-date-dropdown input::placeholder {
-    color: #fff !important;
-}
-.tv-root .tv-dropdown-white input::placeholder,
-#tv-date-dropdown input::placeholder {
-    opacity: 1 !important;
+#pidk-day-label-dropdown,
+#pidk-sizer-event-dropdown,
+.tv-date-dropdown {
+    --Dash-Fill-Inverse-Strong: #1a1a1a;
+    --Dash-Stroke-Strong: #555;
+    --Dash-Text-Strong: #fff;
+    --Dash-Text-Primary: #fff;
+    --Dash-Text-Weak: #ccc;
+    --Dash-Text-Disabled: #999;
+    --Dash-Fill-Primary-Hover: rgba(255,255,255,0.08);
+    --Dash-Fill-Primary-Active: rgba(255,255,255,0.12);
+    --Dash-Fill-Interactive-Strong: #1565C0;
+    --Dash-Fill-Interactive-Weak: rgba(21,101,192,0.15);
+    --Dash-Shading-Strong: rgba(0,0,0,0.5);
+    --Dash-Shading-Weak: rgba(0,0,0,0.3);
 }
 
-/* Fallback for react-select v5+ (different class names) */
-.tv-root .tv-dropdown-white [class*="placeholder"],
-#tv-date-dropdown [class*="placeholder"],
-.tv-root .tv-dropdown-white [class*="Placeholder"],
-#tv-date-dropdown [class*="Placeholder"] {
-    color: #fff !important;
-}
-
-.tv-root .tv-date-dropdown .Select-control,
-.tv-root .tv-date-dropdown .Select-control:hover,
-.tv-root .tv-date-dropdown .Select-control:focus,
-#tv-date-dropdown .Select-control,
-#tv-date-dropdown .Select-control:hover,
-#tv-date-dropdown .Select-control:focus {
+/* Dropdown trigger (control button) */
+#tv-date-dropdown .dash-dropdown,
+#pidk-day-label-dropdown .dash-dropdown,
+#pidk-sizer-event-dropdown .dash-dropdown,
+.tv-date-dropdown .dash-dropdown {
     background-color: #1a1a1a !important;
-    border: 1px solid #555 !important;
+    border-color: #555 !important;
     color: #fff !important;
 }
 
-.tv-root .tv-date-dropdown .Select-control *,
-.tv-root .tv-date-dropdown .Select-value-label,
-.tv-root .tv-date-dropdown .Select-single-value,
-.tv-root .tv-date-dropdown .Select-input,
-.tv-root .tv-date-dropdown .Select-input input,
-#tv-date-dropdown .Select-control *,
-#tv-date-dropdown .Select-value-label,
-#tv-date-dropdown .Select-single-value,
-#tv-date-dropdown .Select-input,
-#tv-date-dropdown .Select-input input {
-    background-color: transparent !important;
+/* Selected value, placeholder, arrow icon */
+#tv-date-dropdown .dash-dropdown-value,
+#pidk-day-label-dropdown .dash-dropdown-value,
+#pidk-sizer-event-dropdown .dash-dropdown-value,
+.tv-date-dropdown .dash-dropdown-value,
+#tv-date-dropdown .dash-dropdown-placeholder,
+#pidk-day-label-dropdown .dash-dropdown-placeholder,
+#pidk-sizer-event-dropdown .dash-dropdown-placeholder,
+.tv-date-dropdown .dash-dropdown-placeholder {
     color: #fff !important;
 }
 
-.tv-root .tv-date-dropdown .Select-placeholder,
-#tv-date-dropdown .Select-placeholder {
+#tv-date-dropdown .dash-dropdown-trigger-icon,
+#pidk-day-label-dropdown .dash-dropdown-trigger-icon,
+#pidk-sizer-event-dropdown .dash-dropdown-trigger-icon,
+.tv-date-dropdown .dash-dropdown-trigger-icon {
     color: #fff !important;
+    fill: #fff !important;
 }
 
-/* Input placeholder - react-select may use input::placeholder */
-.tv-root #tv-date-dropdown input::placeholder,
-#tv-date-dropdown input::placeholder {
-    color: #fff !important;
-    opacity: 1;
-}
-
-/* Force all text in dropdown control to white (override inline blue) */
-.tv-root #tv-date-dropdown .Select-control,
-.tv-root #tv-date-dropdown .Select-control *,
-#tv-date-dropdown .Select-control,
-#tv-date-dropdown .Select-control *,
-.tv-root #tv-date-dropdown input,
-#tv-date-dropdown input {
-    color: #fff !important;
-}
-
-/* Force selected value to white (override default blue) */
-.tv-root .tv-date-dropdown .Select-value-label a,
-#tv-date-dropdown .Select-value-label a,
-.tv-root .tv-date-dropdown .Select-single-value a,
-#tv-date-dropdown .Select-single-value a,
-.tv-root .tv-date-dropdown .Select--single > .Select-control .Select-value,
-#tv-date-dropdown .Select--single > .Select-control .Select-value {
-    color: #fff !important;
-}
-
-.tv-root .tv-date-dropdown .Select-arrow,
-#tv-date-dropdown .Select-arrow {
-    border-top-color: #fff !important;
-}
-
-/* Opened menu: black/dark to match */
-.tv-root .tv-date-dropdown .Select-menu-outer,
-#tv-date-dropdown .Select-menu-outer,
-.tv-root .tv-dropdown-white .Select-menu-outer,
-.tv-dropdown-white .Select-menu-outer {
+/* Dropdown menu / content panel (may be portaled to body) */
+.dash-dropdown-content {
     background-color: #1a1a1a !important;
-    border: 1px solid #555 !important;
-}
-
-/* Menu inner, search input, and all menu content - black */
-.tv-root .tv-date-dropdown .Select-menu,
-#tv-date-dropdown .Select-menu,
-.tv-root .tv-date-dropdown .Select-input input,
-#tv-date-dropdown .Select-input input,
-.tv-root .tv-dropdown-white .Select-menu-outer *,
-.tv-dropdown-white .Select-menu-outer *,
-#tv-date-dropdown .Select-menu-outer * {
-    background-color: #1a1a1a !important;
-    color: #fff !important;
     border-color: #555 !important;
 }
 
-.tv-root .tv-date-dropdown .Select-option,
-#tv-date-dropdown .Select-option {
-    background-color: #1a1a1a !important;
+.dash-dropdown-option {
     color: #fff !important;
 }
 
-/* Search input in open menu - dark background */
-.tv-root .tv-date-dropdown .Select-search-prompt,
-#tv-date-dropdown .Select-search-prompt,
-.tv-root .tv-date-dropdown .Select-search,
-#tv-date-dropdown .Select-search {
-    background-color: #1a1a1a !important;
-    color: #fff !important;
-}
-
-.tv-root .tv-date-dropdown .Select-option:hover,
-.tv-root .tv-date-dropdown .Select-option:focus,
-#tv-date-dropdown .Select-option:hover,
-#tv-date-dropdown .Select-option:focus {
+.dash-dropdown-option:hover,
+.dash-dropdown-option[data-highlighted] {
     background-color: #1565C0 !important;
-    color: white !important;
+    color: #fff !important;
 }
 
-.tv-root .tv-date-dropdown .Select-option.is-selected,
-#tv-date-dropdown .Select-option.is-selected {
+.dash-dropdown-option[data-state="checked"] {
     background-color: #333 !important;
+    color: #fff !important;
+}
+
+/* Search box inside dropdown */
+.dash-dropdown-search-container {
+    background-color: #1a1a1a !important;
+    border-color: #555 !important;
+}
+.dash-dropdown-search {
+    background-color: #1a1a1a !important;
     color: #fff !important;
 }
 

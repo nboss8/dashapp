@@ -13,6 +13,59 @@ app = dash.Dash(
     title="Columbia Fruit Analytics",
 )
 
+# Inject dropdown dark theme last so it overrides Bootstrap; dcc.Dropdown menu is portaled to body
+app.index_string = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%metas%}
+    <title>{%title%}</title>
+    {%favicon%}
+    {%css%}
+    <style>
+    /* Dash 4.0 dropdown dark theme - override CSS variables */
+    #pidk-day-label-dropdown,
+    #pidk-sizer-event-dropdown,
+    #tv-date-dropdown,
+    .tv-date-dropdown {
+        --Dash-Fill-Inverse-Strong: #1a1a1a;
+        --Dash-Stroke-Strong: #555;
+        --Dash-Text-Strong: #fff;
+        --Dash-Text-Primary: #fff;
+        --Dash-Text-Weak: #ccc;
+        --Dash-Text-Disabled: #999;
+        --Dash-Fill-Primary-Hover: rgba(255,255,255,0.08);
+        --Dash-Fill-Primary-Active: rgba(255,255,255,0.12);
+        --Dash-Fill-Interactive-Strong: #1565C0;
+    }
+    /* Direct overrides for control + menu */
+    #pidk-day-label-dropdown .dash-dropdown,
+    #pidk-sizer-event-dropdown .dash-dropdown,
+    #tv-date-dropdown .dash-dropdown,
+    .tv-date-dropdown .dash-dropdown {
+        background-color: #1a1a1a !important; border-color: #555 !important; color: #fff !important;
+    }
+    #pidk-day-label-dropdown .dash-dropdown-value,
+    #pidk-sizer-event-dropdown .dash-dropdown-value,
+    #pidk-day-label-dropdown .dash-dropdown-placeholder,
+    #pidk-sizer-event-dropdown .dash-dropdown-placeholder,
+    #pidk-day-label-dropdown .dash-dropdown-trigger-icon,
+    #pidk-sizer-event-dropdown .dash-dropdown-trigger-icon {
+        color: #fff !important; fill: #fff !important;
+    }
+    .dash-dropdown-content { background-color: #1a1a1a !important; border-color: #555 !important; }
+    .dash-dropdown-option { color: #fff !important; }
+    .dash-dropdown-option:hover { background-color: #1565C0 !important; }
+    .dash-dropdown-option[data-state="checked"] { background-color: #333 !important; color: #fff !important; }
+    .dash-dropdown-search-container,
+    .dash-dropdown-search { background-color: #1a1a1a !important; color: #fff !important; border-color: #555 !important; }
+    </style>
+</head>
+<body>
+    {%app_entry%}
+    <footer>{%config%}{%scripts%}{%renderer%}</footer>
+</body>
+</html>"""
+
 navbar = dbc.Navbar(
     dbc.Container([
         html.A("Columbia Fruit Analytics", className="navbar-brand text-white fw-bold fs-3"),

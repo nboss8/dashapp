@@ -25,6 +25,7 @@ app.index_string = """<!DOCTYPE html>
     /* Dash 4.0 dropdown dark theme - override CSS variables */
     #pidk-day-label-dropdown,
     #pidk-sizer-event-dropdown,
+    #pfr-group-dropdown,
     #tv-date-dropdown,
     .tv-date-dropdown {
         --Dash-Fill-Inverse-Strong: #1a1a1a;
@@ -40,16 +41,20 @@ app.index_string = """<!DOCTYPE html>
     /* Direct overrides for control + menu */
     #pidk-day-label-dropdown .dash-dropdown,
     #pidk-sizer-event-dropdown .dash-dropdown,
+    #pfr-group-dropdown .dash-dropdown,
     #tv-date-dropdown .dash-dropdown,
     .tv-date-dropdown .dash-dropdown {
         background-color: #1a1a1a !important; border-color: #555 !important; color: #fff !important;
     }
     #pidk-day-label-dropdown .dash-dropdown-value,
     #pidk-sizer-event-dropdown .dash-dropdown-value,
+    #pfr-group-dropdown .dash-dropdown-value,
     #pidk-day-label-dropdown .dash-dropdown-placeholder,
     #pidk-sizer-event-dropdown .dash-dropdown-placeholder,
+    #pfr-group-dropdown .dash-dropdown-placeholder,
     #pidk-day-label-dropdown .dash-dropdown-trigger-icon,
-    #pidk-sizer-event-dropdown .dash-dropdown-trigger-icon {
+    #pidk-sizer-event-dropdown .dash-dropdown-trigger-icon,
+    #pfr-group-dropdown .dash-dropdown-trigger-icon {
         color: #fff !important; fill: #fff !important;
     }
     .dash-dropdown-content { background-color: #1a1a1a !important; border-color: #555 !important; }
@@ -80,6 +85,8 @@ navbar = dbc.Navbar(
 
 app.layout = dbc.Container([
     html.Div(id="navbar-container", children=[navbar]),
+    dcc.Download(id="pfr-download-pdf"),
+    dcc.Download(id="pfr-download-zip"),
     html.Div(page_container, id="page-content", className="mt-4")
 ], fluid=True, className="p-0")
 

@@ -773,7 +773,7 @@ _pidk_cache_lock = threading.Lock()
 
 
 def _build_pidk_payload(day_label):
-    """Build full PIDK payload (run_table, shift_table, last_updated, run_data, shift_data) for a given day_label."""
+    """Build full PIDK payload for a given day_label. For TODAY, includes all tiles for instant load."""
     if not day_label:
         day_label = "TODAY"
     run_df = get_run_totals(day_label)
@@ -785,7 +785,36 @@ def _build_pidk_payload(day_label):
     last_updated = f"Last updated: {datetime.now().strftime('%I:%M:%S %p')} · Refreshes every 5 min"
     run_data = run_df.to_dict("records") if not run_df.empty else []
     shift_data = shift_df.to_dict("records") if not shift_df.empty else []
-    return (run_table, shift_table, last_updated, run_data, shift_data)
+    payload = {
+        "run_table": run_table,
+        "shift_table": shift_table,
+        "last_updated": last_updated,
+        "run_data": run_data,
+        "shift_data": shift_data,
+    }
+    if day_label == "TODAY":
+        emp_df = get_employee_summary_data(day_label)
+        emp_summary_list = _compute_employee_summary(emp_df)
+        payload["employee"] = _build_employee_summary_table(emp_summary_list)
+        eq_df = get_eq_data(day_label)
+        payload["eq_matrix"] = _build_eq_matrix_table(eq_df)
+        pkg_df = _eq_data_to_package_type_df(eq_df)
+        payload["package_type"] = _build_package_type_table(pkg_df, selected_package_type=None)
+        events = get_sizer_events_with_event_ids(day_label)
+        payload["sizer_options"] = [{"label": "All", "value": "ALL"}] + [{"label": e["label"], "value": e["event_id"]} for e in events]
+        payload["sizer_value"] = "ALL"
+        drops_all = get_sizer_drops_for_all_events(day_label)
+        payload["sizer_matrix"] = _build_sizer_matrix_table(drops_all)
+        lot_col = "Lot" if "Lot" in run_df.columns else (run_df.columns[3] if len(run_df.columns) > 3 else None)
+        grower_dfs = []
+        if lot_col and not run_df.empty:
+            lots = run_df[lot_col].dropna().astype(str).unique().tolist()
+            for lot in lots:
+                chart_df = get_pidk_bph_chart_data(day_label, lot)
+                if not chart_df.empty:
+                    grower_dfs.append((lot, chart_df))
+        payload["bph_figure"] = build_pidk_bph_chart_all_growers(grower_dfs)
+    return payload
 
 
 def _refresh_cache_pidk_today():
@@ -932,12 +961,23 @@ def _build_shift_totals_table(df):
         style_as_list_view=True,
     )
 
+# Inline SVG icons (no external font needed)
+_PIDK_ICON_EXPAND = html.Img(
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z'/%3E%3C/svg%3E",
+    style={"width": "14px", "height": "14px", "display": "inline-block", "verticalAlign": "middle"},
+)
+_PIDK_ICON_X = html.Img(
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/%3E%3C/svg%3E",
+    style={"width": "14px", "height": "14px", "display": "inline-block", "verticalAlign": "middle"},
+)
+
 layout = html.Div([
     dcc.Interval(id="pidk-interval", interval=300_000, n_intervals=0),
     dcc.Store(id="pidk-day-store", data="TODAY"),
     dcc.Store(id="pidk-selected-run", data=None),
     dcc.Store(id="pidk-selected-shift", data=None),
     dcc.Store(id="pidk-selected-package-type", data=None),
+    dcc.Store(id="pidk-expanded-tile", data=None),
     dcc.Store(id="pidk-run-data", data=[]),
     dcc.Store(id="pidk-shift-data", data=[]),
     dbc.Container([
@@ -980,80 +1020,113 @@ layout = html.Div([
         ], className="align-items-center mb-2 g-2"),
         dbc.Row([
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Run Totals", className="pidk-card-header"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-run-totals-table", className="pidk-table-wrapper"),
-                    ], className="pidk-card-body p-0"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Run Totals"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "run-totals"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-run-totals-table", className="pidk-table-wrapper"),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "run-totals"}, className="pidk-tile-wrapper"),
             ], width=6),
             dbc.Col([
-            dbc.Card([
-                dbc.CardHeader("Shift Totals", className="pidk-card-header"),
-                dbc.CardBody([
-                    html.Div(id="pidk-shift-totals-table", className="pidk-table-wrapper"),
-                ], className="pidk-card-body p-0"),
-            ], className="pidk-table-card"),
-        ], width=6),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Shift Totals"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "shift-totals"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-shift-totals-table", className="pidk-table-wrapper"),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "shift-totals"}, className="pidk-tile-wrapper"),
+            ], width=6),
         dbc.Row([
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Bin Per Hour By Grower", className="pidk-card-header"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-filter-badge", style={"marginBottom": "8px", "minHeight": "24px"}),
-                        html.Div(
-                            dcc.Graph(id="pidk-bph-chart", config={"displayModeBar": False, "displaylogo": False},
-                                      style={"width": "100%", "height": "320px"}),
-                            className="pidk-bph-chart-wrapper pidk-table-wrapper",
-                        ),
-                    ], className="pidk-card-body"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Bin Per Hour By Grower"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "bph"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-filter-badge", style={"marginBottom": "8px", "minHeight": "24px"}),
+                            html.Div(
+                                dcc.Graph(id="pidk-bph-chart", config={"displayModeBar": False, "displaylogo": False},
+                                          style={"width": "100%", "height": "320px"}),
+                                className="pidk-bph-chart-wrapper pidk-table-wrapper",
+                            ),
+                        ], className="pidk-card-body"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "bph"}, className="pidk-tile-wrapper"),
             ], width=8),
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Employee Count", className="pidk-card-header"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-employee-summary", className="pidk-table-wrapper"),
-                    ], className="pidk-card-body p-0"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Employee Count"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "employee"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-employee-summary", className="pidk-table-wrapper"),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "employee"}, className="pidk-tile-wrapper"),
             ], width=4),
         ], className="mt-3 g-3"),
         dbc.Row([
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader([
-                        html.Span("Sizer Profile", style={"marginRight": "1rem"}),
-                        html.Span("Event / Batch ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
-                        dcc.Dropdown(
-                            id="pidk-sizer-event-dropdown",
-                            options=[],
-                            value=None,
-                            clearable=False,
-                            placeholder="Select event or batch",
-                            className="tv-date-dropdown",
-                            style={"minWidth": "140px"},
-                        ),
-                    ], className="pidk-card-header d-flex flex-wrap align-items-center gap-2"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-sizer-matrix", className="pidk-table-wrapper pidk-sizer-matrix-wrapper"),
-                    ], className="pidk-card-body"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Sizer Profile", style={"marginRight": "1rem"}),
+                            html.Span("Event / Batch ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
+                            dcc.Dropdown(
+                                id="pidk-sizer-event-dropdown",
+                                options=[],
+                                value=None,
+                                clearable=False,
+                                placeholder="Select event or batch",
+                                className="tv-date-dropdown",
+                                style={"minWidth": "140px"},
+                            ),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "sizer"}, className="pidk-expand-btn ms-auto"),
+                        ], className="pidk-card-header d-flex flex-wrap align-items-center gap-2"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-sizer-matrix", className="pidk-table-wrapper pidk-sizer-matrix-wrapper"),
+                        ], className="pidk-card-body"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "sizer"}, className="pidk-tile-wrapper"),
             ], width=6),
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Computech Carton Palletized", className="pidk-card-header"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-eq-matrix", className="pidk-table-wrapper"),
-                    ], className="pidk-card-body p-0"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Computech Carton Palletized"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "computech"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-eq-matrix", className="pidk-table-wrapper"),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "computech"}, className="pidk-tile-wrapper"),
             ], width=4),
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader("Package Type", className="pidk-card-header"),
-                    dbc.CardBody([
-                        html.Div(id="pidk-package-type-table", className="pidk-table-wrapper"),
-                    ], className="pidk-card-body p-0"),
-                ], className="pidk-table-card"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Span("Package Type"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "package-type"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        dbc.CardBody([
+                            html.Div(id="pidk-package-type-table", className="pidk-table-wrapper"),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "package-type"}, className="pidk-tile-wrapper"),
             ], width=2),
         ], className="mt-3 g-3"),
     ], className="align-items-start g-3"),
@@ -1083,6 +1156,47 @@ def set_default_today_on_load(pathname):
 )
 def update_day_store(day_label):
     return day_label or "TODAY", None, None
+
+
+_PIDK_TILE_IDS = ["run-totals", "shift-totals", "bph", "employee", "sizer", "computech", "package-type"]
+
+
+@callback(
+    Output("pidk-expanded-tile", "data"),
+    Input({"type": "pidk-expand-btn", "index": ALL}, "n_clicks"),
+    State("pidk-expanded-tile", "data"),
+    prevent_initial_call=True,
+)
+def pidk_toggle_expand(n_clicks_list, expanded):
+    """Expand tile to focus mode on Expand click; collapse on Exit click."""
+    tid = ctx.triggered_id
+    if not tid or tid.get("type") != "pidk-expand-btn":
+        return no_update
+    clicked = tid.get("index")
+    if expanded == clicked:
+        return None
+    return clicked
+
+
+@callback(
+    Output({"type": "pidk-tile-wrapper", "index": ALL}, "className"),
+    Input("pidk-expanded-tile", "data"),
+)
+def pidk_apply_expanded_class(expanded):
+    """Apply pidk-tile-expanded to the active tile."""
+    return [
+        "pidk-tile-wrapper" + (" pidk-tile-expanded" if expanded == i else "")
+        for i in _PIDK_TILE_IDS
+    ]
+
+
+@callback(
+    Output({"type": "pidk-expand-btn", "index": ALL}, "children"),
+    Input("pidk-expanded-tile", "data"),
+)
+def pidk_update_expand_button_labels(expanded):
+    """Show Exit when tile is expanded, Expand otherwise."""
+    return [_PIDK_ICON_X if expanded == i else _PIDK_ICON_EXPAND for i in _PIDK_TILE_IDS]
 
 
 @callback(
@@ -1140,11 +1254,11 @@ def update_pidk(_n_interval, day_label):
     with _pidk_cache_lock:
         cached = _pidk_cache.get(cache_key)
     if cached is not None:
-        return cached[0], cached[1], cached[2], cached[3], cached[4]
+        return cached["run_table"], cached["shift_table"], cached["last_updated"], cached["run_data"], cached["shift_data"]
     payload = _build_pidk_payload(cache_key)
     with _pidk_cache_lock:
         _pidk_cache[cache_key] = payload
-    return payload[0], payload[1], payload[2], payload[3], payload[4]
+    return payload["run_table"], payload["shift_table"], payload["last_updated"], payload["run_data"], payload["shift_data"]
 
 
 def _get_run_keys_for_shift(day_label, packdate_run_key):
@@ -1174,8 +1288,13 @@ def _get_run_keys_for_shift(day_label, packdate_run_key):
     Input("pidk-selected-shift", "data"),
 )
 def update_pidk_bph_chart(day_label, selected_run, selected_shift):
-    """Chart filtered by run or shift selection; no selection = full day."""
+    """Chart filtered by run or shift selection; no selection = full day. Uses cache for TODAY when no filter."""
     day_label = day_label or "TODAY"
+    if day_label == "TODAY" and not selected_run and not selected_shift:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "bph_figure" in cached:
+            return cached["bph_figure"]
     run_df = get_run_totals(day_label)
     run_df = _normalize_df_columns(run_df, _RUN_COL_MAP)
     lot_col = "Lot" if "Lot" in run_df.columns else (run_df.columns[3] if len(run_df.columns) > 3 else None)
@@ -1222,6 +1341,11 @@ def update_pidk_bph_chart(day_label, selected_run, selected_shift):
 )
 def update_sizer_event_options(day_label, selected_run, selected_shift):
     day_label = day_label or "TODAY"
+    if day_label == "TODAY" and not selected_run and not selected_shift:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "sizer_options" in cached:
+            return cached["sizer_options"], cached.get("sizer_value", "ALL")
     run_key = selected_run.get("run_key") if selected_run else None
     packdate_run_key = None
     if selected_run:
@@ -1282,6 +1406,11 @@ def clear_filter(_n_clicks):
 def update_sizer_matrix(event_id, day_label, selected_run, selected_shift):
     if not event_id:
         return html.P("Select an event or batch", style={"color": "#999", "textAlign": "center", "padding": "16px"})
+    if event_id == "ALL" and (day_label or "TODAY") == "TODAY" and not selected_run and not selected_shift:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "sizer_matrix" in cached:
+            return cached["sizer_matrix"]
     if event_id == "ALL":
         run_key = selected_run.get("run_key") if selected_run else None
         packdate_run_key = None
@@ -1332,6 +1461,11 @@ def update_package_type_filter(_n_clicks, current):
 )
 def update_eq_matrix(day_label, selected_run, selected_shift, selected_pkg):
     day_label = day_label or "TODAY"
+    if day_label == "TODAY" and not selected_run and not selected_shift and not selected_pkg:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "eq_matrix" in cached:
+            return cached["eq_matrix"]
     run_key = selected_run.get("run_key") if selected_run else None
     packdate_run_key = None
     if selected_run:
@@ -1352,6 +1486,11 @@ def update_eq_matrix(day_label, selected_run, selected_shift, selected_pkg):
 )
 def update_package_type_table(day_label, selected_run, selected_shift, selected_pkg):
     day_label = day_label or "TODAY"
+    if day_label == "TODAY" and not selected_run and not selected_shift and not selected_pkg:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "package_type" in cached:
+            return cached["package_type"]
     run_key = selected_run.get("run_key") if selected_run else None
     packdate_run_key = None
     if selected_run:
@@ -1371,6 +1510,11 @@ def update_package_type_table(day_label, selected_run, selected_shift, selected_
 )
 def update_employee_summary(day_label, selected_run, selected_shift):
     day_label = day_label or "TODAY"
+    if day_label == "TODAY" and not selected_run and not selected_shift:
+        with _pidk_cache_lock:
+            cached = _pidk_cache.get("TODAY")
+        if cached is not None and "employee" in cached:
+            return cached["employee"]
     packdate_run_key = None
     if selected_shift:
         packdate_run_key = selected_shift.get("packdate_run_key")

@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 from services.snowflake_service import query
-from utils.formatters import *
-from utils.table_helpers import *
+from utils.formatters import _fmt
+from utils.table_helpers import color_bar
 from components.kpi_card import kpi_card
 from components.page_header import page_header
 
@@ -85,14 +85,15 @@ def build_chart(df, y_col, target_col, title, color_col):
     base_layout = dict(
         paper_bgcolor="#1a1a1a",
         plot_bgcolor="#1a1a1a",
-        font=dict(color="white", size=11),
-        title=dict(text=title, font=dict(size=13, color="white"), x=0.5, xanchor="center"),
+        font=dict(color="white", size=14),
+        title=dict(text=title, font=dict(size=24, color="white", family="Arial Black, sans-serif"), x=0.5, xanchor="center"),
         legend=dict(orientation="h", y=1.15, x=0),
         margin=dict(l=40, r=60, t=40, b=30),
-        height=320,
+        height=435,
         barmode="stack",
         xaxis=dict(gridcolor="#2a2a2a", showgrid=True),
         yaxis=dict(gridcolor="#2a2a2a", showgrid=True),
+        uirevision="tv-dashboard",  # constant = smooth incremental updates, no full redraw
     )
     fig = go.Figure(layout=base_layout)
     if df.empty or y_col not in df.columns:
@@ -119,6 +120,44 @@ def build_chart(df, y_col, target_col, title, color_col):
         name="Target"
     ))
     return fig
+
+
+def _empty_figure(title):
+    """Empty figure for initial render (before callback runs). Uses uirevision for consistency."""
+    return build_chart(pd.DataFrame(), None, None, title, None)
+
+
+def _run_tile(label, value, dec=1, width=4):
+    """Simple run metric tile (label + value)."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        val_str = "—"
+    elif isinstance(value, str):
+        val_str = value.strip() or "—"
+    else:
+        val_str = _fmt(value, dec)  # handles int, float, Decimal, numpy types
+    return dbc.Col(
+        html.Div([
+            html.P(label, className="tv-run-tile-label"),
+            html.Div(val_str, className="tv-run-tile-value"),
+        ], className="tv-run-tile"),
+        width=width,
+    )
+
+
+def _run_tile_vs_target(label, value, target, dec=1, width=6):
+    """Run metric tile showing value (target) with full-tile background color (green/yellow/red vs target)."""
+    val_str = _fmt(value, dec) if value is not None else "—"
+    target_str = _fmt(target, dec) if target is not None and float(target) > 0 else "—"
+    display = f"{val_str} ({target_str} target)"
+    bg_color = color_bar(value, target)
+    return dbc.Col(
+        html.Div([
+            html.P(label, className="tv-run-tile-label"),
+            html.Div(display, className="tv-run-tile-value"),
+        ], className="tv-run-tile tv-run-tile-colored", style={"backgroundColor": bg_color}),
+        width=width,
+    )
+
 
 # ── Cache for background refresh (Power BI–style) ─────────────────────
 _tv_cache = {}
@@ -181,40 +220,23 @@ def _build_tv_payload(selected_date):
 
     runs_df = get_current_runs(date_shift_key)
     if runs_df.empty:
-        run_table = html.P("No active runs",
-                          style={"color": "#FFC107", "margin": "0", "textAlign": "center"})
+        run_section_content = html.P("No active runs",
+                          style={"color": "#FFC107", "margin": "0", "textAlign": "center", "fontSize": "1.5rem"})
     else:
-        _cs = {"padding": "5px 12px", "textAlign": "center"}
-        _ths = {"padding": "5px 12px", "fontSize": "0.82rem", "textAlign": "center"}
-        rows = []
-        for _, r in runs_df.iterrows():
-            bph_hex = _normalize_cell_color(r.get("BINS_TARGET_COLOR")) or color_bar_powerbi(r.get("BINS_PER_HOUR"), r.get("BIN_HOUR_TARGET"))
-            ppmh_hex = _normalize_cell_color(r.get("PACKS_TARGET_COLOR")) or color_bar_powerbi(r.get("STAMPER_PPMH"), r.get("PACKS_MANHOUR_TARGET"))
-            rows.append(html.Tr([
-                html.Td(r.get("GROWER_NUMBER", "—"), style=_cs),
-                html.Td(r.get("VARIETY_ABBR", "—"), style=_cs),
-                html.Td(r.get("SHIFT", "—"), style=_cs),
-                html.Td(_fmt(r.get("BINS"), 0), style=_cs),
-                _cell(r.get("BINS_PER_HOUR"), bph_hex, cell_style=_cs),
-                html.Td(_fmt(r.get("BIN_HOUR_TARGET")), style=_cs),
-                _cell(r.get("STAMPER_PPMH"), ppmh_hex, cell_style=_cs),
-                html.Td(_fmt(r.get("PACKS_MANHOUR_TARGET")), style=_cs),
-            ]))
-
-        cols = ["Grower", "Variety", "Shift", "Bins", "Bins Per Hour", "BPH Target", "PPMH", "PPMH Target"]
-        run_table = html.Table([
-            html.Thead(html.Tr([
-                html.Th(c, style={**_ths, "backgroundColor": "#222", "color": "#fff", "borderBottom": "2px solid #444", "textAlign": "center"})
-                for c in cols
-            ])),
-            html.Tbody(rows, style={"backgroundColor": "#1a1a1a"}),
-        ], style={
-            "width": "100%", "tableLayout": "fixed", "fontSize": "0.88rem", "borderCollapse": "collapse",
-            "color": "#fff", "backgroundColor": "#1a1a1a",
-        }, className="tv-runs-fixed-cols")
+        r = runs_df.iloc[0]
+        tiles_row1 = dbc.Row([
+            _run_tile("Grower", r.get("GROWER_NUMBER"), dec=0, width=4),
+            _run_tile("Variety", r.get("VARIETY_ABBR"), dec=0, width=4),
+            _run_tile("Bins", r.get("BINS"), dec=0, width=4),
+        ], className="g-2 mb-2")
+        tiles_row2 = dbc.Row([
+            _run_tile_vs_target("Bins Per Hour", r.get("BINS_PER_HOUR"), r.get("BIN_HOUR_TARGET"), dec=1),
+            _run_tile_vs_target("PPMH", r.get("STAMPER_PPMH"), r.get("PACKS_MANHOUR_TARGET"), dec=1),
+        ], className="g-2")
+        run_section_content = html.Div([tiles_row1, tiles_row2], className="tv-run-tiles-grid")
 
     last_updated = f"Last updated: {datetime.now().strftime('%I:%M:%S %p')} · Refreshes every 5 min"
-    return (cards, ppmh_fig, bph_fig, run_table, header, last_updated)
+    return (cards, ppmh_fig, bph_fig, run_section_content, header, last_updated)
 
 
 def _refresh_cache_today():
@@ -257,42 +279,61 @@ layout = html.Div([
     html.Div([
         # Header row: back arrow, title (dynamic), dropdown + last updated
         page_header(
-            html.H5(id="tv-header", style={
-                "color": "white", "margin": "0", "fontSize": "clamp(0.9rem, 2vw, 1.1rem)",
+            html.H5(id="tv-header", className="tv-main-header", style={
+                "color": "white", "margin": "0", "fontSize": "1.5rem", "fontWeight": "700",
                 "textAlign": "center",
             }),
             back_href="/",
-            right_slot=dcc.Loading(
-                [
-                    dcc.Dropdown(
-                        id="tv-date-dropdown",
-                        options=get_date_dropdown_options(),
-                        value=None,
-                        clearable=False,
-                        placeholder="Select date",
-                        className="tv-date-dropdown",
-                        style={"minWidth": "140px"},
-                    ),
-                    html.P(id="tv-last-updated", style={
-                        "color": "#fff", "margin": "0", "marginTop": "4px",
-                        "fontSize": "0.75rem", "textAlign": "right"
-                    }),
-                ],
-                type="circle",
-                color="white",
-                fullscreen=False,
-                style={"minHeight": "40px"},
-            ),
+            right_slot=html.Div([
+                html.Button("⛶ Fullscreen", id="tv-fullscreen-btn", className="tv-fullscreen-btn", title="Toggle fullscreen (like F11)"),
+                dcc.Loading(
+                    [
+                        dcc.Dropdown(
+                            id="tv-date-dropdown",
+                            options=get_date_dropdown_options(),
+                            value=None,
+                            clearable=False,
+                            placeholder="Select date",
+                            className="tv-date-dropdown",
+                            style={"minWidth": "140px"},
+                        ),
+                        html.P(id="tv-last-updated", style={
+                            "color": "#fff", "margin": "0", "marginTop": "4px",
+                            "fontSize": "0.75rem", "textAlign": "right"
+                        }),
+                    ],
+                    type="circle",
+                    color="white",
+                    fullscreen=False,
+                    style={"minHeight": "40px"},
+                ),
+            ], className="tv-header-right", style={"display": "flex", "alignItems": "center", "gap": "10px", "flexWrap": "wrap"}),
         ),
 
-        # Main content (no scrollbars - fit TV display)
-        html.Div(
-            html.Div(id="tv-main-block", className="g-2"),
-            style={
-                "flex": "1 1 0", "minHeight": 0, "display": "flex", "flexDirection": "column",
-                "overflow": "hidden",
-            },
-        ),
+        # Main content (fixed structure: graphs persist, only their figure props update)
+        html.Div([
+            dbc.Row(id="tv-cards-row", className="g-2 mb-2 flex-shrink-0", children=[]),
+            dbc.Row([
+                dbc.Col(dcc.Graph(
+                    id="tv-ppmh-chart",
+                    figure=_empty_figure("Packs Per Man Hour"),
+                    config={"displayModeBar": False, "displaylogo": False, "showLink": False},
+                ), width=12),
+            ], className="mb-1 tv-chart-row"),
+            dbc.Row([
+                dbc.Col(dcc.Graph(
+                    id="tv-bph-chart",
+                    figure=_empty_figure("Bins Per Hour"),
+                    config={"displayModeBar": False, "displaylogo": False, "showLink": False},
+                ), width=12),
+            ], className="mb-3 tv-chart-row"),
+            html.Div(id="tv-runs-section", className="tv-runs-section", children=[
+                html.P("Loading…", style={"color": "#999", "textAlign": "center"}),
+            ]),
+        ], className="g-2", style={
+            "flex": "1 1 0", "minHeight": 0, "display": "flex", "flexDirection": "column",
+            "overflow": "hidden",
+        }),
 
     ], style={
         "padding": "10px 14px",
@@ -317,39 +358,26 @@ def update_date_store(selected_value):
     return selected_value
 
 
-def _main_block_children(payload):
-    """Build main block content from payload (cards, ppmh_fig, bph_fig, run_table, header, last_updated)."""
-    cards, ppmh_fig, bph_fig, run_table, _h, _u = payload
+def _build_runs_section(run_content):
+    """Build runs section from run_content (tiles grid or 'No active runs' message)."""
     return [
-        dbc.Row(cards, className="g-2 mb-2 flex-shrink-0"),
-        dbc.Row([
-            dbc.Col(dcc.Graph(id="tv-ppmh-chart", figure=ppmh_fig, config={
-                "displayModeBar": False, "displaylogo": False, "showLink": False,
-            }), width=12),
-        ], className="mb-1 tv-chart-row"),
-        dbc.Row([
-            dbc.Col(dcc.Graph(id="tv-bph-chart", figure=bph_fig, config={
-                "displayModeBar": False, "displaylogo": False, "showLink": False,
-            }), width=12),
-        ], className="mb-3 tv-chart-row"),
-        html.Div([
-            html.P("Current Run", style={
-                "color": "#fff", "fontSize": "0.9rem",
-                "letterSpacing": "0.05em", "marginBottom": "8px",
-                "paddingTop": "4px", "paddingBottom": "4px",
-                "textAlign": "center", "lineHeight": "1.4",
-            }),
-            html.Div(run_table, style={
-                "fontSize": "0.82rem", "width": "100%",
-            }, className="tv-runs-table"),
-        ], className="tv-runs-section"),
+        html.P("Current Run", className="tv-current-run-title", style={
+            "color": "#fff", "fontSize": "1.5rem", "fontWeight": "700",
+            "letterSpacing": "0.05em", "marginBottom": "16px",
+            "paddingTop": "8px", "paddingBottom": "8px",
+            "textAlign": "center", "lineHeight": "1.4",
+        }),
+        html.Div(run_content, style={"width": "100%"}, className="tv-run-tiles-wrapper"),
     ]
 
 
 @callback(
     Output("tv-header", "children"),
     Output("tv-last-updated", "children"),
-    Output("tv-main-block", "children"),
+    Output("tv-cards-row", "children"),
+    Output("tv-ppmh-chart", "figure"),
+    Output("tv-bph-chart", "figure"),
+    Output("tv-runs-section", "children"),
     Input("tv-interval", "n_intervals"),
     Input("tv-date-store", "data"),
 )
@@ -358,9 +386,10 @@ def update_tv(_n_interval, selected_date):
     with _tv_cache_lock:
         cached = _tv_cache.get(cache_key)
     if cached is not None:
-        return cached[4], cached[5], _main_block_children(cached)
-    # Cache miss: build once (for Today this only happens on first load; worker keeps cache warm after)
+        cards, ppmh_fig, bph_fig, run_content, header, last_updated = cached
+        return header, last_updated, cards, ppmh_fig, bph_fig, _build_runs_section(run_content)
     payload = _build_tv_payload(selected_date)
     with _tv_cache_lock:
         _tv_cache[cache_key] = payload
-    return payload[4], payload[5], _main_block_children(payload)
+    cards, ppmh_fig, bph_fig, run_content, header, last_updated = payload
+    return header, last_updated, cards, ppmh_fig, bph_fig, _build_runs_section(run_content)

@@ -73,30 +73,123 @@
     overflow: hidden;
 }
 
-/* Charts grow to fill space - taller on TV */
+/* Charts grow to fill space - taller on TV (420-450px for 10-20ft viewing) */
 .tv-root .tv-chart-row {
     flex: 1 1 0;
-    min-height: 280px;
+    min-height: 435px;
 }
 
 .tv-root .tv-chart-row .js-plotly-plot,
 .tv-root .tv-chart-row .plotly {
     height: 100% !important;
-    min-height: 280px;
+    min-height: 435px;
 }
 
 .tv-root .tv-runs-section {
     flex-shrink: 0;
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 8px;
+    padding-top: 28px;
+    padding-bottom: 24px;
 }
 
-.tv-root .tv-runs-table {
+/* TV: Current Run tiles - large TV-friendly cards (replaces table) */
+.tv-root .tv-run-tiles-wrapper {
     flex: 0 1 auto;
     overflow: hidden;
     min-height: 0;
     width: 100%;
+}
+
+.tv-root .tv-run-tiles-grid {
+    width: 100%;
+}
+
+.tv-root .tv-run-tile {
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 28px 32px;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+.tv-root .tv-run-tile-label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #aaa;
+    margin: 0 0 10px 0;
+}
+
+.tv-root .tv-run-tile-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* Colored tiles (Bins Per Hour, PPMH) - value vs target, green/yellow/red background */
+.tv-root .tv-run-tile-colored .tv-run-tile-label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tv-root .tv-run-tile-colored .tv-run-tile-value {
+    color: #fff;
+}
+
+/* TV: KPI cards - larger text (no component changes, CSS only) */
+.tv-root #tv-cards-row > div > div {
+    min-height: 160px !important;
+    padding: 22px 26px !important;
+}
+
+.tv-root #tv-cards-row > div > div > p:first-of-type {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+}
+
+.tv-root #tv-cards-row > div > div > h2 {
+    font-size: 5rem !important;
+    font-weight: 700 !important;
+}
+
+.tv-root #tv-cards-row > div > div > p:last-of-type {
+    font-size: 1.25rem !important;
+}
+
+/* TV: Current Run section title */
+.tv-root .tv-current-run-title {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+/* TV: Fullscreen button */
+.tv-root .tv-fullscreen-btn {
+    background-color: #333 !important;
+    border: 1px solid #555 !important;
+    color: #fff !important;
+    font-size: 0.85rem !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+}
+.tv-root .tv-fullscreen-btn:hover {
+    background-color: #444 !important;
+    border-color: #666 !important;
+}
+
+/* TV: Main date/shift header */
+.tv-root #tv-header,
+.tv-root .tv-main-header {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
 }
 
 /* Native date select: dark background, white text - always visible */

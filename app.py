@@ -92,6 +92,10 @@ app.layout = dbc.Container([
 
 from dash import callback
 
+# Register page callbacks (must run before app starts)
+from callbacks.pidk import *  # noqa: F401
+from callbacks.pfr import *  # noqa: F401
+
 @callback(
     Output('navbar-container', 'style'),
     Input('_pages_location', 'pathname')
@@ -100,6 +104,11 @@ def toggle_navbar(pathname):
     if pathname == '/tv':
         return {'display': 'none'}
     return {'display': 'block'}
+
+
+@app.server.route("/health")
+def health():
+    return "OK", 200
 
 
 if __name__ == "__main__":

@@ -2,60 +2,20 @@ import dash
 from dash import html, dcc, callback, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
-import snowflake.connector
 import pandas as pd
-import os
 import threading
 import time
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
+from services.snowflake_service import query
+from utils.formatters import *
+from utils.table_helpers import *
+from components.kpi_card import kpi_card
+from components.page_header import page_header
+
 load_dotenv()
 dash.register_page(__name__, path="/tv", name="TV Display")
-
-# ── Snowflake connection ──────────────────────────────────────────────
-_conn = None
-
-def get_conn():
-    global _conn
-    try:
-        if _conn is None or _conn.is_closed():
-            _conn = snowflake.connector.connect(
-                account=os.getenv("SNOWFLAKE_ACCOUNT"),
-                user=os.getenv("SNOWFLAKE_USER"),
-                authenticator="programmatic_access_token",
-                token=os.getenv("SNOWFLAKE_TOKEN"),
-                warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
-                database=os.getenv("SNOWFLAKE_DATABASE"),
-                schema=os.getenv("SNOWFLAKE_SCHEMA"),
-                network_timeout=30,
-                login_timeout=30,
-            )
-    except Exception:
-        _conn = snowflake.connector.connect(
-            account=os.getenv("SNOWFLAKE_ACCOUNT"),
-            user=os.getenv("SNOWFLAKE_USER"),
-            authenticator="programmatic_access_token",
-            token=os.getenv("SNOWFLAKE_TOKEN"),
-            warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
-            database=os.getenv("SNOWFLAKE_DATABASE"),
-            schema=os.getenv("SNOWFLAKE_SCHEMA"),
-            network_timeout=30,
-            login_timeout=30,
-        )
-    return _conn
-
-def query(sql):
-    try:
-        conn = get_conn()
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        cols = [desc[0] for desc in cursor.description]
-        rows = cursor.fetchall()
-        return pd.DataFrame(rows, columns=cols)
-    except Exception as e:
-        print(f"Query error: {e}")
-        return pd.DataFrame()
 
 # ── Data fetchers ─────────────────────────────────────────────────────
 def get_kpi_totals(selected_date=None):
@@ -97,108 +57,30 @@ def get_chart_data(date_shift_key):
     """)
 
 def get_current_runs(date_shift_key=None):
-    """Current runs from VW_RUN_TOTALS_FAST_03 (has DATE_SHIFT_KEY, VARIETY_ABBR, targets, colors)."""
+    """Current runs from VW_RUN_TOTALS_FAST_03 filtered by VW_LOT_DUMPER_TIME_03.IS_CURRENT_LOT = 1."""
     if not date_shift_key:
         return pd.DataFrame()
     return query(f"""
         SELECT
-            GROWER_NUMBER,
-            VARIETY_ABBR,
-            SHIFT,
-            COALESCE(BINS_ON_SHIFT, 0) + COALESCE(BINS_PRE_SHIFT, 0) AS BINS,
-            BINS_PER_HOUR,
-            STAMPER_PPMH,
-            BIN_HOUR_TARGET,
-            PACKS_MANHOUR_TARGET,
-            BINS_TARGET_COLOR,
-            PACKS_TARGET_COLOR
-        FROM FROSTY.STAGING.VW_RUN_TOTALS_FAST_03
-        WHERE DATE_SHIFT_KEY = '{date_shift_key}'
+            v.GROWER_NUMBER,
+            v.VARIETY_ABBR,
+            v.SHIFT,
+            COALESCE(v.BINS_ON_SHIFT, 0) + COALESCE(v.BINS_PRE_SHIFT, 0) AS BINS,
+            v.BINS_PER_HOUR,
+            v.STAMPER_PPMH,
+            v.BIN_HOUR_TARGET,
+            v.PACKS_MANHOUR_TARGET,
+            v.BINS_TARGET_COLOR,
+            v.PACKS_TARGET_COLOR
+        FROM FROSTY.STAGING.VW_RUN_TOTALS_FAST_03 v
+        INNER JOIN FROSTY.STAGING.VW_LOT_DUMPER_TIME_03 l
+            ON l.DATE_SHIFT_KEY = v.DATE_SHIFT_KEY
+            AND l.RUN_KEY = v.RUN_KEY
+        WHERE v.DATE_SHIFT_KEY = '{date_shift_key}'
+          AND l.IS_CURRENT_LOT = 1
     """)
 
 # ── Helpers ───────────────────────────────────────────────────────────
-def color_bar(val, target):
-    if val is None or target is None or target == 0:
-        return "#555555"
-    pct = (val - target) / target
-    if pct >= 0:
-        return "#4CAF50"
-    elif pct >= -0.10:
-        return "#FFC107"
-    else:
-        return "#F44336"
-
-
-def color_bar_powerbi(val, target):
-    """Power BI–style pastel colors: light green / yellow / red for table cells."""
-    if val is None or target is None or target == 0:
-        return "#C8E6C9"   # fallback neutral (light green) if no target
-    try:
-        pct = (float(val) - float(target)) / float(target)
-    except (TypeError, ValueError, ZeroDivisionError):
-        return "#C8E6C9"
-    if pct >= 0:
-        return "#C8E6C9"   # light green
-    elif pct >= -0.10:
-        return "#FFF9C4"   # light yellow
-    else:
-        return "#FFCDD2"   # light red
-
-
-def _normalize_cell_color(val):
-    """Use view color if valid hex, else None (caller will use color_bar_powerbi)."""
-    if val is None or (isinstance(val, float) and pd.isna(val)):
-        return None
-    s = str(val).strip().upper()
-    if not s or s in ("NAN", "NONE"):
-        return None
-    if not s.startswith("#"):
-        s = "#" + s
-    if len(s) >= 7 and all(c in "0123456789ABCDEF#" for c in s):
-        return s
-    return None
-
-def kpi_card(title, value, goal, delta_pct, color, value_color="#fff", dec=1):
-    if value is not None:
-        value_str = f"{value:,.0f}" if dec == 0 else f"{value:,.1f}"
-    else:
-        value_str = "—"
-    if goal and goal > 0 and value is not None:
-        sign = "+" if delta_pct >= 0 else ""
-        goal_val = f"{goal:,.0f}" if dec == 0 else f"{goal:,.1f}"
-        goal_str = f"Goal: {goal_val} ({sign}{delta_pct:.1f}%)"
-    else:
-        goal_str = "\u00a0"  # non-breaking space keeps height consistent
-    return dbc.Col(
-        html.Div([
-            html.P(title, style={
-                "fontSize": "0.9rem", "color": "#fff",
-                "marginBottom": "2px", "textTransform": "uppercase",
-                "letterSpacing": "0.05em"
-            }),
-            html.H2(value_str, style={
-                "fontSize": "3rem", "fontWeight": "bold",
-                "margin": "0", "lineHeight": "1",
-                "color": value_color,
-            }),
-            html.P(goal_str, style={
-                "fontSize": "0.9rem", "color": "#fff",
-                "marginTop": "4px", "marginBottom": "0"
-            }),
-        ], style={
-            "backgroundColor": color or "#2d2d2d",
-            "borderRadius": "10px",
-            "padding": "14px 18px",
-            "textAlign": "center",
-            "color": "white",
-            "minHeight": "120px",
-            "display": "flex",
-            "flexDirection": "column",
-            "justifyContent": "center",
-        }),
-        width=3
-    )
-
 def build_chart(df, y_col, target_col, title, color_col):
     base_layout = dict(
         paper_bgcolor="#1a1a1a",
@@ -304,27 +186,6 @@ def _build_tv_payload(selected_date):
     else:
         _cs = {"padding": "5px 12px", "textAlign": "center"}
         _ths = {"padding": "5px 12px", "fontSize": "0.82rem", "textAlign": "center"}
-
-        def _fmt(val, dec=1):
-            if val is None:
-                return "—"
-            try:
-                return f"{float(val):,.{dec}f}"
-            except (ValueError, TypeError):
-                return "—"
-
-        # Map hex to CSS class for reliable override (Bootstrap table-dark can override inline)
-        _hex_to_class = {"#C8E6C9": "tv-cell-green", "#FFF9C4": "tv-cell-yellow", "#FFCDD2": "tv-cell-red"}
-
-        def _cell(val, hex_color=None, dec=1):
-            """Colored cell: use CSS class when possible, else inline style for custom hex from view."""
-            if hex_color:
-                cls = _hex_to_class.get((hex_color or "").upper())
-                if cls:
-                    return html.Td(_fmt(val, dec), className=cls, style={**_cs, "textAlign": "center"})
-                return html.Td(_fmt(val, dec), style={**_cs, "backgroundColor": hex_color, "color": "#000", "fontWeight": "600", "textAlign": "center"})
-            return html.Td(_fmt(val, dec), style=_cs)
-
         rows = []
         for _, r in runs_df.iterrows():
             bph_hex = _normalize_cell_color(r.get("BINS_TARGET_COLOR")) or color_bar_powerbi(r.get("BINS_PER_HOUR"), r.get("BIN_HOUR_TARGET"))
@@ -334,9 +195,9 @@ def _build_tv_payload(selected_date):
                 html.Td(r.get("VARIETY_ABBR", "—"), style=_cs),
                 html.Td(r.get("SHIFT", "—"), style=_cs),
                 html.Td(_fmt(r.get("BINS"), 0), style=_cs),
-                _cell(r.get("BINS_PER_HOUR"), bph_hex),
+                _cell(r.get("BINS_PER_HOUR"), bph_hex, cell_style=_cs),
                 html.Td(_fmt(r.get("BIN_HOUR_TARGET")), style=_cs),
-                _cell(r.get("STAMPER_PPMH"), ppmh_hex),
+                _cell(r.get("STAMPER_PPMH"), ppmh_hex, cell_style=_cs),
                 html.Td(_fmt(r.get("PACKS_MANHOUR_TARGET")), style=_cs),
             ]))
 
@@ -394,37 +255,35 @@ layout = html.Div([
 
     # Main content (no sidebar)
     html.Div([
-        # Header row: title centered (Date - Shift - Airport Apple Packing), dropdown + last updated on right
-        dbc.Row([
-            dbc.Col(html.Div(), width=2),
-            dbc.Col(html.H5(id="tv-header", style={
+        # Header row: back arrow, title (dynamic), dropdown + last updated
+        page_header(
+            html.H5(id="tv-header", style={
                 "color": "white", "margin": "0", "fontSize": "clamp(0.9rem, 2vw, 1.1rem)",
                 "textAlign": "center",
-            }), width=8, className="d-flex justify-content-center align-items-center"),
-            dbc.Col([
-                dcc.Loading(
-                    [
-                        dcc.Dropdown(
-                            id="tv-date-dropdown",
-                            options=get_date_dropdown_options(),
-                            value=None,
-                            clearable=False,
-                            placeholder="Select date",
-                            className="tv-date-dropdown",
-                            style={"minWidth": "140px"},
-                        ),
-                        html.P(id="tv-last-updated", style={
-                            "color": "#fff", "margin": "0", "marginTop": "4px",
-                            "fontSize": "0.75rem", "textAlign": "right"
-                        }),
-                    ],
-                    type="circle",
-                    color="white",
-                    fullscreen=False,
-                    style={"minHeight": "40px"},
-                ),
-            ], width=2, className="align-self-center"),
-        ], className="align-items-center mb-2 g-2"),
+            }),
+            back_href="/",
+            right_slot=dcc.Loading(
+                [
+                    dcc.Dropdown(
+                        id="tv-date-dropdown",
+                        options=get_date_dropdown_options(),
+                        value=None,
+                        clearable=False,
+                        placeholder="Select date",
+                        className="tv-date-dropdown",
+                        style={"minWidth": "140px"},
+                    ),
+                    html.P(id="tv-last-updated", style={
+                        "color": "#fff", "margin": "0", "marginTop": "4px",
+                        "fontSize": "0.75rem", "textAlign": "right"
+                    }),
+                ],
+                type="circle",
+                color="white",
+                fullscreen=False,
+                style={"minHeight": "40px"},
+            ),
+        ),
 
         # Main content (no scrollbars - fit TV display)
         html.Div(

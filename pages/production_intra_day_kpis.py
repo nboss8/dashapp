@@ -31,14 +31,14 @@ _header_right = dcc.Loading(
             style={"minWidth": "140px"},
         ),
         html.P(id="pidk-last-updated", style={
-            "color": "#fff", "margin": "0", "marginTop": "4px",
-            "fontSize": "0.75rem", "textAlign": "right",
+            "color": "#fff", "margin": "0", "marginTop": "2px",
+            "fontSize": "0.7rem", "textAlign": "right",
         }),
     ],
     type="circle",
     color="white",
     fullscreen=False,
-    style={"minHeight": "40px"},
+    style={"minHeight": "28px"},
 )
 
 layout = html.Div([
@@ -51,17 +51,28 @@ layout = html.Div([
     dcc.Store(id="pidk-run-data", data=[]),
     dcc.Store(id="pidk-shift-data", data=[]),
     dbc.Container([
-        page_header("Production Intra Day KPIs", "/", right_slot=_header_right),
+        html.Div(
+            page_header("Production Intra Day KPIs", "/", right_slot=_header_right),
+            className="pidk-page-header-wrap",
+        ),
         dbc.Row([
             dbc.Col([
                 html.Div([
                     dbc.Card([
                         dbc.CardHeader([
-                            html.Span("Run Totals"),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "run-totals"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                            html.Div(html.Span("Run Totals"), className="pidk-card-title"),
+                            html.Div([
+                                dbc.Button("Export CSV", id="pidk-run-totals-export-btn", color="secondary", size="sm", outline=True, className="me-1"),
+                                html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "run-totals"}, className="pidk-expand-btn"),
+                            ], className="pidk-card-actions d-flex align-items-center gap-1"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-run-totals-table", className="pidk-table-wrapper"),
+                            dcc.Loading(
+                                html.Div(id="pidk-run-totals-table", className="pidk-table-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
+                            ),
                         ], className="pidk-card-body p-0"),
                     ], className="pidk-table-card"),
                 ], id={"type": "pidk-tile-wrapper", "index": "run-totals"}, className="pidk-tile-wrapper"),
@@ -70,11 +81,19 @@ layout = html.Div([
                 html.Div([
                     dbc.Card([
                         dbc.CardHeader([
-                            html.Span("Shift Totals"),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "shift-totals"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                            html.Div(html.Span("Shift Totals"), className="pidk-card-title"),
+                            html.Div([
+                                dbc.Button("Export CSV", id="pidk-shift-totals-export-btn", color="secondary", size="sm", outline=True, className="me-1"),
+                                html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "shift-totals"}, className="pidk-expand-btn"),
+                            ], className="pidk-card-actions d-flex align-items-center gap-1"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-shift-totals-table", className="pidk-table-wrapper"),
+                            dcc.Loading(
+                                html.Div(id="pidk-shift-totals-table", className="pidk-table-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
+                            ),
                         ], className="pidk-card-body p-0"),
                     ], className="pidk-table-card"),
                 ], id={"type": "pidk-tile-wrapper", "index": "shift-totals"}, className="pidk-tile-wrapper"),
@@ -85,84 +104,113 @@ layout = html.Div([
                 html.Div([
                     dbc.Card([
                         dbc.CardHeader([
-                            html.Span("Bin Per Hour By Grower"),
+                            html.Div(html.Span("Bin Per Hour By Grower"), className="pidk-card-title"),
                             html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "bph"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-filter-badge", style={"marginBottom": "8px", "minHeight": "24px"}),
-                            html.Div(
-                                dcc.Graph(id="pidk-bph-chart", config={"displayModeBar": False, "displaylogo": False},
-                                          style={"width": "100%", "height": "320px"}),
-                                className="pidk-bph-chart-wrapper pidk-table-wrapper",
+                            html.Div(id="pidk-filter-badge", style={"marginBottom": "4px", "minHeight": "0"}),
+                            dcc.Loading(
+                                html.Div(
+                                    dcc.Graph(id="pidk-bph-chart", config={"displayModeBar": False, "displaylogo": False},
+                                              style={"width": "100%", "height": "320px"}),
+                                    className="pidk-bph-chart-wrapper pidk-table-wrapper",
+                                ),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
                             ),
                         ], className="pidk-card-body"),
                     ], className="pidk-table-card"),
                 ], id={"type": "pidk-tile-wrapper", "index": "bph"}, className="pidk-tile-wrapper"),
-            ], width=8),
-            dbc.Col([
                 html.Div([
                     dbc.Card([
                         dbc.CardHeader([
-                            html.Span("Employee Count"),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "employee"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                            html.Div([
+                                html.Span("Sizer Profile", style={"marginRight": "1rem"}),
+                                html.Span("Event / Batch ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
+                                dcc.Dropdown(
+                                    id="pidk-sizer-event-dropdown",
+                                    options=[],
+                                    value=None,
+                                    clearable=False,
+                                    placeholder="Select event or batch",
+                                    className="tv-date-dropdown",
+                                    style={"minWidth": "140px"},
+                                ),
+                                html.Span("Packout Group ", style={"color": "#aaa", "fontSize": "0.8rem", "marginLeft": "12px", "marginRight": "6px"}),
+                                dcc.Dropdown(
+                                    id="pidk-sizer-packout-dropdown",
+                                    options=[
+                                        {"label": "packed", "value": "packed"},
+                                        {"label": "Culls", "value": "Culls"},
+                                        {"label": "All", "value": "All"},
+                                    ],
+                                    value="packed",
+                                    clearable=False,
+                                    className="tv-date-dropdown",
+                                    style={"minWidth": "100px"},
+                                ),
+                            ], className="pidk-card-title d-flex flex-wrap align-items-center justify-content-center gap-2"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "sizer"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-employee-summary", className="pidk-table-wrapper"),
-                        ], className="pidk-card-body p-0"),
-                    ], className="pidk-table-card"),
-                ], id={"type": "pidk-tile-wrapper", "index": "employee"}, className="pidk-tile-wrapper"),
-            ], width=4),
-        ], className="mt-3 g-3"),
-        dbc.Row([
-            dbc.Col([
-                html.Div([
-                    dbc.Card([
-                        dbc.CardHeader([
-                            html.Span("Sizer Profile", style={"marginRight": "1rem"}),
-                            html.Span("Event / Batch ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
-                            dcc.Dropdown(
-                                id="pidk-sizer-event-dropdown",
-                                options=[],
-                                value=None,
-                                clearable=False,
-                                placeholder="Select event or batch",
-                                className="tv-date-dropdown",
-                                style={"minWidth": "140px"},
+                            dcc.Loading(
+                                html.Div(id="pidk-sizer-matrix", className="pidk-table-wrapper pidk-sizer-matrix-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
                             ),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "sizer"}, className="pidk-expand-btn ms-auto"),
-                        ], className="pidk-card-header d-flex flex-wrap align-items-center gap-2"),
-                        dbc.CardBody([
-                            html.Div(id="pidk-sizer-matrix", className="pidk-table-wrapper pidk-sizer-matrix-wrapper"),
                         ], className="pidk-card-body"),
                     ], className="pidk-table-card"),
                 ], id={"type": "pidk-tile-wrapper", "index": "sizer"}, className="pidk-tile-wrapper"),
-            ], width=6),
+            ], width=8, className="d-flex flex-column gap-3"),
             dbc.Col([
                 html.Div([
                     dbc.Card([
                         dbc.CardHeader([
-                            html.Span("Computech Carton Palletized"),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "computech"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
+                            html.Div(html.Span("Employee Count"), className="pidk-card-title"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "employee"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-eq-matrix", className="pidk-table-wrapper"),
+                            dcc.Loading(
+                                html.Div(id="pidk-employee-summary", className="pidk-table-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
+                            ),
+                        ], className="pidk-card-body p-0"),
+                    ], className="pidk-table-card"),
+                ], id={"type": "pidk-tile-wrapper", "index": "employee"}, className="pidk-tile-wrapper"),
+                html.Div([
+                    dbc.Card([
+                        dbc.CardHeader([
+                            html.Div(html.Span("Computech Carton Palletized"), className="pidk-card-title"),
+                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "computech"}, className="pidk-expand-btn"),
+                        ], className="pidk-card-header pidk-card-header-centered"),
+                        dbc.CardBody([
+                            dcc.Loading(
+                                html.Div(id="pidk-eq-matrix", className="pidk-table-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
+                            ),
+                            html.Div("Package Type", style={
+                                "color": "#ddd",
+                                "fontSize": "0.8rem",
+                                "fontWeight": "600",
+                                "marginTop": "10px",
+                                "marginBottom": "6px",
+                            }),
+                            dcc.Loading(
+                                html.Div(id="pidk-package-type-table", className="pidk-table-wrapper"),
+                                type="circle",
+                                color="#64B5F6",
+                                fullscreen=False,
+                            ),
                         ], className="pidk-card-body p-0"),
                     ], className="pidk-table-card"),
                 ], id={"type": "pidk-tile-wrapper", "index": "computech"}, className="pidk-tile-wrapper"),
-            ], width=4),
-            dbc.Col([
-                html.Div([
-                    dbc.Card([
-                        dbc.CardHeader([
-                            html.Span("Package Type"),
-                            html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "package-type"}, className="pidk-expand-btn"),
-                        ], className="pidk-card-header d-flex justify-content-between align-items-center"),
-                        dbc.CardBody([
-                            html.Div(id="pidk-package-type-table", className="pidk-table-wrapper"),
-                        ], className="pidk-card-body p-0"),
-                    ], className="pidk-table-card"),
-                ], id={"type": "pidk-tile-wrapper", "index": "package-type"}, className="pidk-tile-wrapper"),
-            ], width=2),
-        ], className="mt-3 g-3"),
-    ], fluid=True, className="py-4"),
-], className="tv-root pidk-root", style={"backgroundColor": "#1a1a1a", "minHeight": "100vh", "paddingTop": "1rem"})
+            ], width=4, className="d-flex flex-column gap-3"),
+        ], className="mt-2 g-2"),
+    ], fluid=True, className="py-1"),
+], className="tv-root pidk-root", style={"backgroundColor": "#1a1a1a", "minHeight": "100vh", "paddingTop": "0.15rem"})

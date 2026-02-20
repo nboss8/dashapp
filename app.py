@@ -1,5 +1,6 @@
 import dash
 from dash import html, dcc, page_container, page_registry, clientside_callback, Input, Output
+import dash_ag_grid as dag
 import dash_bootstrap_components as dbc
 from dotenv import load_dotenv
 
@@ -8,7 +9,7 @@ load_dotenv()
 app = dash.Dash(
     __name__,
     use_pages=True,
-    external_stylesheets=[dbc.themes.DARKLY],
+    external_stylesheets=[dbc.themes.DARKLY, dag.themes.BASE, dag.themes.ALPINE],
     suppress_callback_exceptions=True,
     title="Columbia Fruit Analytics",
 )
@@ -87,6 +88,7 @@ app.layout = dbc.Container([
     html.Div(id="navbar-container", children=[navbar]),
     dcc.Download(id="pfr-download-pdf"),
     dcc.Download(id="pfr-download-zip"),
+    dcc.Download(id="ag-grid-csv-download"),
     html.Div(page_container, id="page-content", className="mt-4")
 ], fluid=True, className="p-0")
 
@@ -101,9 +103,10 @@ from callbacks.pfr import *  # noqa: F401
     Input('_pages_location', 'pathname')
 )
 def toggle_navbar(pathname):
-    if pathname == '/tv':
-        return {'display': 'none'}
-    return {'display': 'block'}
+    # Show navbar only on Home; report pages use page_header "← Back" instead
+    if pathname in (None, "/"):
+        return {'display': 'block'}
+    return {'display': 'none'}
 
 
 @app.server.route("/health")

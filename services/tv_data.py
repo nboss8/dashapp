@@ -23,7 +23,7 @@ from utils.formatters import _fmt
 from utils.table_helpers import color_bar
 from components.kpi_card import kpi_card
 
-DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV")
+DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV_DBT_DEV")
 
 
 def get_kpi_totals(selected_date=None):

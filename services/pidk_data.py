@@ -15,7 +15,7 @@ from utils.table_helpers import _normalize_df_columns
 from utils.sizer import build_sizer_matrix, _get_gradient_color
 
 # dbt marts schema: DATABASE.DBT_DEV (e.g. FROSTY.DBT_DEV)
-DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV")
+DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV_DBT_DEV")
 
 # Column maps for Snowflake uppercase → display names (exported for callbacks)
 RUN_COL_MAP = {

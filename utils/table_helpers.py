@@ -51,10 +51,22 @@ def _normalize_cell_color(val):
 
 
 def _normalize_df_columns(df, mapping):
-    """Map Snowflake uppercase columns to expected keys for table builders."""
+    """Map Snowflake uppercase columns to expected keys for table builders.
+    Supports two mapping formats:
+    - {source_col: target_col} e.g. {"RUN": "Run"}
+    - {target_col: [source_col, ...]} e.g. {"cartons": ["CARTONS"]}
+    """
     if df is None or df.empty:
         return df
-    rename = {k: v for k, v in mapping.items() if k in df.columns and k != v}
+    rename = {}
+    for k, v in mapping.items():
+        if isinstance(v, (list, tuple)):
+            for src in v:
+                if src in df.columns:
+                    rename[src] = k
+                    break
+        elif k in df.columns and k != v:
+            rename[k] = v
     return df.rename(columns=rename) if rename else df
 
 

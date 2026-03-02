@@ -18,14 +18,16 @@ if (Test-Path $envPath) {
 $dbtDir = Join-Path (Get-Location) "dbt"
 Push-Location $dbtDir
 try {
-    # Use venv_dbt's dbt if available
+    # Prefer venv_dbt's Python + dbt module to avoid broken Windows launchers
     $projectRoot = Split-Path (Get-Location) -Parent
-    $dbtExe = Join-Path $projectRoot (Join-Path "venv_dbt" (Join-Path "Scripts" "dbt.exe"))
-    if (-not (Test-Path $dbtExe)) { $dbtExe = "dbt" }
+    $pythonExe = Join-Path $projectRoot (Join-Path "venv_dbt" (Join-Path "Scripts" "python.exe"))
+    if (-not (Test-Path $pythonExe)) { $pythonExe = "python" }
+
     if ($args.Count -gt 0) {
-        & $dbtExe @args --profiles-dir .
-    } else {
-        & $dbtExe run --profiles-dir .
+        & $pythonExe -m dbt.cli.main @args --profiles-dir .
+    }
+    else {
+        & $pythonExe -m dbt.cli.main run --profiles-dir .
     }
 } finally {
     Pop-Location

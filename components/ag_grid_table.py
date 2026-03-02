@@ -40,6 +40,8 @@ def create_ag_grid_table(
             "wrapHeaderText": True,
             "autoHeaderHeight": True,
         }
+        if col == "sku":
+            col_def["width"] = 250
         if col in hidden_columns:
             col_def["hide"] = True
         elif i < pinned_cols:

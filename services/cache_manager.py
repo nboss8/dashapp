@@ -126,7 +126,7 @@ def load_persistent_cache():
     logger.info("[Cache] Persistent warm-up complete — %s entries loaded", loaded_count)
 
 
-def register_report(build_func, get_options_func=None):
+def register_report(build_func, get_options_func=None, prewarm_all_options=False, historical_refresh_keys=None):
     """Call this at bottom of every *_data.py. Auto-detects slug."""
     # Auto-detect slug: tv_data.py → 'tv'
     frame = inspect.stack()[1]
@@ -151,7 +151,10 @@ def register_report(build_func, get_options_func=None):
         print(f"Prewarming historical for {slug} (background)")
         options = get_options_func()
         cutoff = (date.today() - timedelta(days=7)).isoformat()
-        vals = [opt.get('value') for opt in options if opt.get('value') and str(opt.get('value')).upper() != 'TODAY' and opt.get('value') >= cutoff]
+        if prewarm_all_options:
+            vals = [opt.get('value') for opt in options if opt.get('value') and str(opt.get('value')).upper() != 'TODAY']
+        else:
+            vals = [opt.get('value') for opt in options if opt.get('value') and str(opt.get('value')).upper() != 'TODAY' and opt.get('value') >= cutoff]
         if vals:
             def _prewarm_worker(slug=slug, lock=lock, vals=vals):
                 for val in vals:
@@ -169,13 +172,13 @@ def register_report(build_func, get_options_func=None):
         interval = int(row['refresh_seconds'])
 
         if period == 'historical':
-            def h_worker(slug=slug, interval=interval, lock=lock):
+            def h_worker(slug=slug, interval=interval, lock=lock, refresh_keys=historical_refresh_keys):
                 while True:
                     time.sleep(interval)
                     with lock:
-                        for k in list(_caches.get(slug, {})):
-                            if k != 'today':
-                                _refresh(slug, 'historical', lock, k)
+                        keys_to_refresh = list(refresh_keys) if refresh_keys else [k for k in _caches.get(slug, {}) if k != 'today']
+                        for k in keys_to_refresh:
+                            _refresh(slug, 'historical', lock, k)
 
             t = threading.Thread(target=h_worker, daemon=True)
             _threads[(slug, period)] = t

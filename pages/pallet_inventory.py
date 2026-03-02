@@ -8,15 +8,13 @@ import dash_bootstrap_components as dbc
 from dotenv import load_dotenv
 
 from components.page_header import page_header
-from services.inventory_data import get_filter_options
 
 load_dotenv()
 dash.register_page(__name__, path="/production/pallet-inventory", name="Pallet Inventory")
 
-try:
-    opts = get_filter_options()
-except Exception:
-    opts = {k: [{"label": "All", "value": "ALL"}] for k in ["group_category", "variety", "pack", "grade", "size", "pool", "process_code", "final_stage_status"]}
+# Placeholder; real options loaded via callback when page renders (Snowflake ready)
+_DEFAULT_OPTS = [{"label": "All", "value": "ALL"}]
+opts = {k: _DEFAULT_OPTS for k in ["group_category", "variety", "pack", "grade", "size", "pool", "process_code", "final_stage_status"]}
 
 _header_right = html.Div([
     html.Span("Show ", style={"color": "#aaa", "fontSize": "0.85rem", "marginRight": "6px"}),
@@ -27,15 +25,22 @@ _header_right = html.Div([
         inline=True,
         style={"color": "#fff", "fontSize": "0.9rem"},
         inputStyle={"marginRight": "6px"},
-        labelStyle={"marginRight": "12px"},
+        labelStyle={"marginRight": "12px", "color": "#fff"},
     ),
 ], className="d-flex align-items-center")
 
 layout = html.Div([
     dcc.Interval(id="inv-interval", interval=900_000, n_intervals=0),
     dcc.Store(id="inv-filters-store", data={
-        "group_category": None, "variety": None, "pack": None, "grade": None,
-        "size": None, "pool": None, "process_code": None, "final_stage_status": None,
+        "group_category": None,
+        "variety": None,
+        "pack": None,
+        "grade": None,
+        "size": None,
+        "pool": None,
+        "process_code": None,
+        "final_stage_status": None,
+        "week_bucket": None,
     }),
     dcc.Store(id="inv-sku-page", data=1),
     dbc.Container([
@@ -53,49 +58,46 @@ layout = html.Div([
             dbc.Col([html.Label("Size", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-size", options=opts["size"], value="ALL", clearable=False, className="inv-dropdown")], width=1),
             dbc.Col([html.Label("Stage", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-stage", options=opts["final_stage_status"], value="ALL", clearable=False, className="inv-dropdown")], width=1),
         ], className="mb-3 g-2"),
-        # Changes for Today
-        dbc.Row([
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardBody([
-                        html.Div("Packed today", style={"color": "#aaa", "fontSize": "0.8rem"}),
-                        html.Div(id="inv-packed-value", style={"color": "#fff", "fontSize": "1.2rem", "fontWeight": "600"}),
-                    ]),
-                ], className="bg-dark"),
-            ], width=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardBody([
-                        html.Div("Shipped today", style={"color": "#aaa", "fontSize": "0.8rem"}),
-                        html.Div(id="inv-shipped-value", style={"color": "#fff", "fontSize": "1.2rem", "fontWeight": "600"}),
-                    ]),
-                ], className="bg-dark"),
-            ], width=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardBody([
-                        html.Div([
-                            "Staged ",
-                            html.Span("(?)", id="inv-staged-tooltip", title="Staged = current STAGED status on pallets packed today (no event timestamp yet)", style={"cursor": "help", "color": "#888"}),
-                        ], style={"color": "#aaa", "fontSize": "0.8rem"}),
-                        html.Div(id="inv-staged-value", style={"color": "#fff", "fontSize": "1.2rem", "fontWeight": "600"}),
-                    ]),
-                ], className="bg-dark"),
-            ], width=4),
-        ], className="mb-3"),
+        # Clear Filters button
+        dbc.Row(
+            dbc.Col(
+                dbc.Button(
+                    "Clear All Filters",
+                    id="inv-clear-filters",
+                    color="secondary",
+                    size="sm",
+                    outline=True,
+                ),
+                width=12,
+                className="mb-3",
+            ),
+        ),
+        # Hidden metric targets (values still computed for callbacks, but not shown as tiles)
+        html.Div(
+            [
+                html.Div(id="inv-packed-value"),
+                html.Div(id="inv-shipped-value"),
+                html.Div(id="inv-staged-value"),
+            ],
+            style={"display": "none"},
+        ),
         # Export buttons
-        dbc.Row([
-            dbc.Col([
-                dbc.Button("Export Pivot CSV", id="inv-export-pivot-btn", color="secondary", size="sm", outline=True, className="me-2"),
-                dbc.Button("Export SKU CSV", id="inv-export-sku-btn", color="secondary", size="sm", outline=True),
-            ], width=12, className="mb-2"),
-        ]),
+        dcc.Download(id="inv-csv-download"),
         # Pivot and SKU
         dbc.Row([
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader("Cartons, Variety by Weeks Age"),
                     dbc.CardBody([
+                        html.Div(
+                            dbc.Button(
+                                "Export Pivot CSV",
+                                id="inv-export-pivot-btn",
+                                color="outline-light",
+                                size="sm",
+                            ),
+                            className="text-end mb-2"
+                        ),
                         dcc.Loading(
                             html.Div(id="inv-pivot-table", className="inv-table-wrapper"),
                             type="circle",
@@ -109,6 +111,15 @@ layout = html.Div([
                 dbc.Card([
                     dbc.CardHeader("SKU Detail"),
                     dbc.CardBody([
+                        html.Div(
+                            dbc.Button(
+                                "Export SKU CSV",
+                                id="inv-export-sku-btn",
+                                color="outline-light",
+                                size="sm",
+                            ),
+                            className="text-end mb-2"
+                        ),
                         dcc.Loading(
                             html.Div(id="inv-sku-table", className="inv-table-wrapper"),
                             type="circle",
@@ -121,4 +132,4 @@ layout = html.Div([
             ], width=5),
         ], className="g-3"),
     ], fluid=True, className="py-3"),
-], className="tv-root", style={"backgroundColor": "#1a1a1a", "minHeight": "100vh"})
+], className="pallet-root", style={"backgroundColor": "#1a1a1a", "minHeight": "100vh"})

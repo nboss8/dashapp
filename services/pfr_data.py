@@ -15,7 +15,7 @@ from dash import html
 
 from services.snowflake_service import query
 
-DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV")
+DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV_DBT_DEV")
 from utils.formatters import _fmt_dt, _fmt_num, _safe_str, _combine_breakdowns
 from utils.sizer import build_sizer_matrix, _get_gradient_color
 

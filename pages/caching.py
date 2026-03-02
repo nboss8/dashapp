@@ -26,7 +26,7 @@ layout = html.Div([
     Input("caching-interval", "n_intervals"),
 )
 def update_caching_status(_n):
-    status = get_cache_status()
+    status = get_cache_status()  # Includes inventory (pallet) via cache_manager
     sections = []
     for slug, entries in sorted(status.items()):
         items = [

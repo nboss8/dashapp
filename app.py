@@ -79,7 +79,7 @@ app.index_string = """<!DOCTYPE html>
     #pfr-group-dropdown .dash-dropdown-trigger-icon {
         color: #fff !important; fill: #fff !important;
     }
-    .dash-dropdown-content { background-color: #1a1a1a !important; border-color: #555 !important; }
+    .dash-dropdown-content { background-color: #1a1a1a !important; border-color: #555 !important; z-index: 9999 !important; }
     .dash-dropdown-option { color: #fff !important; }
     .dash-dropdown-option:hover { background-color: #1565C0 !important; }
     .dash-dropdown-option[data-state="checked"] { background-color: #333 !important; color: #fff !important; }

@@ -2,8 +2,8 @@
 Production Intra Day KPIs - data fetching, payload building, table/chart builders.
 All data logic for the PIDK page lives here.
 """
+import os
 from datetime import datetime, date
-import threading
 import time
 
 import pandas as pd
@@ -14,6 +14,9 @@ from services.snowflake_service import query
 from utils.table_helpers import _normalize_df_columns
 from utils.sizer import build_sizer_matrix, _get_gradient_color
 
+# dbt marts schema: DATABASE.DBT_DEV (e.g. FROSTY.DBT_DEV)
+DBT_SCHEMA = os.getenv("SNOWFLAKE_DATABASE", "FROSTY") + "." + os.getenv("DBT_SCHEMA", "DBT_DEV")
+
 # Column maps for Snowflake uppercase → display names (exported for callbacks)
 RUN_COL_MAP = {
     "RUN": "Run", "VARIETY": "Variety", "SHIFT": "Shift", "LOT": "Lot",
@@ -22,9 +25,32 @@ RUN_COL_MAP = {
     "BINPERHOURTARGET": "BinPerHourTarget", "PACKSPERHOURMANHOUR": "PacksPerHourManHour",
 }
 SHIFT_COL_MAP = {
-    "SHIFT": "Shift", "TOTALBINS": "TotalBins", "BINPERHOUR": "BinPerHour",
-    "PPMH": "PPMH", "PPMHTARGET": "PPMHTarget", "BPHTARGET": "BPHTarget",
+    "SHIFT": "Shift", "TOTALBINS": "TotalBins",
+    "FORECASTEDBINS": "ForcastedBins", "BINSTARGET": "BinsTarget",
+    "BINPERHOUR": "BinPerHour", "PPMH": "PPMH", "PPMHTARGET": "PPMHTarget",
+    "BPHTARGET": "BPHTarget", "EQSPERHOUR": "EQsPerHour",
 }
+
+# Canonical keys for run_data / shift_data dicts (callbacks expect these)
+_RUN_DATA_KEYS = ("RUN_KEY", "PACKDATE_RUN_KEY", "Lot", "Run", "Shift")
+_SHIFT_DATA_KEYS = ("PACKDATE_RUN_KEY", "Shift")
+
+
+def _normalize_run_shift_keys(df, canonical_keys):
+    """Rename columns to canonical keys so callbacks get consistent names (handles Snowflake casing)."""
+    if df is None or df.empty:
+        return df
+    renames = {}
+    for canon in canonical_keys:
+        if canon in df.columns:
+            continue
+        for col in df.columns:
+            if str(col).upper() == str(canon).upper():
+                renames[col] = canon
+                break
+    if renames:
+        return df.rename(columns=renames)
+    return df
 
 _BPH_BAR_COLORS = ["#42A5F5", "#1976D2", "#1E88E5", "#1565C0", "#0D47A1"]
 
@@ -33,28 +59,28 @@ def _resolve_day_to_date(day_label):
     if not day_label:
         return date.today().isoformat()
     if str(day_label).upper() == "TODAY":
-        df = query("""
-            SELECT DATE_D FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03
-            WHERE DAY_LABEL = 'TODAY' LIMIT 1
-        """)
-        if not df.empty and df.iloc[0]["DATE_D"] is not None:
-            d = df.iloc[0]["DATE_D"]
-            return d.isoformat() if hasattr(d, "isoformat") else str(d)[:10]
+        df = query(
+            f"SELECT date_d FROM {DBT_SCHEMA}.run_slicer_refs WHERE day_label = %s LIMIT 1",
+            params=["TODAY"],
+        )
+        if not df.empty:
+            row = df.iloc[0]
+            col = "date_d" if "date_d" in df.columns else ("DATE_D" if "DATE_D" in df.columns else df.columns[0])
+            if col and row[col] is not None:
+                d = row[col]
+                return d.isoformat() if hasattr(d, "isoformat") else str(d)[:10]
         return date.today().isoformat()
     return str(day_label)[:10]
 
 
 def get_day_label_options():
-    df = query("""
-        SELECT DISTINCT DAY_LABEL
-        FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03
-        ORDER BY CASE WHEN DAY_LABEL = 'TODAY' THEN 0 ELSE 1 END, DAY_LABEL
-    """)
+    df = query(f"SELECT DISTINCT day_label FROM {DBT_SCHEMA}.day_labels")
     if df.empty:
         return [{"label": "Today", "value": "TODAY"}]
+    col = "day_label" if "day_label" in df.columns else ("DAY_LABEL" if "DAY_LABEL" in df.columns else df.columns[0])
     opts = []
     for _, r in df.iterrows():
-        label = str(r["DAY_LABEL"])
+        label = str(r[col])
         val = label
         if label == "TODAY":
             opts.insert(0, {"label": "Today", "value": "TODAY"})
@@ -66,68 +92,55 @@ def get_day_label_options():
 def get_run_totals(day_label):
     if not day_label:
         return pd.DataFrame()
-    return query(f"""
-        SELECT
-            p.RUN_KEY AS "RUN_KEY",
-            p.PACKDATE_RUN_KEY AS "PACKDATE_RUN_KEY",
-            p.RUNS AS "Run",
-            v.VARIETY_ABBR AS "Variety",
-            p.SHIFT AS "Shift",
-            p.GROWER_NUMBER AS "Lot",
-            COALESCE(v.BINS_PRE_SHIFT, 0) AS "BinsPreShift",
-            COALESCE(v.BINS_ON_SHIFT, 0) AS "BinsOnShift",
-            v.BINS_PER_HOUR AS "BinsPerHour",
-            v.STAMPER_PPMH AS "StamperPPMH",
-            COALESCE(p.BIN_HOUR_TARGET, v.BIN_HOUR_TARGET) AS "BinPerHourTarget",
-            COALESCE(p.PACKS_MANHOUR_TARGET, v.PACKS_MANHOUR_TARGET) AS "PacksPerHourManHour",
-            v.BINS_TARGET_COLOR AS "BINS_TARGET_COLOR",
-            v.PACKS_TARGET_COLOR AS "PACKS_TARGET_COLOR"
-        FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p
-        INNER JOIN FROSTY.STAGING.VW_RUN_TOTALS_FAST_03 v
-            ON v.PACKDATE_RUN_KEY = p.PACKDATE_RUN_KEY
-            AND v.GROWER_NUMBER = p.GROWER_NUMBER
-        WHERE p.DAY_LABEL = '{day_label.replace("'", "''")}'
-        ORDER BY p.RUNS, p.GROWER_NUMBER
-    """)
+    return query(
+        f"""
+        SELECT "RUN_KEY", "PACKDATE_RUN_KEY", "Run", "Variety", "Shift", "Lot",
+               "BinsPreShift", "BinsOnShift", "BinsPerHour", "StamperPPMH",
+               "BinPerHourTarget", "PacksPerHourManHour",
+               "BINS_TARGET_COLOR", "PACKS_TARGET_COLOR"
+        FROM {DBT_SCHEMA}.pidk_run_totals
+        WHERE "DAY_LABEL" = %s
+        ORDER BY "Run", "Lot"
+        """,
+        params=[day_label],
+    )
 
 
 def get_shift_totals(day_label):
+    """Shift totals from pidk_shift_totals mart."""
     if not day_label:
         return pd.DataFrame()
-    return query(f"""
-        SELECT
-            v.PACKDATE_RUN_KEY AS "PACKDATE_RUN_KEY",
-            v.SHIFT AS "Shift",
-            SUM(COALESCE(v.BINS_ON_SHIFT, 0) + COALESCE(v.BINS_PRE_SHIFT, 0)) AS "TotalBins",
-            AVG(v.BINS_PER_HOUR) AS "BinPerHour",
-            AVG(v.STAMPER_PPMH) AS "PPMH",
-            MAX(v.PACKS_MANHOUR_TARGET) AS "PPMHTarget",
-            MAX(v.BIN_HOUR_TARGET) AS "BPHTarget"
-        FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p
-        INNER JOIN FROSTY.STAGING.VW_RUN_TOTALS_FAST_03 v
-            ON v.PACKDATE_RUN_KEY = p.PACKDATE_RUN_KEY
-        WHERE p.DAY_LABEL = '{day_label.replace("'", "''")}'
-        GROUP BY v.SHIFT, v.PACKDATE_RUN_KEY
-        ORDER BY v.SHIFT
-    """)
+    return query(
+        f"""
+        SELECT "PACKDATE_RUN_KEY", "Shift", "TotalBins", "ForcastedBins", "BinsTarget",
+               "BinPerHour", "PPMH", "PPMHTarget", "BPHTarget", "EQsPerHour"
+        FROM {DBT_SCHEMA}.pidk_shift_totals
+        WHERE "DAY_LABEL" = %s
+        ORDER BY "Shift"
+        """,
+        params=[day_label],
+    )
 
 
 def get_run_keys_for_shift(day_label, packdate_run_key):
     if not day_label or not packdate_run_key:
         return []
-    pk = str(packdate_run_key).replace("'", "''")
-    df = query(f"""
-        SELECT p.GROWER_NUMBER, p.RUN_KEY
-        FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p
-        WHERE p.DAY_LABEL = '{day_label.replace("'", "''")}'
-          AND p.PACKDATE_RUN_KEY = '{pk}'
-        ORDER BY p.RUNS, p.GROWER_NUMBER
-    """)
+    df = query(
+        f"""
+        SELECT grower_number, run_key
+        FROM {DBT_SCHEMA}.run_slicer_refs
+        WHERE day_label = %s AND packdate_run_key = %s
+        ORDER BY grower_number
+        """,
+        params=[day_label, str(packdate_run_key)],
+    )
     if df.empty:
         return []
+    gn = "grower_number" if "grower_number" in df.columns else "GROWER_NUMBER"
+    rk = "run_key" if "run_key" in df.columns else "RUN_KEY"
     return list(zip(
-        df["GROWER_NUMBER"].fillna("").astype(str),
-        df["RUN_KEY"].fillna("").astype(str),
+        df[gn].fillna("").astype(str),
+        df[rk].fillna("").astype(str),
     ))
 
 
@@ -135,41 +148,37 @@ def get_pidk_bph_chart_data(day_label, grower_number, run_key=None, packdate_run
     if not day_label or grower_number is None or grower_number == "":
         return pd.DataFrame()
     if packdate_run_key:
-        pk = str(packdate_run_key).replace("'", "''")
-        run_key_esc = str(run_key).replace("'", "''") if run_key else None
-        run_filter = f"AND RUN_KEY = '{run_key_esc}'" if run_key_esc else ""
+        pk = str(packdate_run_key)
+        run_filter = "AND run_key = %s" if run_key else ""
+        params = [pk] if not run_key else [pk, str(run_key)]
     else:
-        esc = str(grower_number).replace("'", "''")
-        key_df = query(f"""
-            SELECT p."PACKDATE_RUN_KEY" AS "PACKDATE_RUN_KEY", p."RUN_KEY" AS "RUN_KEY"
-            FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p
-            WHERE p."DAY_LABEL" = '{day_label.replace("'", "''")}'
-              AND p."GROWER_NUMBER" = '{esc}'
-            ORDER BY p."RUNS"
+        key_df = query(
+            f"""
+            SELECT packdate_run_key, run_key FROM {DBT_SCHEMA}.run_slicer_refs
+            WHERE day_label = %s AND grower_number = %s
+            ORDER BY grower_number
             LIMIT 1
-        """)
+            """,
+            params=[day_label, str(grower_number)],
+        )
         if key_df.empty:
             return pd.DataFrame()
         row0 = key_df.iloc[0]
-        packdate_run_key = row0.get("PACKDATE_RUN_KEY") or row0.get("packdate_run_key")
+        packdate_run_key = row0.get("packdate_run_key") or row0.get("PACKDATE_RUN_KEY")
         if not packdate_run_key:
             return pd.DataFrame()
-        pk = str(packdate_run_key).replace("'", "''")
-        run_key = row0.get("RUN_KEY") or row0.get("run_key")
-        run_key_esc = str(run_key).replace("'", "''") if run_key else None
-        run_filter = f"AND RUN_KEY = '{run_key_esc}'" if run_key_esc else ""
-    return query(f"""
-        SELECT
-            BUCKET_START,
-            SUM(BINS_PER_HOUR)     AS BINS_PER_HOUR,
-            SUM(BIN_HOUR_TARGET)   AS BIN_HOUR_TARGET
-        FROM FROSTY.STAGING.DT_SHIFT_10MIN_KPI_A_PER_RUN03_DT
-        WHERE DATE_SHIFT_KEY = '{pk}'
-        {run_filter}
-        AND MINUTES_WORKED_ALLOC > 0
-        GROUP BY BUCKET_START
-        ORDER BY BUCKET_START
-    """)
+        pk = str(packdate_run_key)
+        run_key = row0.get("run_key") or row0.get("RUN_KEY")
+        run_filter = "AND run_key = %s" if run_key else ""
+        params = [pk] if not run_key else [pk, str(run_key)]
+    sql = f"""
+        SELECT bucket_start AS "BUCKET_START", sum(bins_per_hour) AS "BINS_PER_HOUR", sum(bin_hour_target) AS "BIN_HOUR_TARGET"
+        FROM {DBT_SCHEMA}.shift_10min_kpi
+        WHERE date_shift_key = %s {run_filter}
+        GROUP BY bucket_start
+        ORDER BY bucket_start
+    """
+    return query(sql, params=params)
 
 
 def build_pidk_bph_chart_all_growers(grower_dfs):
@@ -222,31 +231,25 @@ def build_pidk_bph_chart_all_growers(grower_dfs):
 def get_sizer_events_for_day(day_label, run_key=None, packdate_run_key=None):
     if not day_label:
         return pd.DataFrame()
-    run_filter = f"AND p.\"RUN_KEY\" = '{str(run_key).replace(chr(39), chr(39)+chr(39))}'" if run_key else ""
-    packdate_filter = f"AND p.\"PACKDATE_RUN_KEY\" = '{str(packdate_run_key).replace(chr(39), chr(39)+chr(39))}'" if packdate_run_key else ""
-    extra = run_filter or packdate_filter
-    q = f"""
-        SELECT h."BatchID" AS "BatchID", h."EventId" AS "EventId", h."SHIFT_KEY" AS "SHIFT_KEY", h."GrowerCode" AS "GrowerCode",
-               h."VarietyName" AS "VarietyName", h."StartTime" AS "StartTime", h."SHIFT_CODE" AS "SHIFT_CODE",
-               p."PACKDATE_RUN_KEY", p."RUN_KEY"
-        FROM FROSTY.STAGING.DQ_APPLE_SIZER_HEADER_VIEW_03 h
-        INNER JOIN FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p ON p."RUN_KEY" = h."SHIFT_KEY"
-        WHERE p."DAY_LABEL" = '{day_label.replace("'", "''")}' {extra}
-        ORDER BY h."StartTime" DESC, h."BatchID"
-    """
-    df = query(q)
-    if not df.empty:
-        return df
-    q2 = f"""
-        SELECT h."BatchID" AS "BatchID", h."EventId" AS "EventId", h."SHIFT_KEY" AS "SHIFT_KEY", h."GrowerCode" AS "GrowerCode",
-               h."VarietyName" AS "VarietyName", h."StartTime" AS "StartTime", h."SHIFT_CODE" AS "SHIFT_CODE",
-               p."PACKDATE_RUN_KEY", p."RUN_KEY"
-        FROM FROSTY.STAGING.DQ_APPLE_SIZER_HEADER_VIEW_03 h
-        INNER JOIN FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p ON h."SHIFT_KEY" LIKE p."PACKDATE_RUN_KEY" || '%'
-        WHERE p."DAY_LABEL" = '{day_label.replace("'", "''")}' {extra}
-        ORDER BY h."StartTime" DESC, h."BatchID"
-    """
-    return query(q2)
+    w = ["\"DAY_LABEL\" = %s"]
+    params = [day_label]
+    if run_key:
+        w.append("\"RUN_KEY\" = %s")
+        params.append(str(run_key))
+    elif packdate_run_key:
+        w.append("\"PACKDATE_RUN_KEY\" = %s")
+        params.append(str(packdate_run_key))
+    where = " AND ".join(w)
+    return query(
+        f"""
+        SELECT "BatchID", "EventId", "SHIFT_KEY", "GrowerCode", "VarietyName", "StartTime", "SHIFT_CODE",
+               "PACKDATE_RUN_KEY", "RUN_KEY"
+        FROM {DBT_SCHEMA}.pidk_sizer_events
+        WHERE {where}
+        ORDER BY "StartTime" DESC, "BatchID"
+        """,
+        params=params,
+    )
 
 
 def get_sizer_events_with_event_ids(day_label, run_key=None, packdate_run_key=None):
@@ -281,29 +284,33 @@ def get_sizer_events_with_event_ids(day_label, run_key=None, packdate_run_key=No
 
 
 def filter_sizer_events_by_run_packdate(events, run_key=None, packdate_run_key=None):
-    """Filter events list by run_key or packdate_run_key. Prefer run_key when both given (run selection)."""
+    """Filter events list by run_key or packdate_run_key. When run_key is given, filter only by run_key
+    (run selection = one lot). When only packdate_run_key is given, filter by packdate_run_key (shift selection)."""
     if not events or (not run_key and not packdate_run_key):
         return events
     out = []
     for e in events:
-        if run_key and str(e.get("run_key", "")).strip() == str(run_key).strip():
-            out.append(e)
-        elif packdate_run_key and str(e.get("packdate_run_key", "")).strip() == str(packdate_run_key).strip():
-            out.append(e)
+        if run_key:
+            if str(e.get("run_key", "")).strip() == str(run_key).strip():
+                out.append(e)
+        elif packdate_run_key:
+            if str(e.get("packdate_run_key", "")).strip() == str(packdate_run_key).strip():
+                out.append(e)
     return out
 
 
 def get_sizer_drops_for_event(event_id, batch_id=None):
-    safe_id = str(event_id).replace("'", "''")
-    return query(f"""
-        SELECT "GradeName" AS "GradeName", "SizeName" AS "SizeName",
-               COALESCE(NULLIF(TRIM("PACKOUT_GROUP"), ''), 'Unclassified') AS "PACKOUT_GROUP",
-               SUM(COALESCE("weight_dec", "WEIGHT", 0)) AS "WEIGHT"
-        FROM FROSTY.STAGING.DQ_APPLE_SIZER_DROPSUMMARY_03
-        WHERE "EventId" = '{safe_id}'
-        GROUP BY "GradeName", "SizeName", "PACKOUT_GROUP"
-        ORDER BY "GradeName", "SizeName"
-    """)
+    return query(
+        f"""
+        SELECT grade_name AS "GradeName", size_name AS "SizeName", packout_group AS "PACKOUT_GROUP",
+               SUM(weight_dec) AS "WEIGHT"
+        FROM {DBT_SCHEMA}.pidk_sizer_drops
+        WHERE event_id = %s
+        GROUP BY grade_name, size_name, packout_group
+        ORDER BY grade_name, size_name
+        """,
+        params=[str(event_id)],
+    )
 
 
 def get_sizer_drops_for_all_events(day_label, run_key=None, packdate_run_key=None):
@@ -376,22 +383,24 @@ def build_sizer_matrix_table(drops_df):
 def get_eq_data(day_label, run_key=None, packdate_run_key=None):
     if not day_label:
         return pd.DataFrame()
-    dl = str(day_label).replace("'", "''")
-    extra = ""
+    w = ["day_label = %s"]
+    params = [day_label]
     if run_key:
-        extra = f" AND p.RUN_KEY = '{str(run_key).replace(chr(39), chr(39)+chr(39))}'"
+        w.append("run_key = %s")
+        params.append(str(run_key))
     elif packdate_run_key:
-        extra = f" AND p.PACKDATE_RUN_KEY = '{str(packdate_run_key).replace(chr(39), chr(39)+chr(39))}'"
-    return query(f"""
-        SELECT TRIM(e.PACK_ABBR) AS PACK_ABBR, TRIM(e.GRADE_ABBR) AS GRADE_ABBR,
-               COALESCE(e.CARTONS, 0) AS CARTONS, COALESCE(e.EQ_ON_HAND, e.CARTONS, 0) AS EQ_VAL,
-               COALESCE(NULLIF(TRIM(pc.CLASSIFICATION), ''), 'Unclassified') AS CLASSIFICATION,
-               p.PACKDATE_RUN_KEY, p.RUN_KEY
-        FROM FROSTY.STAGING.DQ_EQ_WITH_KEYS03 e
-        INNER JOIN FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p ON p.RUN_KEY = e.RUN_KEY AND p.DAY_LABEL = '{dl}'
-        LEFT OUTER JOIN FROSTY.STAGING.PACK_CLASSIFICATION pc ON UPPER(TRIM(e.PACK_ABBR)) = UPPER(TRIM(pc.PACK_ABBR))
-        WHERE 1=1 {extra}
-    """)
+        w.append("packdate_run_key = %s")
+        params.append(str(packdate_run_key))
+    where = " AND ".join(w)
+    return query(
+        f"""
+        SELECT pack_abbr AS PACK_ABBR, grade_abbr AS GRADE_ABBR, cartons AS CARTONS, eq_val AS EQ_VAL,
+               classification AS CLASSIFICATION, packdate_run_key AS PACKDATE_RUN_KEY, run_key AS RUN_KEY
+        FROM {DBT_SCHEMA}.pidk_eq
+        WHERE {where}
+        """,
+        params=params,
+    )
 
 
 def filter_eq_by_run_or_packdate(eq_df, run_key=None, packdate_run_key=None):
@@ -402,10 +411,10 @@ def filter_eq_by_run_or_packdate(eq_df, run_key=None, packdate_run_key=None):
     df.columns = [c.strip() if isinstance(c, str) else c for c in df.columns]
     pk_col = "PACKDATE_RUN_KEY" if "PACKDATE_RUN_KEY" in df.columns else "packdate_run_key"
     rk_col = "RUN_KEY" if "RUN_KEY" in df.columns else "run_key"
-    if packdate_run_key and pk_col in df.columns:
-        df = df[df[pk_col].astype(str).str.strip() == str(packdate_run_key).strip()]
-    elif run_key and rk_col in df.columns:
+    if run_key and rk_col in df.columns:
         df = df[df[rk_col].astype(str).str.strip() == str(run_key).strip()]
+    elif packdate_run_key and pk_col in df.columns:
+        df = df[df[pk_col].astype(str).str.strip() == str(packdate_run_key).strip()]
     return df
 
 
@@ -451,7 +460,7 @@ def build_eq_matrix_table(eq_df):
         row_cells = [html.Td(pack, style={**_tds, "textAlign": "left", "fontWeight": "600", "color": "#ddd", "backgroundColor": "#1e1e1e"})]
         for g in grade_cols:
             val = int(pivot.loc[pack, g]) if g in pivot.columns else 0
-            bg, txt = _get_gradient_color(float(val), min_val=0, max_val=max(1, max_val)) if val > 0 else ("#1e1e1e", "#888")
+            bg, txt = _get_gradient_color(float(val), min_val=0, max_val=float(max(1, max_val))) if val > 0 else ("#1e1e1e", "#888")
             row_cells.append(html.Td(str(val), style={**_tds, "textAlign": "center", "backgroundColor": bg, "color": txt, "fontWeight": "600"}))
         row_cells.append(html.Td(str(pack_total), style={**_tds, "textAlign": "center", "backgroundColor": "#2a2a2a", "fontWeight": "700", "color": "#fff"}))
         rows.append(html.Tr(row_cells))
@@ -536,24 +545,28 @@ def build_package_type_table(pkg_df, selected_package_type=None):
 def get_employee_summary_data(day_label, packdate_run_key=None):
     if not day_label:
         return pd.DataFrame()
-    key_df = query(f"""
-        SELECT DISTINCT p.PACKDATE_RUN_KEY
-        FROM FROSTY.STAGING.DQ_PTRUN_N_REPORT_03 p
-        WHERE p.DAY_LABEL = '{day_label.replace("'", "''")}'
-        ORDER BY p.PACKDATE_RUN_KEY
-    """)
+    key_df = query(
+        f"SELECT DISTINCT packdate_run_key FROM {DBT_SCHEMA}.run_slicer_refs WHERE day_label = %s",
+        params=[day_label],
+    )
     if key_df.empty:
         return pd.DataFrame()
-    keys = [str(packdate_run_key)] if packdate_run_key else key_df["PACKDATE_RUN_KEY"].dropna().astype(str).unique().tolist()
+    pk_col = "packdate_run_key" if "packdate_run_key" in key_df.columns else "PACKDATE_RUN_KEY"
+    keys = [str(packdate_run_key)] if packdate_run_key else key_df[pk_col].dropna().astype(str).unique().tolist()
     if not keys:
         return pd.DataFrame()
-    in_list = ",".join([f"'{str(k).replace(chr(39), chr(39)+chr(39))}'" for k in keys])
-    return query(f"""
-        SELECT SHIFT, DATE_SHIFT_KEY, BUCKET_START, EMPLOYEE_COUNT_ALLOC, MINUTES_WORKED_ALLOC, STAMPER_EQS, PACKS_MANHOUR_TARGET
-        FROM FROSTY.STAGING.DT_SHIFT_10MIN_KPI_A_PER_RUN03_DT
-        WHERE DATE_SHIFT_KEY IN ({in_list})
-        ORDER BY DATE_SHIFT_KEY, BUCKET_START
-    """)
+    placeholders = ",".join(["%s"] * len(keys))
+    return query(
+        f"""
+        SELECT shift AS "SHIFT", date_shift_key AS "DATE_SHIFT_KEY", bucket_start AS "BUCKET_START",
+               employee_count_alloc AS "EMPLOYEE_COUNT_ALLOC", minutes_worked_alloc AS "MINUTES_WORKED_ALLOC",
+               stamper_eqs AS "STAMPER_EQS", packs_manhour_target AS "PACKS_MANHOUR_TARGET"
+        FROM {DBT_SCHEMA}.shift_10min_kpi
+        WHERE date_shift_key IN ({placeholders})
+        ORDER BY date_shift_key, bucket_start
+        """,
+        params=keys,
+    )
 
 
 def compute_employee_summary(df):
@@ -618,10 +631,13 @@ RUN_COLUMNS = [
 SHIFT_COLUMNS = [
     {"field": "Shift", "header": "Shift", "dec": 0},
     {"field": "TotalBins", "header": "Total Bins", "dec": 0},
+    {"field": "ForcastedBins", "header": "Forcasted Bins", "dec": 0},
+    {"field": "BinsTarget", "header": "Bins Target", "dec": 0},
     {"field": "BinPerHour", "header": "Bin Per Hour", "dec": 1, "color_target": "BPHTarget"},
     {"field": "PPMH", "header": "PPMH", "dec": 1, "color_target": "PPMHTarget"},
     {"field": "PPMHTarget", "header": "PPMH Target", "dec": 1},
     {"field": "BPHTarget", "header": "BPH Target", "dec": 0},
+    {"field": "EQsPerHour", "header": "EQs Per Hour", "dec": 1},
 ]
 
 
@@ -635,7 +651,7 @@ def build_run_totals_table(df):
         columns=RUN_COLUMNS,
         id_prefix="pidk-run-totals",
         pinned_cols=4,
-        row_click_type="pidk-run-row-btn",
+        row_click_type=None,
     )
 
 
@@ -649,91 +665,79 @@ def build_shift_totals_table(df):
         columns=SHIFT_COLUMNS,
         id_prefix="pidk-shift-totals",
         pinned_cols=2,
-        row_click_type="pidk-shift-row-btn",
+        row_click_type=None,
     )
-
-
-# Cache (exported for callbacks)
-pidk_cache = {}
-pidk_cache_lock = threading.Lock()
 
 
 def build_pidk_payload(day_label):
     if not day_label:
         day_label = "TODAY"
+    _start = time.perf_counter()
     run_df = get_run_totals(day_label)
     shift_df = get_shift_totals(day_label)
     run_df = _normalize_df_columns(run_df, RUN_COL_MAP)
     shift_df = _normalize_df_columns(shift_df, SHIFT_COL_MAP)
+    run_df = _normalize_run_shift_keys(run_df, _RUN_DATA_KEYS)
+    shift_df = _normalize_run_shift_keys(shift_df, _SHIFT_DATA_KEYS)
     run_table = build_run_totals_table(run_df)
     shift_table = build_shift_totals_table(shift_df)
     last_updated = f"Last updated: {datetime.now().strftime('%I:%M:%S %p')} · Refreshes every 5 min"
     run_data = run_df.to_dict("records") if not run_df.empty else []
     shift_data = shift_df.to_dict("records") if not shift_df.empty else []
+    # Normalize row dict keys to uppercase for consistent Snowflake casing
+    run_data = [{str(k).upper(): v for k, v in r.items()} for r in run_data]
+    shift_data = [{str(k).upper(): v for k, v in r.items()} for r in shift_data]
     payload = {
         "run_table": run_table, "shift_table": shift_table, "last_updated": last_updated,
         "run_data": run_data, "shift_data": shift_data,
     }
-    if day_label == "TODAY":
-        emp_df = get_employee_summary_data(day_label)
-        payload["employee_df_full"] = emp_df
-        payload["employee"] = build_employee_summary_table(compute_employee_summary(emp_df))
-        eq_df = get_eq_data(day_label)
-        payload["eq_df_full"] = eq_df
-        payload["eq_matrix"] = build_eq_matrix_table(eq_df)
-        pkg_df = eq_data_to_package_type_df(eq_df)
-        payload["package_type"] = build_package_type_table(pkg_df, selected_package_type=None)
-        events = get_sizer_events_with_event_ids(day_label)
-        payload["sizer_events_full"] = events
-        payload["sizer_options"] = [{"label": "All", "value": "ALL"}] + [{"label": e["label"], "value": e["event_id"]} for e in events]
-        payload["sizer_value"] = "ALL"
-        drops_by_event = {}
-        for e in events:
-            df = get_sizer_drops_for_event(e["event_id"])
-            if df is not None and not df.empty:
-                drops_by_event[str(e["event_id"])] = df
-        payload["sizer_drops_by_event"] = drops_by_event
-        drops_all = get_sizer_drops_for_all_events(day_label)
-        payload["sizer_matrix"] = build_sizer_matrix_table(drops_all)
-        lot_col = "Lot" if "Lot" in run_df.columns else (run_df.columns[3] if len(run_df.columns) > 3 else None)
-        pk_col = "PACKDATE_RUN_KEY" if "PACKDATE_RUN_KEY" in run_df.columns else (run_df.columns[-1] if "PACKDATE_RUN_KEY" in [c.upper() for c in run_df.columns] else None)
-        rk_col = "RUN_KEY" if "RUN_KEY" in run_df.columns else None
-        bph_data = {}
-        grower_dfs = []
-        if lot_col and not run_df.empty:
-            for _, r in run_df.iterrows():
-                lot = str(r.get(lot_col, "")).strip()
-                pk = str(r.get(pk_col, "")).strip() if pk_col else None
-                rk = r.get(rk_col) if rk_col else None
-                if not lot:
-                    continue
-                key = (pk or "", lot)
-                if key in bph_data:
-                    continue
-                chart_df = get_pidk_bph_chart_data(day_label, lot, run_key=rk, packdate_run_key=pk)
-                if not chart_df.empty:
-                    bph_data[key] = chart_df
-                    grower_dfs.append((lot, chart_df))
-        payload["bph_data"] = bph_data
-        payload["run_df"] = run_df
-        payload["bph_figure"] = build_pidk_bph_chart_all_growers(grower_dfs)
+    emp_df = get_employee_summary_data(day_label)
+    payload["employee_df_full"] = emp_df
+    payload["employee"] = build_employee_summary_table(compute_employee_summary(emp_df))
+    eq_df = get_eq_data(day_label)
+    payload["eq_df_full"] = eq_df
+    payload["eq_matrix"] = build_eq_matrix_table(eq_df)
+    pkg_df = eq_data_to_package_type_df(eq_df)
+    payload["package_type"] = build_package_type_table(pkg_df, selected_package_type=None)
+    events = get_sizer_events_with_event_ids(day_label)
+    payload["sizer_events_full"] = events
+    payload["sizer_options"] = [{"label": "All", "value": "ALL"}] + [{"label": e["label"], "value": e["event_id"]} for e in events]
+    payload["sizer_value"] = "ALL"
+    drops_by_event = {}
+    for e in events:
+        df = get_sizer_drops_for_event(e["event_id"])
+        if df is not None and not df.empty:
+            drops_by_event[str(e["event_id"])] = df
+    payload["sizer_drops_by_event"] = drops_by_event
+    drops_all = get_sizer_drops_for_all_events(day_label)
+    payload["sizer_matrix"] = build_sizer_matrix_table(drops_all)
+    lot_col = "Lot" if "Lot" in run_df.columns else (run_df.columns[3] if len(run_df.columns) > 3 else None)
+    pk_col = "PACKDATE_RUN_KEY" if "PACKDATE_RUN_KEY" in run_df.columns else (run_df.columns[-1] if "PACKDATE_RUN_KEY" in [c.upper() for c in run_df.columns] else None)
+    rk_col = "RUN_KEY" if "RUN_KEY" in run_df.columns else None
+    bph_data = {}
+    grower_dfs = []
+    if lot_col and not run_df.empty:
+        for _, r in run_df.iterrows():
+            lot = str(r.get(lot_col, "")).strip()
+            pk = str(r.get(pk_col, "")).strip() if pk_col else None
+            rk = r.get(rk_col) if rk_col else None
+            if not lot:
+                continue
+            key = (pk or "", lot)
+            if key in bph_data:
+                continue
+            chart_df = get_pidk_bph_chart_data(day_label, lot, run_key=rk, packdate_run_key=pk)
+            if not chart_df.empty:
+                bph_data[key] = chart_df
+                grower_dfs.append((lot, chart_df))
+    payload["bph_data"] = bph_data
+    payload["run_df"] = run_df
+    payload["bph_figure"] = build_pidk_bph_chart_all_growers(grower_dfs)
+    payload["_cached_at"] = datetime.now().isoformat()
+    payload["_cached_duration_seconds"] = round(time.perf_counter() - _start, 2)
     return payload
 
 
-def _refresh_cache_pidk_today():
-    try:
-        with pidk_cache_lock:
-            pidk_cache["TODAY"] = build_pidk_payload("TODAY")
-    except Exception as e:
-        print(f"PIDK cache refresh error: {e}")
+from services.cache_manager import register_report
+register_report(build_pidk_payload, get_day_label_options)
 
-
-def _pidk_background_worker():
-    _refresh_cache_pidk_today()
-    while True:
-        time.sleep(300)
-        _refresh_cache_pidk_today()
-
-
-_pidk_bg_thread = threading.Thread(target=_pidk_background_worker, daemon=True)
-_pidk_bg_thread.start()

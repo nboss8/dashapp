@@ -1,0 +1,7089 @@
+{
+  "generated_at": "2026-02-18T20:40:24.806002Z",
+  "schema_targets": [
+    "FROSTY.APP",
+    "FROSTY.STAGING"
+  ],
+  "objects": {
+    "FROSTY.APP.AGROFRESH_CULLS_LOOKUP": {
+      "columns": [
+        {
+          "name": "Date (UTC)",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "PACKING_LINE_ORDER",
+          "type": "NUMBER",
+          "ordinal": 3
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "Grower Number/Identification del ranchero ",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "Bin Temp",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "Bins Dumped",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "Tub Temp",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "CreatedBy",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "Inspector",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "Conventional/Organic(Convencional/Organica)",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 14
+        }
+      ],
+      "sample": [
+        {
+          "Date (UTC)": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "PACKING_LINE_ORDER": 2,
+          "GROWER_NUMBER": "0007",
+          "Grower Number/Identification del ranchero ": "0007 Steve Allen",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "Bin Temp": "34.5",
+          "Bins Dumped": "245.0",
+          "Tub Temp": "39.2",
+          "CreatedBy": null,
+          "Inspector": "Evelia Lopez",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "EVER"
+        },
+        {
+          "Date (UTC)": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "PACKING_LINE_ORDER": 2,
+          "GROWER_NUMBER": "1158",
+          "Grower Number/Identification del ranchero ": "1158 4 Ransom Farms LLC",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "Bin Temp": "38.3",
+          "Bins Dumped": "171.0",
+          "Tub Temp": "50.0",
+          "CreatedBy": null,
+          "Inspector": "Evelia Lopez",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "EVER"
+        }
+      ]
+    },
+    "FROSTY.APP.AGROFRESH_CULLS_UNPIVOTED": {
+      "columns": [
+        {
+          "name": "Id",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "Date (UTC)",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "PACKING_LINE_ORDER",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "Grower Number/Identification del ranchero ",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "Conventional/Organic(Convencional/Organica)",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "Date/Fecha",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "Packing Line/Turno",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "Bin Temp",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "Time ",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "Tub Temp",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "Inspector",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "Storage/Tipo de almacenamiento",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "Bins Dumped",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "Sample Size/Cuantas esta revisando",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "Status ",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "Notes",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "Block # & Count",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "Pick # & Count",
+          "type": "TEXT",
+          "ordinal": 23
+        },
+        {
+          "name": "CMI Inspector",
+          "type": "TEXT",
+          "ordinal": 24
+        },
+        {
+          "name": "Crop",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "Location",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "CreatedBy",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "UpdatedBy",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "TEXT",
+          "ordinal": 29
+        },
+        {
+          "name": "CreatedAt",
+          "type": "TEXT",
+          "ordinal": 30
+        },
+        {
+          "name": "DEFECT_TYPE",
+          "type": "TEXT",
+          "ordinal": 31
+        },
+        {
+          "name": "count",
+          "type": "TEXT",
+          "ordinal": 32
+        }
+      ],
+      "sample": [
+        {
+          "Id": "665a66974a0c35d6f77cc631",
+          "Date (UTC)": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "PACKING_LINE_ORDER": 2,
+          "GROWER_NUMBER": "0007",
+          "Grower Number/Identification del ranchero ": "0007 Steve Allen",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "EVER",
+          "Date/Fecha": "2024-05-31 00:00:00",
+          "Packing Line/Turno": "CFAP NIGHT",
+          "Bin Temp": "34.5",
+          "Time ": "4:35 PM",
+          "Tub Temp": "39.2",
+          "Inspector": "Evelia Lopez",
+          "Storage/Tipo de almacenamiento": "CA-M",
+          "Bins Dumped": "245.0",
+          "Sample Size/Cuantas esta revisando": "100",
+          "Status ": "Pass",
+          "Notes": null,
+          "Block # & Count": null,
+          "Pick # & Count": null,
+          "CMI Inspector": null,
+          "Crop": null,
+          "Location": null,
+          "CreatedBy": null,
+          "UpdatedBy": null,
+          "UpdatedAt": null,
+          "CreatedAt": null,
+          "DEFECT_TYPE": "51 Bird Peck",
+          "count": "4.0"
+        },
+        {
+          "Id": "665a66974a0c35d6f77cc631",
+          "Date (UTC)": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "PACKING_LINE_ORDER": 2,
+          "GROWER_NUMBER": "0007",
+          "Grower Number/Identification del ranchero ": "0007 Steve Allen",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "EVER",
+          "Date/Fecha": "2024-05-31 00:00:00",
+          "Packing Line/Turno": "CFAP NIGHT",
+          "Bin Temp": "34.5",
+          "Time ": "4:35 PM",
+          "Tub Temp": "39.2",
+          "Inspector": "Evelia Lopez",
+          "Storage/Tipo de almacenamiento": "CA-M",
+          "Bins Dumped": "245.0",
+          "Sample Size/Cuantas esta revisando": "100",
+          "Status ": "Pass",
+          "Notes": null,
+          "Block # & Count": null,
+          "Pick # & Count": null,
+          "CMI Inspector": null,
+          "Crop": null,
+          "Location": null,
+          "CreatedBy": null,
+          "UpdatedBy": null,
+          "UpdatedAt": null,
+          "CreatedAt": null,
+          "DEFECT_TYPE": "52 Bitterpit",
+          "count": "5.0"
+        }
+      ]
+    },
+    "FROSTY.APP.AGROFRESH_PRESSURE_LOOKUP": {
+      "columns": [
+        {
+          "name": "Id",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "Date/Fecha",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "Grower Number/Identification del ranchero ",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "Conventional/Organic(Convencional/Organica)",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "Fruit Size ",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "Pressure",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "Pressure Total Count",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "Inspector",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "Date (UTC)",
+          "type": "TEXT",
+          "ordinal": 15
+        }
+      ],
+      "sample": [
+        {
+          "Id": "665a93944a0c35d6f77ccd98",
+          "Date/Fecha": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "SHIFT": 2,
+          "GROWER_NUMBER": "0007",
+          "Grower Number/Identification del ranchero ": "0007 Steve Allen",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "COMPUTECH_ABBR": "EVER",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "Fruit Size ": "150",
+          "Pressure": "22.0",
+          "Pressure Total Count": "3",
+          "Inspector": "Evelia Lopez",
+          "Date (UTC)": "2024-06-01 03:20:26"
+        },
+        {
+          "Id": "665a93794a0c35d6f77ccd87",
+          "Date/Fecha": "2024-05-31 00:00:00",
+          "DATE_YY_MM_DD": "2024-05-31",
+          "SHIFT": 2,
+          "GROWER_NUMBER": "0007",
+          "Grower Number/Identification del ranchero ": "0007 Steve Allen",
+          "VARIETY": "Evercrisp",
+          "VARIETY_USER_CD": "EVER",
+          "COMPUTECH_ABBR": "EVER",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "Fruit Size ": "138",
+          "Pressure": "23.97",
+          "Pressure Total Count": "3",
+          "Inspector": "Evelia Lopez",
+          "Date (UTC)": "2024-06-01 03:20:01"
+        }
+      ]
+    },
+    "FROSTY.APP.DOWNTIME_TRACKING": {
+      "columns": [
+        {
+          "name": "ENTRY_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "VDS_CAUSE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "MECHANICAL_ISSUES",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "DUMPER_DE_STACKER",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "FULL_BOX_LINE",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "BRUSH_BED",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "DRYING_ROOM",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "AGF",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "SIZER_PROBLEMS",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "STAMPER_ISSUES",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "DEFECT_SORTING",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "DROPS_TOO_MUCH_FRUIT",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "CARRIER_MISSING",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "MEETINGS",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "BAG_MACHINES_FULL",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "VARIETY_CHANGE",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "GROWER_CHANGE",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "LOAD_CELL_PROBLEMS_MIX_FRUIT",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "SIZER_STOPPED_BY_COMPAC",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "TOOK_REFERENCES_FOR_IQS",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "OTHER",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "TOTAL",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "COMMENTS",
+          "type": "TEXT",
+          "ordinal": 24
+        },
+        {
+          "name": "UPDATE_TIMESTAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 25
+        },
+        {
+          "name": "UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "TOOK_FIRST_BREAK",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "TOOK_SECOND_BREAK",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "TOOK_LUNCH",
+          "type": "TEXT",
+          "ordinal": 29
+        },
+        {
+          "name": "SOLENOIDS",
+          "type": "NUMBER",
+          "ordinal": 30
+        }
+      ],
+      "sample": [
+        {
+          "ENTRY_DATE": "2026-02-17",
+          "SHIFT": 2,
+          "VDS_CAUSE": "NO",
+          "MECHANICAL_ISSUES": 0,
+          "DUMPER_DE_STACKER": 0,
+          "FULL_BOX_LINE": 2,
+          "BRUSH_BED": 11,
+          "DRYING_ROOM": 0,
+          "AGF": 2,
+          "SIZER_PROBLEMS": 0,
+          "STAMPER_ISSUES": 0,
+          "DEFECT_SORTING": 0,
+          "DROPS_TOO_MUCH_FRUIT": 0,
+          "CARRIER_MISSING": 0,
+          "MEETINGS": 0,
+          "BAG_MACHINES_FULL": 0,
+          "VARIETY_CHANGE": 0,
+          "GROWER_CHANGE": 0,
+          "LOAD_CELL_PROBLEMS_MIX_FRUIT": 0,
+          "SIZER_STOPPED_BY_COMPAC": 0,
+          "TOOK_REFERENCES_FOR_IQS": 0,
+          "OTHER": 0,
+          "TOTAL": 15,
+          "COMMENTS": "",
+          "UPDATE_TIMESTAMP": "2026-02-18T02:16:52.026962",
+          "UPDATED_BY": "Alberto.Gomez@columbiafruit.com",
+          "TOOK_FIRST_BREAK": "YES",
+          "TOOK_SECOND_BREAK": "YES",
+          "TOOK_LUNCH": "YES",
+          "SOLENOIDS": 0
+        },
+        {
+          "ENTRY_DATE": "2026-02-13",
+          "SHIFT": 1,
+          "VDS_CAUSE": "NO",
+          "MECHANICAL_ISSUES": 0,
+          "DUMPER_DE_STACKER": 0,
+          "FULL_BOX_LINE": 0,
+          "BRUSH_BED": 0,
+          "DRYING_ROOM": 0,
+          "AGF": 0,
+          "SIZER_PROBLEMS": 0,
+          "STAMPER_ISSUES": 0,
+          "DEFECT_SORTING": 0,
+          "DROPS_TOO_MUCH_FRUIT": 0,
+          "CARRIER_MISSING": 6,
+          "MEETINGS": 0,
+          "BAG_MACHINES_FULL": 0,
+          "VARIETY_CHANGE": 0,
+          "GROWER_CHANGE": 0,
+          "LOAD_CELL_PROBLEMS_MIX_FRUIT": 0,
+          "SIZER_STOPPED_BY_COMPAC": 0,
+          "TOOK_REFERENCES_FOR_IQS": 0,
+          "OTHER": 12,
+          "TOTAL": 18,
+          "COMMENTS": "CHANGE 4 LINES",
+          "UPDATE_TIMESTAMP": "2026-02-13T15:24:59.090453",
+          "UPDATED_BY": "francisco.cardenas@columbiafruit.com",
+          "TOOK_FIRST_BREAK": "YES",
+          "TOOK_SECOND_BREAK": "YES",
+          "TOOK_LUNCH": "YES",
+          "SOLENOIDS": 0
+        }
+      ]
+    },
+    "FROSTY.APP.DOWNTIME_VIEW": {
+      "columns": [
+        {
+          "name": "ENTRY_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "VDS_CAUSE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "MECHANICAL_ISSUES",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "SOLENOIDS",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "DUMPER_DE_STACKER",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "FULL_BOX_LINE",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "BRUSH_BED",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "DRYING_ROOM",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "AGF",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "SIZER_PROBLEMS",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "STAMPER_ISSUES",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "DEFECT_SORTING",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "DROPS_TOO_MUCH_FRUIT",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "CARRIER_MISSING",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "MEETINGS",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "BAG_MACHINES_FULL",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "VARIETY_CHANGE",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "GROWER_CHANGE",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "LOAD_CELL_PROBLEMS_MIX_FRUIT",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "SIZER_STOPPED_BY_COMPAC",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "TOOK_REFERENCES_FOR_IQS",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "OTHER",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "TOTAL",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "COMMENTS",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "TOOK_FIRST_BREAK",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "TOOK_SECOND_BREAK",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "TOOK_LUNCH",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "UPDATE_TIMESTAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 29
+        },
+        {
+          "name": "UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 30
+        }
+      ],
+      "sample": [
+        {
+          "ENTRY_DATE": "2026-02-10",
+          "SHIFT": "1",
+          "VDS_CAUSE": "NO",
+          "MECHANICAL_ISSUES": 0,
+          "SOLENOIDS": 0,
+          "DUMPER_DE_STACKER": 0,
+          "FULL_BOX_LINE": 0,
+          "BRUSH_BED": 0,
+          "DRYING_ROOM": 0,
+          "AGF": 0,
+          "SIZER_PROBLEMS": 0,
+          "STAMPER_ISSUES": 0,
+          "DEFECT_SORTING": 0,
+          "DROPS_TOO_MUCH_FRUIT": 0,
+          "CARRIER_MISSING": 0,
+          "MEETINGS": 0,
+          "BAG_MACHINES_FULL": 0,
+          "VARIETY_CHANGE": 0,
+          "GROWER_CHANGE": 0,
+          "LOAD_CELL_PROBLEMS_MIX_FRUIT": 0,
+          "SIZER_STOPPED_BY_COMPAC": 0,
+          "TOOK_REFERENCES_FOR_IQS": 0,
+          "OTHER": 0,
+          "TOTAL": 0,
+          "COMMENTS": "",
+          "TOOK_FIRST_BREAK": "YES",
+          "TOOK_SECOND_BREAK": "YES",
+          "TOOK_LUNCH": "YES",
+          "UPDATE_TIMESTAMP": "2026-02-14T07:48:28.551517",
+          "UPDATED_BY": "david.lopez@columbiafruit.com"
+        },
+        {
+          "ENTRY_DATE": "2026-02-10",
+          "SHIFT": "2",
+          "VDS_CAUSE": "NO",
+          "MECHANICAL_ISSUES": 0,
+          "SOLENOIDS": 0,
+          "DUMPER_DE_STACKER": 0,
+          "FULL_BOX_LINE": 13,
+          "BRUSH_BED": 0,
+          "DRYING_ROOM": 0,
+          "AGF": 0,
+          "SIZER_PROBLEMS": 0,
+          "STAMPER_ISSUES": 0,
+          "DEFECT_SORTING": 0,
+          "DROPS_TOO_MUCH_FRUIT": 0,
+          "CARRIER_MISSING": 0,
+          "MEETINGS": 0,
+          "BAG_MACHINES_FULL": 4,
+          "VARIETY_CHANGE": 21,
+          "GROWER_CHANGE": 0,
+          "LOAD_CELL_PROBLEMS_MIX_FRUIT": 0,
+          "SIZER_STOPPED_BY_COMPAC": 0,
+          "TOOK_REFERENCES_FOR_IQS": 0,
+          "OTHER": 0,
+          "TOTAL": 38,
+          "COMMENTS": "",
+          "TOOK_FIRST_BREAK": "YES",
+          "TOOK_SECOND_BREAK": "YES",
+          "TOOK_LUNCH": "YES",
+          "UPDATE_TIMESTAMP": "2026-02-11T01:49:05.514097",
+          "UPDATED_BY": "Alberto.Gomez@columbiafruit.com"
+        }
+      ]
+    },
+    "FROSTY.APP.PALLET_EQ_LOOKUP": {
+      "columns": [
+        {
+          "name": "GRADE_ABBR",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "PACK_ABBR",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "VARIETY_ABBR",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "PACK_DATE",
+          "type": "DATE",
+          "ordinal": 7
+        },
+        {
+          "name": "SIZE_RANGE",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "EQS",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "KEY",
+          "type": "TEXT",
+          "ordinal": 10
+        }
+      ],
+      "sample": [
+        {
+          "GRADE_ABBR": "2A  ",
+          "PACK_ABBR": "C3PA",
+          "POOL": "ORE1",
+          "VARIETY_ABBR": "GALO",
+          "GROWER_NUMBER": "0077",
+          "SHIFT": "1",
+          "PACK_DATE": "2023-08-22",
+          "SIZE_RANGE": "212-212",
+          "EQS": "761.460",
+          "KEY": "202308220077ORE11"
+        },
+        {
+          "GRADE_ABBR": "XFYS",
+          "PACK_ABBR": "ISCA",
+          "POOL": "CMIP",
+          "VARIETY_ABBR": "GRAO",
+          "GROWER_NUMBER": "9996",
+          "SHIFT": "I",
+          "PACK_DATE": "2023-06-27",
+          "SIZE_RANGE": "100-88",
+          "EQS": "0.000",
+          "KEY": "202306279996CMIPI"
+        }
+      ]
+    },
+    "FROSTY.APP.POWERBI_PRODUCTION_HEADER": {
+      "columns": [
+        {
+          "name": "COMMENTS",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "PICK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "GROWER_FULL_NAME",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 5
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 17
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 18
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "BIN_TYPE",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "TARE_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "ACTUAL_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "ACTUAL_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "SIZER_FOREIGN_KEYS",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "GROWER_CONTACTED",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "REC_BIN_COUNT",
+          "type": "NUMBER",
+          "ordinal": 27
+        },
+        {
+          "name": "REC_NET_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 28
+        },
+        {
+          "name": "REC_TARE_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 29
+        },
+        {
+          "name": "REC_AVG_TARE_PER_BIN",
+          "type": "NUMBER",
+          "ordinal": 30
+        },
+        {
+          "name": "REC_GROSS_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 31
+        },
+        {
+          "name": "REC_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "REC_FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 33
+        },
+        {
+          "name": "REC_LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 34
+        },
+        {
+          "name": "RAW_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 35
+        },
+        {
+          "name": "RAW_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 36
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_COUNT",
+          "type": "NUMBER",
+          "ordinal": 37
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PRESSURE",
+          "type": "BOOLEAN",
+          "ordinal": 38
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 39
+        },
+        {
+          "name": "AGROFRESH_CULLS_COUNT",
+          "type": "NUMBER",
+          "ordinal": 40
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_CULLS",
+          "type": "BOOLEAN",
+          "ordinal": 41
+        },
+        {
+          "name": "AGROFRESH_CULLS_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 42
+        },
+        {
+          "name": "PROCESSOR_COUNT",
+          "type": "NUMBER",
+          "ordinal": 43
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PROCESSOR",
+          "type": "BOOLEAN",
+          "ordinal": 44
+        },
+        {
+          "name": "PROCESSOR_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 45
+        },
+        {
+          "name": "HAS_AGROFRESH_PRESSURE",
+          "type": "TEXT",
+          "ordinal": 46
+        },
+        {
+          "name": "HAS_AGROFRESH_CULLS",
+          "type": "TEXT",
+          "ordinal": 47
+        },
+        {
+          "name": "HAS_PROCESSOR",
+          "type": "TEXT",
+          "ordinal": 48
+        },
+        {
+          "name": "PROCESSOR_WEIGHT",
+          "type": "FLOAT",
+          "ordinal": 49
+        },
+        {
+          "name": "PACKABLE_WEIGHT",
+          "type": "FLOAT",
+          "ordinal": 50
+        },
+        {
+          "name": "STAMPER_PACKED_WEIGHT_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 51
+        },
+        {
+          "name": "PERCENT_STAMPER_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 52
+        },
+        {
+          "name": "SIZER_PACKED_WEIGHT_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 53
+        },
+        {
+          "name": "PERCENT_SIZER_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 54
+        },
+        {
+          "name": "PACKS",
+          "type": "FLOAT",
+          "ordinal": 55
+        },
+        {
+          "name": "PACKOUT",
+          "type": "FLOAT",
+          "ordinal": 56
+        },
+        {
+          "name": "PACKOUT_PERCENTAGE",
+          "type": "FLOAT",
+          "ordinal": 57
+        },
+        {
+          "name": "SIZER_COLOR",
+          "type": "TEXT",
+          "ordinal": 58
+        },
+        {
+          "name": "STAMPER_COLOR",
+          "type": "TEXT",
+          "ordinal": 59
+        },
+        {
+          "name": "PRESSURE_COLOR",
+          "type": "TEXT",
+          "ordinal": 60
+        },
+        {
+          "name": "CULLS_COLOR",
+          "type": "TEXT",
+          "ordinal": 61
+        }
+      ],
+      "sample": [
+        {
+          "COMMENTS": "BITTERPIT, PUNCTURES, BRUISE-PICKING\n",
+          "PICK_BREAKDOWN": "PICK: N/A=63 Bins",
+          "KEY": "202602111157ECA12",
+          "GROWER_FULL_NAME": "1157 PinUp                  ",
+          "RUN_DATE": "2026-02-11",
+          "UNIQUE_RUN_KEY": "2026021152CC1157",
+          "RUN_NUMBER": 5,
+          "SHIFT": "2",
+          "PACK_LINE": "APZ",
+          "GROWER": "1157",
+          "VARIETY_USER_CD": "COSM",
+          "POOL": "ECA1",
+          "BINS_SUBMITTED": 63,
+          "ACTUAL_NET": 57970,
+          "ACTUAL_TARE": 5670,
+          "ACTUAL_GROSS": 63640,
+          "FIRST_DUMP_TIME": "2026-02-11T23:00:00",
+          "LAST_DUMP_TIME": "2026-02-11T00:30:00",
+          "SUBMITTED_BY": "Miguel.Garcia@columbiafruit.com",
+          "BIN_TYPE": "H - CFP PLASTIC",
+          "BLOCK_BREAKDOWN": "BLOCK: #N/A=63 Bins",
+          "TARE_BREAKDOWN": "H - CFP PLASTIC=63@90",
+          "ACTUAL_SIZER_WEIGHT": "45429.70",
+          "ACTUAL_STAMPER_WEIGHT": "42409.00",
+          "SIZER_FOREIGN_KEYS": "BatchID:4505/EventId:5214",
+          "GROWER_CONTACTED": "N/A",
+          "REC_BIN_COUNT": 63,
+          "REC_NET_WEIGHT": 57970,
+          "REC_TARE_WEIGHT": 5670,
+          "REC_AVG_TARE_PER_BIN": "90.000000",
+          "REC_GROSS_WEIGHT": 63640,
+          "REC_DUMPER_HMS": "00:53:40",
+          "REC_FIRST_DUMP_TIME": "2026-02-11T22:45:38.263000",
+          "REC_LAST_DUMP_TIME": "2026-02-11T23:39:18.403000",
+          "RAW_STAMPER_WEIGHT": "0.000",
+          "RAW_SIZER_WEIGHT": "0E-8",
+          "AGROFRESH_PRESSURE_COUNT": 9,
+          "IS_LOOSE_LOOKUP_PRESSURE": false,
+          "AGROFRESH_PRESSURE_VARIETIES": "COSM",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "COSM",
+          "PROCESSOR_COUNT": 2,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "COSM",
+          "HAS_AGROFRESH_PRESSURE": "Yes",
+          "HAS_AGROFRESH_CULLS": "Yes",
+          "HAS_PROCESSOR": "Yes",
+          "PROCESSOR_WEIGHT": 13922.0,
+          "PACKABLE_WEIGHT": 44048.0,
+          "STAMPER_PACKED_WEIGHT_VARIANCE": -1639.0,
+          "PERCENT_STAMPER_VARIANCE": -0.03720940791863422,
+          "SIZER_PACKED_WEIGHT_VARIANCE": 1381.699999999997,
+          "PERCENT_SIZER_VARIANCE": 0.03136805303305478,
+          "PACKS": 1074.341463414634,
+          "PACKOUT": 17.05303910181959,
+          "PACKOUT_PERCENTAGE": 0.7598412972227014,
+          "SIZER_COLOR": "#D5F8CE",
+          "STAMPER_COLOR": "#D5F8CE",
+          "PRESSURE_COLOR": "#D5F8CE",
+          "CULLS_COLOR": "#D5F8CE"
+        },
+        {
+          "COMMENTS": "BRUISE PICKING,PUNCTURE,SPLITS",
+          "PICK_BREAKDOWN": "PICK: N/A=238 Bins",
+          "KEY": "202602041781MIDC2",
+          "GROWER_FULL_NAME": "1781 Taggares Fruit Co 1    ",
+          "RUN_DATE": "2026-02-04",
+          "UNIQUE_RUN_KEY": "2026020452EA1781",
+          "RUN_NUMBER": 5,
+          "SHIFT": "2",
+          "PACK_LINE": "APZ",
+          "GROWER": "1781",
+          "VARIETY_USER_CD": "HONY",
+          "POOL": "MIDC",
+          "BINS_SUBMITTED": 238,
+          "ACTUAL_NET": 179558,
+          "ACTUAL_TARE": 26656,
+          "ACTUAL_GROSS": 206214,
+          "FIRST_DUMP_TIME": "2026-02-04T20:45:00",
+          "LAST_DUMP_TIME": "2026-02-04T00:52:00",
+          "SUBMITTED_BY": "Miguel.Garcia@columbiafruit.com",
+          "BIN_TYPE": "G - CFP WOOD",
+          "BLOCK_BREAKDOWN": "BLOCK: #419=238 Bins",
+          "TARE_BREAKDOWN": "G - CFP WOOD=238@112",
+          "ACTUAL_SIZER_WEIGHT": "130353.12",
+          "ACTUAL_STAMPER_WEIGHT": "126941.00",
+          "SIZER_FOREIGN_KEYS": "BatchID:4473/EventId:5170,BatchID:4473/EventId:5172",
+          "GROWER_CONTACTED": "I TALKED TO THE GROWER",
+          "REC_BIN_COUNT": 238,
+          "REC_NET_WEIGHT": 179558,
+          "REC_TARE_WEIGHT": 26656,
+          "REC_AVG_TARE_PER_BIN": "112.000000",
+          "REC_GROSS_WEIGHT": 206214,
+          "REC_DUMPER_HMS": "04:15:14",
+          "REC_FIRST_DUMP_TIME": "2026-02-04T20:37:11.677000",
+          "REC_LAST_DUMP_TIME": "2026-02-05T00:52:25.603000",
+          "RAW_STAMPER_WEIGHT": "0.000",
+          "RAW_SIZER_WEIGHT": "0E-8",
+          "AGROFRESH_PRESSURE_COUNT": 10,
+          "IS_LOOSE_LOOKUP_PRESSURE": false,
+          "AGROFRESH_PRESSURE_VARIETIES": "HONY",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "HONY",
+          "PROCESSOR_COUNT": 3,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "HONY",
+          "HAS_AGROFRESH_PRESSURE": "Yes",
+          "HAS_AGROFRESH_CULLS": "Yes",
+          "HAS_PROCESSOR": "Yes",
+          "PROCESSOR_WEIGHT": 42237.0,
+          "PACKABLE_WEIGHT": 137321.0,
+          "STAMPER_PACKED_WEIGHT_VARIANCE": -10380.0,
+          "PERCENT_STAMPER_VARIANCE": -0.07558931263244514,
+          "SIZER_PACKED_WEIGHT_VARIANCE": -6967.880000000005,
+          "PERCENT_SIZER_VARIANCE": -0.050741547177780566,
+          "PACKS": 3349.2926829268295,
+          "PACKOUT": 14.072658331625334,
+          "PACKOUT_PERCENTAGE": 0.7647723855244545,
+          "SIZER_COLOR": "#F0E199",
+          "STAMPER_COLOR": "#F0E199",
+          "PRESSURE_COLOR": "#D5F8CE",
+          "CULLS_COLOR": "#D5F8CE"
+        }
+      ]
+    },
+    "FROSTY.APP.POWERBI_PRODUCTION_HEADER_MAT": {
+      "columns": [
+        {
+          "name": "COMMENTS",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "PICK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "GROWER_FULL_NAME",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 5
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 17
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 18
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "BIN_TYPE",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "TARE_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "ACTUAL_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "ACTUAL_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "SIZER_FOREIGN_KEYS",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "GROWER_CONTACTED",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "REC_BIN_COUNT",
+          "type": "NUMBER",
+          "ordinal": 27
+        },
+        {
+          "name": "REC_NET_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 28
+        },
+        {
+          "name": "REC_TARE_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 29
+        },
+        {
+          "name": "REC_AVG_TARE_PER_BIN",
+          "type": "NUMBER",
+          "ordinal": 30
+        },
+        {
+          "name": "REC_GROSS_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 31
+        },
+        {
+          "name": "REC_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "REC_FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 33
+        },
+        {
+          "name": "REC_LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 34
+        },
+        {
+          "name": "RAW_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 35
+        },
+        {
+          "name": "RAW_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 36
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_COUNT",
+          "type": "NUMBER",
+          "ordinal": 37
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PRESSURE",
+          "type": "BOOLEAN",
+          "ordinal": 38
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 39
+        },
+        {
+          "name": "AGROFRESH_CULLS_COUNT",
+          "type": "NUMBER",
+          "ordinal": 40
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_CULLS",
+          "type": "BOOLEAN",
+          "ordinal": 41
+        },
+        {
+          "name": "AGROFRESH_CULLS_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 42
+        },
+        {
+          "name": "PROCESSOR_COUNT",
+          "type": "NUMBER",
+          "ordinal": 43
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PROCESSOR",
+          "type": "BOOLEAN",
+          "ordinal": 44
+        },
+        {
+          "name": "PROCESSOR_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 45
+        },
+        {
+          "name": "HAS_AGROFRESH_PRESSURE",
+          "type": "TEXT",
+          "ordinal": 46
+        },
+        {
+          "name": "HAS_AGROFRESH_CULLS",
+          "type": "TEXT",
+          "ordinal": 47
+        },
+        {
+          "name": "HAS_PROCESSOR",
+          "type": "TEXT",
+          "ordinal": 48
+        },
+        {
+          "name": "PROCESSOR_WEIGHT",
+          "type": "FLOAT",
+          "ordinal": 49
+        },
+        {
+          "name": "PACKABLE_WEIGHT",
+          "type": "FLOAT",
+          "ordinal": 50
+        },
+        {
+          "name": "STAMPER_PACKED_WEIGHT_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 51
+        },
+        {
+          "name": "PERCENT_STAMPER_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 52
+        },
+        {
+          "name": "SIZER_PACKED_WEIGHT_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 53
+        },
+        {
+          "name": "PERCENT_SIZER_VARIANCE",
+          "type": "FLOAT",
+          "ordinal": 54
+        },
+        {
+          "name": "PACKS",
+          "type": "FLOAT",
+          "ordinal": 55
+        },
+        {
+          "name": "PACKOUT",
+          "type": "FLOAT",
+          "ordinal": 56
+        },
+        {
+          "name": "PACKOUT_PERCENTAGE",
+          "type": "FLOAT",
+          "ordinal": 57
+        },
+        {
+          "name": "SIZER_COLOR",
+          "type": "TEXT",
+          "ordinal": 58
+        },
+        {
+          "name": "STAMPER_COLOR",
+          "type": "TEXT",
+          "ordinal": 59
+        },
+        {
+          "name": "PRESSURE_COLOR",
+          "type": "TEXT",
+          "ordinal": 60
+        },
+        {
+          "name": "CULLS_COLOR",
+          "type": "TEXT",
+          "ordinal": 61
+        }
+      ],
+      "sample": [
+        {
+          "COMMENTS": "BITTERPIT, PUNCTURES, BRUISE-PICKING\n",
+          "PICK_BREAKDOWN": "PICK: N/A=63 Bins",
+          "KEY": "202602111157ECA12",
+          "GROWER_FULL_NAME": "1157 PinUp                  ",
+          "RUN_DATE": "2026-02-11",
+          "UNIQUE_RUN_KEY": "2026021152CC1157",
+          "RUN_NUMBER": 5,
+          "SHIFT": "2",
+          "PACK_LINE": "APZ",
+          "GROWER": "1157",
+          "VARIETY_USER_CD": "COSM",
+          "POOL": "ECA1",
+          "BINS_SUBMITTED": 63,
+          "ACTUAL_NET": 57970,
+          "ACTUAL_TARE": 5670,
+          "ACTUAL_GROSS": 63640,
+          "FIRST_DUMP_TIME": "2026-02-11T23:00:00",
+          "LAST_DUMP_TIME": "2026-02-11T00:30:00",
+          "SUBMITTED_BY": "Miguel.Garcia@columbiafruit.com",
+          "BIN_TYPE": "H - CFP PLASTIC",
+          "BLOCK_BREAKDOWN": "BLOCK: #N/A=63 Bins",
+          "TARE_BREAKDOWN": "H - CFP PLASTIC=63@90",
+          "ACTUAL_SIZER_WEIGHT": "45429.70",
+          "ACTUAL_STAMPER_WEIGHT": "42409.00",
+          "SIZER_FOREIGN_KEYS": "BatchID:4505/EventId:5214",
+          "GROWER_CONTACTED": "N/A",
+          "REC_BIN_COUNT": 63,
+          "REC_NET_WEIGHT": 57970,
+          "REC_TARE_WEIGHT": 5670,
+          "REC_AVG_TARE_PER_BIN": "90.000000",
+          "REC_GROSS_WEIGHT": 63640,
+          "REC_DUMPER_HMS": "00:53:40",
+          "REC_FIRST_DUMP_TIME": "2026-02-11T22:45:38.263000",
+          "REC_LAST_DUMP_TIME": "2026-02-11T23:39:18.403000",
+          "RAW_STAMPER_WEIGHT": "0.000",
+          "RAW_SIZER_WEIGHT": "0E-8",
+          "AGROFRESH_PRESSURE_COUNT": 9,
+          "IS_LOOSE_LOOKUP_PRESSURE": false,
+          "AGROFRESH_PRESSURE_VARIETIES": "COSM",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "COSM",
+          "PROCESSOR_COUNT": 2,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "COSM",
+          "HAS_AGROFRESH_PRESSURE": "Yes",
+          "HAS_AGROFRESH_CULLS": "Yes",
+          "HAS_PROCESSOR": "Yes",
+          "PROCESSOR_WEIGHT": 13922.0,
+          "PACKABLE_WEIGHT": 44048.0,
+          "STAMPER_PACKED_WEIGHT_VARIANCE": -1639.0,
+          "PERCENT_STAMPER_VARIANCE": -0.03720940791863422,
+          "SIZER_PACKED_WEIGHT_VARIANCE": 1381.699999999997,
+          "PERCENT_SIZER_VARIANCE": 0.03136805303305478,
+          "PACKS": 1074.341463414634,
+          "PACKOUT": 17.05303910181959,
+          "PACKOUT_PERCENTAGE": 0.7598412972227014,
+          "SIZER_COLOR": "#D5F8CE",
+          "STAMPER_COLOR": "#D5F8CE",
+          "PRESSURE_COLOR": "#D5F8CE",
+          "CULLS_COLOR": "#D5F8CE"
+        },
+        {
+          "COMMENTS": "",
+          "PICK_BREAKDOWN": "PICK: N/A=137 Bins",
+          "KEY": "202602090608MIDO1",
+          "GROWER_FULL_NAME": "0608 COM/CF II/CFA Organic  ",
+          "RUN_DATE": "2026-02-09",
+          "UNIQUE_RUN_KEY": "2026020921CY0608",
+          "RUN_NUMBER": 2,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "0608",
+          "VARIETY_USER_CD": "GALO",
+          "POOL": "MIDO",
+          "BINS_SUBMITTED": 137,
+          "ACTUAL_NET": 127481,
+          "ACTUAL_TARE": 12330,
+          "ACTUAL_GROSS": 139811,
+          "FIRST_DUMP_TIME": "2026-02-09T09:15:00",
+          "LAST_DUMP_TIME": "2026-02-09T13:30:00",
+          "SUBMITTED_BY": "david.lopez@columbiafruit.com",
+          "BIN_TYPE": "H - CFP PLASTIC",
+          "BLOCK_BREAKDOWN": "BLOCK: #1=137 Bins",
+          "TARE_BREAKDOWN": "H - CFP PLASTIC=137@90",
+          "ACTUAL_SIZER_WEIGHT": "99807.51",
+          "ACTUAL_STAMPER_WEIGHT": "94148.56",
+          "SIZER_FOREIGN_KEYS": "BatchID:4489/EventId:5194",
+          "GROWER_CONTACTED": "I LEFT A VOICEMAIL",
+          "REC_BIN_COUNT": 137,
+          "REC_NET_WEIGHT": 127481,
+          "REC_TARE_WEIGHT": 12330,
+          "REC_AVG_TARE_PER_BIN": "90.000000",
+          "REC_GROSS_WEIGHT": 139811,
+          "REC_DUMPER_HMS": "03:49:27",
+          "REC_FIRST_DUMP_TIME": "2026-02-09T09:10:01.790000",
+          "REC_LAST_DUMP_TIME": "2026-02-09T12:59:28.467000",
+          "RAW_STAMPER_WEIGHT": "0.000",
+          "RAW_SIZER_WEIGHT": "0E-8",
+          "AGROFRESH_PRESSURE_COUNT": 8,
+          "IS_LOOSE_LOOKUP_PRESSURE": false,
+          "AGROFRESH_PRESSURE_VARIETIES": "GALO",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "GALO",
+          "PROCESSOR_COUNT": 3,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "GALO",
+          "HAS_AGROFRESH_PRESSURE": "Yes",
+          "HAS_AGROFRESH_CULLS": "Yes",
+          "HAS_PROCESSOR": "Yes",
+          "PROCESSOR_WEIGHT": 33325.0,
+          "PACKABLE_WEIGHT": 94156.0,
+          "STAMPER_PACKED_WEIGHT_VARIANCE": -7.440000000002328,
+          "PERCENT_STAMPER_VARIANCE": -7.901780024642432e-05,
+          "SIZER_PACKED_WEIGHT_VARIANCE": 5651.509999999995,
+          "PERCENT_SIZER_VARIANCE": 0.06002283444496362,
+          "PACKS": 2296.487804878049,
+          "PACKOUT": 16.76268470713904,
+          "PACKOUT_PERCENTAGE": 0.7385884955405119,
+          "SIZER_COLOR": "#F0E199",
+          "STAMPER_COLOR": "#D5F8CE",
+          "PRESSURE_COLOR": "#D5F8CE",
+          "CULLS_COLOR": "#D5F8CE"
+        }
+      ]
+    },
+    "FROSTY.APP.PROCESSOR_LOOKUP": {
+      "columns": [
+        {
+          "name": "TICKET_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "REC_TYPE",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "SIZE_ABBR",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "GROWER_NUM",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "TOTAL_NET_WT",
+          "type": "FLOAT",
+          "ordinal": 5
+        },
+        {
+          "name": "VARIETY_ABBR",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 8
+        }
+      ],
+      "sample": [
+        {
+          "TICKET_DATE": "2023-01-10",
+          "REC_TYPE": "P",
+          "SIZE_ABBR": "CULL",
+          "GROWER_NUM": "9999",
+          "TOTAL_NET_WT": 5512.0,
+          "VARIETY_ABBR": "FUJI",
+          "POOL": "C002",
+          "SHIFT": "9"
+        },
+        {
+          "TICKET_DATE": "2023-01-10",
+          "REC_TYPE": "P",
+          "SIZE_ABBR": "CULL",
+          "GROWER_NUM": "0636",
+          "TOTAL_NET_WT": 87552.0,
+          "VARIETY_ABBR": "HONO",
+          "POOL": "ORMP",
+          "SHIFT": "1"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_AGROFRESH_CULLS_VIEW_PBIX": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "Id",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "Date (UTC)",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "PACKING_LINE_ORDER",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "Grower Number/Identification del ranchero ",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "Conventional/Organic(Convencional/Organica)",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "Date/Fecha",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "Packing Line/Turno",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "Bin Temp",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "Time ",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "Tub Temp",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "Inspector",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "Storage/Tipo de almacenamiento",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "Bins Dumped",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "Sample Size/Cuantas esta revisando",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "Status ",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "Notes",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "Block # & Count",
+          "type": "TEXT",
+          "ordinal": 23
+        },
+        {
+          "name": "Pick # & Count",
+          "type": "TEXT",
+          "ordinal": 24
+        },
+        {
+          "name": "CMI Inspector",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "Crop",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "Location",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "CreatedBy",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "UpdatedBy",
+          "type": "TEXT",
+          "ordinal": 29
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "TEXT",
+          "ordinal": 30
+        },
+        {
+          "name": "CreatedAt",
+          "type": "TEXT",
+          "ordinal": 31
+        },
+        {
+          "name": "DEFECT_TYPE",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "count",
+          "type": "TEXT",
+          "ordinal": 33
+        },
+        {
+          "name": "COUNT_INT",
+          "type": "NUMBER",
+          "ordinal": 34
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021821EZ0400",
+          "Id": "6995edb9a27defe61cdd6711",
+          "Date (UTC)": "2026-02-18 00:00:00",
+          "DATE_YY_MM_DD": "2026-02-18",
+          "PACKING_LINE_ORDER": 1,
+          "GROWER_NUMBER": "0400",
+          "Grower Number/Identification del ranchero ": "0400 COM/Remington",
+          "VARIETY": "Kiku",
+          "VARIETY_USER_CD": "KIKU",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "KIKU",
+          "Date/Fecha": "2026-02-18 00:00:00",
+          "Packing Line/Turno": "CFAP DAY",
+          "Bin Temp": "36.0",
+          "Time ": "7:59 AM",
+          "Tub Temp": "49.3",
+          "Inspector": "Other",
+          "Storage/Tipo de almacenamiento": "CA-M",
+          "Bins Dumped": null,
+          "Sample Size/Cuantas esta revisando": "100",
+          "Status ": "Pass",
+          "Notes": null,
+          "Block # & Count": null,
+          "Pick # & Count": null,
+          "CMI Inspector": "Other",
+          "Crop": "Apples",
+          "Location": "Cull Analysis",
+          "CreatedBy": "cfap1@columbiafruit.com",
+          "UpdatedBy": null,
+          "UpdatedAt": "2026-02-18 17:42:21",
+          "CreatedAt": "2026-02-18 16:50:01",
+          "DEFECT_TYPE": "70 Puncture",
+          "count": "37",
+          "COUNT_INT": 37
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021821EZ0400",
+          "Id": "6995edb9a27defe61cdd6711",
+          "Date (UTC)": "2026-02-18 00:00:00",
+          "DATE_YY_MM_DD": "2026-02-18",
+          "PACKING_LINE_ORDER": 1,
+          "GROWER_NUMBER": "0400",
+          "Grower Number/Identification del ranchero ": "0400 COM/Remington",
+          "VARIETY": "Kiku",
+          "VARIETY_USER_CD": "KIKU",
+          "Conventional/Organic(Convencional/Organica)": "Conventional/Convencional",
+          "COMPUTECH_ABBR": "KIKU",
+          "Date/Fecha": "2026-02-18 00:00:00",
+          "Packing Line/Turno": "CFAP DAY",
+          "Bin Temp": "36.0",
+          "Time ": "7:59 AM",
+          "Tub Temp": "49.3",
+          "Inspector": "Other",
+          "Storage/Tipo de almacenamiento": "CA-M",
+          "Bins Dumped": null,
+          "Sample Size/Cuantas esta revisando": "100",
+          "Status ": "Pass",
+          "Notes": null,
+          "Block # & Count": null,
+          "Pick # & Count": null,
+          "CMI Inspector": "Other",
+          "Crop": "Apples",
+          "Location": "Cull Analysis",
+          "CreatedBy": "cfap1@columbiafruit.com",
+          "UpdatedBy": null,
+          "UpdatedAt": "2026-02-18 17:42:21",
+          "CreatedAt": "2026-02-18 16:50:01",
+          "DEFECT_TYPE": "71 Russet or Frost",
+          "count": "4.0",
+          "COUNT_INT": 4
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_AGROFRESH_ENRICHED": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 2
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_COUNT",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PRESSURE",
+          "type": "BOOLEAN",
+          "ordinal": 9
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "AGROFRESH_CULLS_COUNT",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_CULLS",
+          "type": "BOOLEAN",
+          "ordinal": 12
+        },
+        {
+          "name": "AGROFRESH_CULLS_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "PROCESSOR_COUNT",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP_PROCESSOR",
+          "type": "BOOLEAN",
+          "ordinal": 15
+        },
+        {
+          "name": "PROCESSOR_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 19
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 21
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "ACTUAL_DUMPER_SECONDS",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "ACTUAL_DUMPER_MINUTES",
+          "type": "NUMBER",
+          "ordinal": 26
+        },
+        {
+          "name": "ACTUAL_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 28
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 29
+        },
+        {
+          "name": "ACTUAL_SYNC_STATUS",
+          "type": "TEXT",
+          "ordinal": 30
+        },
+        {
+          "name": "BIN_TYPE",
+          "type": "TEXT",
+          "ordinal": 31
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "TARE_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 33
+        },
+        {
+          "name": "ACTUAL_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 34
+        },
+        {
+          "name": "SIZER_FOREIGN_KEYS",
+          "type": "TEXT",
+          "ordinal": 35
+        },
+        {
+          "name": "ACTUAL_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 36
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021222EA1782",
+          "RUN_DATE": "2026-02-12",
+          "GROWER": "1782",
+          "VARIETY": "HONY",
+          "RUN_NUMBER": 2,
+          "SHIFT": "2",
+          "POOL": "MIDC",
+          "AGROFRESH_PRESSURE_COUNT": 0,
+          "IS_LOOSE_LOOKUP_PRESSURE": true,
+          "AGROFRESH_PRESSURE_VARIETIES": "",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "HONY",
+          "PROCESSOR_COUNT": 3,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "HONY",
+          "BINS_SUBMITTED": null,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": null,
+          "LAST_UPDATED_AT": null,
+          "ACTUAL_NET": null,
+          "ACTUAL_TARE": null,
+          "ACTUAL_GROSS": null,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null,
+          "ACTUAL_SYNC_STATUS": null,
+          "BIN_TYPE": null,
+          "BLOCK_BREAKDOWN": null,
+          "TARE_BREAKDOWN": null,
+          "ACTUAL_SIZER_WEIGHT": null,
+          "SIZER_FOREIGN_KEYS": null,
+          "ACTUAL_STAMPER_WEIGHT": null
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026020511DS1784",
+          "RUN_DATE": "2026-02-05",
+          "GROWER": "1784",
+          "VARIETY": "GRAN",
+          "RUN_NUMBER": 1,
+          "SHIFT": "1",
+          "POOL": "MIDC",
+          "AGROFRESH_PRESSURE_COUNT": 10,
+          "IS_LOOSE_LOOKUP_PRESSURE": false,
+          "AGROFRESH_PRESSURE_VARIETIES": "GRAN",
+          "AGROFRESH_CULLS_COUNT": 1,
+          "IS_LOOSE_LOOKUP_CULLS": false,
+          "AGROFRESH_CULLS_VARIETIES": "GRAN",
+          "PROCESSOR_COUNT": 3,
+          "IS_LOOSE_LOOKUP_PROCESSOR": false,
+          "PROCESSOR_VARIETIES": "GRAN",
+          "BINS_SUBMITTED": null,
+          "SUBMITTED_BY": "david.lopez@columbiafruit.com",
+          "SUBMITTED_AT": "2026-02-06T06:59:14.091000",
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-06T06:59:14.062334",
+          "ACTUAL_NET": null,
+          "ACTUAL_TARE": null,
+          "ACTUAL_GROSS": null,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null,
+          "ACTUAL_SYNC_STATUS": "PENDING",
+          "BIN_TYPE": null,
+          "BLOCK_BREAKDOWN": null,
+          "TARE_BREAKDOWN": null,
+          "ACTUAL_SIZER_WEIGHT": "0.00",
+          "SIZER_FOREIGN_KEYS": null,
+          "ACTUAL_STAMPER_WEIGHT": "310162.78"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_AGROFRESH_PRESSURE_ENRICHED": {
+      "error": "002057 (42601): SQL compilation error:\nView definition for 'FROSTY.APP.PTRUN_AGROFRESH_PRESSURE_ENRICHED' declared 34 column(s), but view query produces 36 column(s).",
+      "columns": [],
+      "sample": []
+    },
+    "FROSTY.APP.PTRUN_AGROFRESH_PRESSURE_VIEW_PBIX": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "Id",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "Date/Fecha",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "Grower Number/Identification del ranchero ",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "Conventional/Organic(Convencional/Organica)",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "Fruit Size ",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "Pressure",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "Pressure Total Count",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "Inspector",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "Date (UTC)",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "PRESSURE_DEC",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "PRESSURE_TOTAL_COUNT_DEC",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "FRUIT_SIZE_INT",
+          "type": "NUMBER",
+          "ordinal": 19
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021841EZ4505",
+          "Id": null,
+          "Date/Fecha": null,
+          "DATE_YY_MM_DD": null,
+          "SHIFT": null,
+          "GROWER_NUMBER": null,
+          "Grower Number/Identification del ranchero ": null,
+          "VARIETY": null,
+          "VARIETY_USER_CD": null,
+          "COMPUTECH_ABBR": null,
+          "Conventional/Organic(Convencional/Organica)": null,
+          "Fruit Size ": null,
+          "Pressure": null,
+          "Pressure Total Count": null,
+          "Inspector": null,
+          "Date (UTC)": null,
+          "PRESSURE_DEC": null,
+          "PRESSURE_TOTAL_COUNT_DEC": null,
+          "FRUIT_SIZE_INT": null
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021831EZ4505",
+          "Id": null,
+          "Date/Fecha": null,
+          "DATE_YY_MM_DD": null,
+          "SHIFT": null,
+          "GROWER_NUMBER": null,
+          "Grower Number/Identification del ranchero ": null,
+          "VARIETY": null,
+          "VARIETY_USER_CD": null,
+          "COMPUTECH_ABBR": null,
+          "Conventional/Organic(Convencional/Organica)": null,
+          "Fruit Size ": null,
+          "Pressure": null,
+          "Pressure Total Count": null,
+          "Inspector": null,
+          "Date (UTC)": null,
+          "PRESSURE_DEC": null,
+          "PRESSURE_TOTAL_COUNT_DEC": null,
+          "FRUIT_SIZE_INT": null
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_AUDIT_LOG": {
+      "columns": [
+        {
+          "name": "AUDIT_ID",
+          "type": "NUMBER",
+          "ordinal": 1
+        },
+        {
+          "name": "ACTION_TYPE",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "AUDIT_TIMESTAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 4
+        },
+        {
+          "name": "AUDITED_BY",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "TABLE_NAME",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "OLD_DATA",
+          "type": "VARIANT",
+          "ordinal": 7
+        }
+      ],
+      "sample": [
+        {
+          "AUDIT_ID": 1,
+          "ACTION_TYPE": "DELETE",
+          "UNIQUE_RUN_KEY": "2026011321EG0052",
+          "AUDIT_TIMESTAMP": "2026-01-23T10:54:46.838000",
+          "AUDITED_BY": "NATHANBOSTROM",
+          "TABLE_NAME": "PTRUN_BIN_INPUT",
+          "OLD_DATA": "{\n  \"ACTUAL_GROSS\": 366145,\n  \"ACTUAL_NET\": 328885,\n  \"ACTUAL_SIZER_WEIGHT\": 0,\n  \"ACTUAL_STAMPER_WEIGHT\": 0,\n  \"ACTUAL_SYNC_STATUS\": \"PENDING\",\n  \"ACTUAL_TARE\": 37260,\n  \"BINS_SUBMITTED\": 414,\n  \"BIN_TYPE\": \"H - CFP PLASTIC\",\n  \"BLOCK_BREAKDOWN\": \"BLOCK: N/A\",\n  \"COMMENTS\": \"\",\n  \"FIRST_DUMP_TIME\": \"2026-01-13 06:39:00.000\",\n  \"GROWER_CONTACTED\": \"\",\n  \"LAST_DUMP_TIME\": \"2026-01-13 15:08:00.000\",\n  \"PICK_BREAKDOWN\": \"PICK: N/A\",\n  \"SIZER_FOREIGN_KEYS\": \"\",\n  \"SUBMITTED_AT\": \"2026-01-23 10:14:55.598\",\n  \"SUBMITTED_BY\": \"NATHANBOSTROM\",\n  \"TARE_BREAKDOWN\": \"H - CFP PLASTIC=414@90\",\n  \"UNIQUE_RUN_KEY\": \"2026011321EG0052\"\n}"
+        },
+        {
+          "AUDIT_ID": 101,
+          "ACTION_TYPE": "DELETE",
+          "UNIQUE_RUN_KEY": "2026011321EG0052",
+          "AUDIT_TIMESTAMP": "2026-01-23T10:54:47.882000",
+          "AUDITED_BY": "NATHANBOSTROM",
+          "TABLE_NAME": "PTRUN_CULL_HEADER",
+          "OLD_DATA": "{\n  \"BIN_TEMP\": 0.000000000000000e+00,\n  \"CMI_INSPECTOR\": \"\",\n  \"COMPUTECH_ABBR\": \"HONO\",\n  \"CULL_ID\": \"None\",\n  \"DATE_YY_MM_DD\": \"2026-01-13\",\n  \"GROWER_NUMBER\": 52,\n  \"SHIFT\": 1,\n  \"SUBMITTED_AT\": \"2026-01-23 10:14:56.365\",\n  \"SUBMITTED_BY\": \"NATHANBOSTROM\",\n  \"TUB_TEMP\": 0.000000000000000e+00,\n  \"UNIQUE_RUN_KEY\": \"2026011321EG0052\"\n}"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_BIN_INPUT": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 4
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "ACTUAL_DUMPER_SECONDS",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "ACTUAL_DUMPER_MINUTES",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "ACTUAL_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 13
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 14
+        },
+        {
+          "name": "ACTUAL_SYNC_STATUS",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "BIN_TYPE",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "TARE_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "ACTUAL_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "SIZER_FOREIGN_KEYS",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "ACTUAL_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "GROWER_CONTACTED",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "COMMENTS",
+          "type": "TEXT",
+          "ordinal": 23
+        },
+        {
+          "name": "CMI_QC_PERSON",
+          "type": "TEXT",
+          "ordinal": 24
+        },
+        {
+          "name": "PICK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 25
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021721CS0028",
+          "BINS_SUBMITTED": 132,
+          "SUBMITTED_BY": "david.lopez@columbiafruit.com",
+          "SUBMITTED_AT": "2026-02-18T09:58:16.322000",
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T10:01:48.857901",
+          "ACTUAL_NET": 118235,
+          "ACTUAL_TARE": 14784,
+          "ACTUAL_GROSS": 133019,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": "2026-02-17T12:01:00",
+          "LAST_DUMP_TIME": "2026-02-17T15:30:00",
+          "ACTUAL_SYNC_STATUS": "PENDING",
+          "BIN_TYPE": "G - CFP WOOD",
+          "BLOCK_BREAKDOWN": "BLOCK: #N/A=20 Bins, #2=32 Bins, #3=19 Bins, #5=28 Bins, #6=33 Bins",
+          "TARE_BREAKDOWN": "G - CFP WOOD=132@112",
+          "ACTUAL_SIZER_WEIGHT": "103937.98",
+          "SIZER_FOREIGN_KEYS": "BatchID:4520/EventId:5237",
+          "ACTUAL_STAMPER_WEIGHT": "101308.26",
+          "GROWER_CONTACTED": "I LEFT A VOICEMAIL",
+          "COMMENTS": "",
+          "CMI_QC_PERSON": null,
+          "PICK_BREAKDOWN": "PICK: N/A=70 Bins, 2ND=62 Bins"
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021711EG0052",
+          "BINS_SUBMITTED": 372,
+          "SUBMITTED_BY": "david.lopez@columbiafruit.com",
+          "SUBMITTED_AT": "2026-02-18T08:21:57.642000",
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T08:25:54.990442",
+          "ACTUAL_NET": 292857,
+          "ACTUAL_TARE": 33480,
+          "ACTUAL_GROSS": 326337,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": "2026-02-17T06:00:00",
+          "LAST_DUMP_TIME": "2026-02-17T12:00:00",
+          "ACTUAL_SYNC_STATUS": "PENDING",
+          "BIN_TYPE": "H - CFP PLASTIC",
+          "BLOCK_BREAKDOWN": "BLOCK: #2=53 Bins, #4=319 Bins",
+          "TARE_BREAKDOWN": "H - CFP PLASTIC=372@90",
+          "ACTUAL_SIZER_WEIGHT": "142599.00",
+          "SIZER_FOREIGN_KEYS": "BatchID:4519/EventId:5236",
+          "ACTUAL_STAMPER_WEIGHT": "128698.39",
+          "GROWER_CONTACTED": "I TALKED TO THE GROWER",
+          "COMMENTS": "",
+          "CMI_QC_PERSON": null,
+          "PICK_BREAKDOWN": "PICK: N/A=372 Bins"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_BIN_INPUT_VIEW_PBIX": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 4
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "ACTUAL_DUMPER_SECONDS",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "ACTUAL_DUMPER_MINUTES",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "ACTUAL_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 13
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 14
+        },
+        {
+          "name": "ACTUAL_SYNC_STATUS",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "BIN_TYPE",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "TARE_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "ACTUAL_SIZER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "SIZER_FOREIGN_KEYS",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "ACTUAL_STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "GROWER_CONTACTED",
+          "type": "TEXT",
+          "ordinal": 22
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021841EZ4505",
+          "BINS_SUBMITTED": null,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": null,
+          "LAST_UPDATED_AT": null,
+          "ACTUAL_NET": null,
+          "ACTUAL_TARE": null,
+          "ACTUAL_GROSS": null,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null,
+          "ACTUAL_SYNC_STATUS": null,
+          "BIN_TYPE": null,
+          "BLOCK_BREAKDOWN": null,
+          "TARE_BREAKDOWN": null,
+          "ACTUAL_SIZER_WEIGHT": null,
+          "SIZER_FOREIGN_KEYS": null,
+          "ACTUAL_STAMPER_WEIGHT": null,
+          "GROWER_CONTACTED": null
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021831EZ4505",
+          "BINS_SUBMITTED": null,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": null,
+          "LAST_UPDATED_AT": null,
+          "ACTUAL_NET": null,
+          "ACTUAL_TARE": null,
+          "ACTUAL_GROSS": null,
+          "ACTUAL_DUMPER_SECONDS": null,
+          "ACTUAL_DUMPER_MINUTES": null,
+          "ACTUAL_DUMPER_HMS": null,
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null,
+          "ACTUAL_SYNC_STATUS": null,
+          "BIN_TYPE": null,
+          "BLOCK_BREAKDOWN": null,
+          "TARE_BREAKDOWN": null,
+          "ACTUAL_SIZER_WEIGHT": null,
+          "SIZER_FOREIGN_KEYS": null,
+          "ACTUAL_STAMPER_WEIGHT": null,
+          "GROWER_CONTACTED": null
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_CULL_DEFECT": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DEFECT_TYPE",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "COUNT_INT",
+          "type": "NUMBER",
+          "ordinal": 3
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026012121EA0025",
+          "DEFECT_TYPE": "78 Sunburn",
+          "COUNT_INT": 4
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026012121EA0025",
+          "DEFECT_TYPE": "77 Stink Bug",
+          "COUNT_INT": 2
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_CULL_HEADER": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "CULL_ID",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "DATE",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "PACKING_LINE_TURNO",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "BIN_TEMP",
+          "type": "FLOAT",
+          "ordinal": 8
+        },
+        {
+          "name": "TUB_TEMP",
+          "type": "FLOAT",
+          "ordinal": 9
+        },
+        {
+          "name": "CMI_INSPECTOR",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "BINS_DUMPED",
+          "type": "FLOAT",
+          "ordinal": 11
+        },
+        {
+          "name": "BLOCK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "PICK_BREAKDOWN",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 15
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 17
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021711EG0052",
+          "CULL_ID": "6994859cd3209ea8a2b37487",
+          "DATE_YY_MM_DD": "2026-02-17",
+          "SHIFT": 1,
+          "GROWER_NUMBER": 52,
+          "COMPUTECH_ABBR": "HONO",
+          "PACKING_LINE_TURNO": null,
+          "BIN_TEMP": 38.3,
+          "TUB_TEMP": 41.0,
+          "CMI_INSPECTOR": "Other",
+          "BINS_DUMPED": null,
+          "BLOCK_BREAKDOWN": null,
+          "PICK_BREAKDOWN": null,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T08:26:30.623427"
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021152CC1157",
+          "CULL_ID": "698d8297a27defe61cda14eb",
+          "DATE_YY_MM_DD": "2026-02-11",
+          "SHIFT": 2,
+          "GROWER_NUMBER": 1157,
+          "COMPUTECH_ABBR": "COSM",
+          "PACKING_LINE_TURNO": null,
+          "BIN_TEMP": 37.8,
+          "TUB_TEMP": 46.0,
+          "CMI_INSPECTOR": "EVELIA",
+          "BINS_DUMPED": null,
+          "BLOCK_BREAKDOWN": null,
+          "PICK_BREAKDOWN": null,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": "Miguel.Garcia@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T02:05:19.533005"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_HEADER_VIEW": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_COUNT",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "IS_LOOSE_LOOKUP",
+          "type": "BOOLEAN",
+          "ordinal": 7
+        },
+        {
+          "name": "AGROFRESH_PRESSURE_VARIETIES",
+          "type": "TEXT",
+          "ordinal": 8
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY": "BRAK",
+          "RUN_NUMBER": 4,
+          "SHIFT": "1",
+          "POOL": "C002",
+          "AGROFRESH_PRESSURE_COUNT": 0,
+          "IS_LOOSE_LOOKUP": true,
+          "AGROFRESH_PRESSURE_VARIETIES": ""
+        },
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY": "BRAK",
+          "RUN_NUMBER": 2,
+          "SHIFT": "1",
+          "POOL": "C002",
+          "AGROFRESH_PRESSURE_COUNT": 0,
+          "IS_LOOSE_LOOKUP": true,
+          "AGROFRESH_PRESSURE_VARIETIES": "KIKU"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_PRESSURE_DETAIL": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "FRUIT_SIZE_INT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "PRESSURE_DEC",
+          "type": "FLOAT",
+          "ordinal": 3
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026012121EA0025",
+          "FRUIT_SIZE_INT": 56,
+          "PRESSURE_DEC": 9.5
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026012121EA0025",
+          "FRUIT_SIZE_INT": 64,
+          "PRESSURE_DEC": 12.53
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_PRESSURE_HEADER": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "PRESSURE_ID",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "DATE_YY_MM_DD",
+          "type": "DATE",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "COMPUTECH_ABBR",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "BIN_TEMP",
+          "type": "FLOAT",
+          "ordinal": 7
+        },
+        {
+          "name": "TUB_TEMP",
+          "type": "FLOAT",
+          "ordinal": 8
+        },
+        {
+          "name": "CMI_INSPECTOR",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 11
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 13
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026021721CS0028",
+          "PRESSURE_ID": "6994eb4aa27defe61cdced9d",
+          "DATE_YY_MM_DD": "2026-02-17",
+          "SHIFT": 1,
+          "GROWER_NUMBER": 28,
+          "COMPUTECH_ABBR": "GALA",
+          "BIN_TEMP": null,
+          "TUB_TEMP": null,
+          "CMI_INSPECTOR": "Other",
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T10:14:14.253946"
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026021711EG0052",
+          "PRESSURE_ID": "699487bfd3209ea8a2b376c8",
+          "DATE_YY_MM_DD": "2026-02-17",
+          "SHIFT": 1,
+          "GROWER_NUMBER": 52,
+          "COMPUTECH_ABBR": "HONO",
+          "BIN_TEMP": null,
+          "TUB_TEMP": null,
+          "CMI_INSPECTOR": "Other",
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": "david.lopez@columbiafruit.com",
+          "LAST_UPDATED_AT": "2026-02-18T08:27:04.637879"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_PROCESSOR_VIEW_PBIX": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "TICKET_DATE",
+          "type": "DATE",
+          "ordinal": 2
+        },
+        {
+          "name": "REC_TYPE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SIZE_ABBR",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUM",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "TOTAL_NET_WT",
+          "type": "FLOAT",
+          "ordinal": 6
+        },
+        {
+          "name": "VARIETY_ABBR",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 9
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026020411EX0043",
+          "TICKET_DATE": "2026-02-04",
+          "REC_TYPE": "P",
+          "SIZE_ABBR": "PEELER",
+          "GROWER_NUM": "0043",
+          "TOTAL_NET_WT": 29533.0,
+          "VARIETY_ABBR": "NICT",
+          "POOL": "MIDC",
+          "SHIFT": "1"
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026020411EX0043",
+          "TICKET_DATE": "2026-02-04",
+          "REC_TYPE": "P",
+          "SIZE_ABBR": "ROT",
+          "GROWER_NUM": "0043",
+          "TOTAL_NET_WT": 27494.0,
+          "VARIETY_ABBR": "NICT",
+          "POOL": "MIDC",
+          "SHIFT": "1"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_SIZER_DROP_SNAPSHOT": {
+      "columns": [
+        {
+          "name": "SNAPSHOT_ID",
+          "type": "NUMBER",
+          "ordinal": 1
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "BATCH_ID",
+          "type": "NUMBER",
+          "ordinal": 3
+        },
+        {
+          "name": "EVENT_ID",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "DROPSUMMARY_ID",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "SUMMARY_GROUP_ID",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "DROP_ID",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "FRUIT_COUNT",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "WEIGHT_GRAMS",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "AVE_FRUIT_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "GRADE_INDEX",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "GRADE_NAME",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "SIZE_INDEX",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "SIZE_NAME",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "MIN_WEIGHT_GRAMS",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "PRODUCT_ID",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "PRODUCT_NAME",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "QUALITY_INDEX",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "QUALITY_NAME",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "SUMMARY_GROUP_NAME",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "ORDER_ID",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "VARIETY_SIZING_MAP_ID",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "SIZING_MAP_NAME",
+          "type": "TEXT",
+          "ordinal": 23
+        },
+        {
+          "name": "FRUIT_COUNT_NON_REJECT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "WEIGHT_GRAMS_NON_REJECT",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 26
+        },
+        {
+          "name": "COUNT",
+          "type": "NUMBER",
+          "ordinal": 27
+        },
+        {
+          "name": "SIZE_NUM",
+          "type": "NUMBER",
+          "ordinal": 28
+        },
+        {
+          "name": "PACKOUT_GROUP",
+          "type": "TEXT",
+          "ordinal": 29
+        },
+        {
+          "name": "WEIGHT_DEC",
+          "type": "NUMBER",
+          "ordinal": 30
+        },
+        {
+          "name": "SNAPSHOT_TIMESTAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 31
+        }
+      ],
+      "sample": [
+        {
+          "SNAPSHOT_ID": 256181,
+          "UNIQUE_RUN_KEY": "2026021211CS0028",
+          "BATCH_ID": 4508,
+          "EVENT_ID": 5219,
+          "DROPSUMMARY_ID": 1360327,
+          "SUMMARY_GROUP_ID": 0,
+          "DROP_ID": 54,
+          "FRUIT_COUNT": 7165,
+          "WEIGHT_GRAMS": "987586.00",
+          "AVE_FRUIT_WEIGHT": "138.00",
+          "GRADE_INDEX": 2,
+          "GRADE_NAME": "AA",
+          "SIZE_INDEX": 5,
+          "SIZE_NAME": "138",
+          "MIN_WEIGHT_GRAMS": "132.00",
+          "PRODUCT_ID": 199911,
+          "PRODUCT_NAME": "163.AAAA.GOOD 150.AAAA.GOOD 138.AAAA.GOOD 163.AAA.",
+          "QUALITY_INDEX": 0,
+          "QUALITY_NAME": "GOOD",
+          "SUMMARY_GROUP_NAME": "Packed Fruit",
+          "ORDER_ID": 0,
+          "VARIETY_SIZING_MAP_ID": 2128257,
+          "SIZING_MAP_NAME": "AA",
+          "FRUIT_COUNT_NON_REJECT": 7165,
+          "WEIGHT_GRAMS_NON_REJECT": "987586.00",
+          "WEIGHT": "987585.80",
+          "COUNT": 7165,
+          "SIZE_NUM": 138,
+          "PACKOUT_GROUP": "packed",
+          "WEIGHT_DEC": 987586,
+          "SNAPSHOT_TIMESTAMP": "2026-02-13T07:34:26.106000"
+        },
+        {
+          "SNAPSHOT_ID": 256182,
+          "UNIQUE_RUN_KEY": "2026021211CS0028",
+          "BATCH_ID": 4508,
+          "EVENT_ID": 5219,
+          "DROPSUMMARY_ID": 1360581,
+          "SUMMARY_GROUP_ID": 0,
+          "DROP_ID": 29,
+          "FRUIT_COUNT": 684,
+          "WEIGHT_GRAMS": "74682.00",
+          "AVE_FRUIT_WEIGHT": "109.00",
+          "GRADE_INDEX": 0,
+          "GRADE_NAME": "AAAA",
+          "SIZE_INDEX": 2,
+          "SIZE_NAME": "175",
+          "MIN_WEIGHT_GRAMS": "101.00",
+          "PRODUCT_ID": 199908,
+          "PRODUCT_NAME": "198.AAAA.GOOD 175.AAAA.GOOD 198.AAA.GOOD 175.AAA.G",
+          "QUALITY_INDEX": 0,
+          "QUALITY_NAME": "GOOD",
+          "SUMMARY_GROUP_NAME": "Packed Fruit",
+          "ORDER_ID": 0,
+          "VARIETY_SIZING_MAP_ID": 2128255,
+          "SIZING_MAP_NAME": "AAAA",
+          "FRUIT_COUNT_NON_REJECT": 684,
+          "WEIGHT_GRAMS_NON_REJECT": "74682.00",
+          "WEIGHT": "74681.80",
+          "COUNT": 684,
+          "SIZE_NUM": 175,
+          "PACKOUT_GROUP": "packed",
+          "WEIGHT_DEC": 74682,
+          "SNAPSHOT_TIMESTAMP": "2026-02-13T07:34:26.106000"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_SIZER_PACKED": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "QUALITY_NAME",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "GRADE_NAME",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SIZE_NAME",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "IS_PACKED",
+          "type": "BOOLEAN",
+          "ordinal": 5
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        }
+      ],
+      "sample": [
+        {
+          "UNIQUE_RUN_KEY": "2026012011EZ0255",
+          "QUALITY_NAME": "GOOD",
+          "GRADE_NAME": "US1",
+          "SIZE_NAME": "216",
+          "IS_PACKED": false,
+          "LAST_UPDATED_AT": "2026-01-30T15:30:43.377741"
+        },
+        {
+          "UNIQUE_RUN_KEY": "2026012011EZ0255",
+          "QUALITY_NAME": "GOOD",
+          "GRADE_NAME": "US1",
+          "SIZE_NAME": "198",
+          "IS_PACKED": true,
+          "LAST_UPDATED_AT": "2026-01-30T15:30:43.377741"
+        }
+      ]
+    },
+    "FROSTY.APP.PTRUN_SIZER_PACKED_OVERRIDE": {
+      "columns": [
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "EVENT_ID",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SIZE_NAME",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "GRADE_NAME",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "IS_PACKED",
+          "type": "BOOLEAN",
+          "ordinal": 5
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_LTZ",
+          "ordinal": 7
+        }
+      ],
+      "sample": []
+    },
+    "FROSTY.APP.SCHEMA_INFO_VIEW": {
+      "columns": [
+        {
+          "name": "OBJECT_TYPE",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "TABLE_CATALOG",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "TABLE_SCHEMA",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "OBJECT_NAME",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "COLUMN_NAME",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "DATA_TYPE",
+          "type": "TEXT",
+          "ordinal": 6
+        }
+      ],
+      "sample": [
+        {
+          "OBJECT_TYPE": "VIEW",
+          "TABLE_CATALOG": "FROSTY",
+          "TABLE_SCHEMA": "APP",
+          "OBJECT_NAME": "PTRUN_AGROFRESH_ENRICHED",
+          "COLUMN_NAME": "ACTUAL_NET",
+          "DATA_TYPE": "NUMBER"
+        },
+        {
+          "OBJECT_TYPE": "VIEW",
+          "TABLE_CATALOG": "FROSTY",
+          "TABLE_SCHEMA": "APP",
+          "OBJECT_NAME": "PTRUN_AGROFRESH_ENRICHED",
+          "COLUMN_NAME": "LAST_UPDATED_BY",
+          "DATA_TYPE": "TEXT"
+        }
+      ]
+    },
+    "FROSTY.APP.VARIETY_TRANSLATION": {
+      "columns": [
+        {
+          "name": "CONV_CD",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "ORG_CD",
+          "type": "TEXT",
+          "ordinal": 2
+        }
+      ],
+      "sample": [
+        {
+          "CONV_CD": "BRAK",
+          "ORG_CD": "BRKO"
+        },
+        {
+          "CONV_CD": "COSM",
+          "ORG_CD": "COSO"
+        }
+      ]
+    },
+    "FROSTY.APP.VIEW_EXPLANATIONS_VIEW": {
+      "columns": [
+        {
+          "name": "VIEW_NAME",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DDL_CODE",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "VIEW_COMMENT",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "TEXT",
+          "ordinal": 4
+        }
+      ],
+      "sample": [
+        {
+          "VIEW_NAME": "AGROFRESH_CULLS_LOOKUP",
+          "DDL_CODE": null,
+          "VIEW_COMMENT": null,
+          "DESCRIPTION": "No description provided yet."
+        },
+        {
+          "VIEW_NAME": "AGROFRESH_CULLS_UNPIVOTED",
+          "DDL_CODE": null,
+          "VIEW_COMMENT": null,
+          "DESCRIPTION": "No description provided yet."
+        }
+      ]
+    },
+    "FROSTY.APP.V_BINDUMP_AGG": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "GROWER_CODE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "REC_BIN_COUNT",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "REC_NET_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "REC_TARE_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "REC_AVG_TARE_PER_BIN",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "REC_GROSS_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "REC_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "REC_FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 10
+        },
+        {
+          "name": "REC_LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 11
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2026-02-07",
+          "SHIFT": 1,
+          "GROWER_CODE": "0400",
+          "REC_BIN_COUNT": 73,
+          "REC_NET_WEIGHT": 69276,
+          "REC_TARE_WEIGHT": 6570,
+          "REC_AVG_TARE_PER_BIN": "90.000000",
+          "REC_GROSS_WEIGHT": 75846,
+          "REC_DUMPER_HMS": "01:42:07",
+          "REC_FIRST_DUMP_TIME": "2026-02-07T05:47:47.777000",
+          "REC_LAST_DUMP_TIME": "2026-02-07T07:29:54.743000"
+        },
+        {
+          "RUN_DATE": "2026-02-03",
+          "SHIFT": 2,
+          "GROWER_CODE": "1310",
+          "REC_BIN_COUNT": 13,
+          "REC_NET_WEIGHT": 11390,
+          "REC_TARE_WEIGHT": 1170,
+          "REC_AVG_TARE_PER_BIN": "90.000000",
+          "REC_GROSS_WEIGHT": 12560,
+          "REC_DUMPER_HMS": "00:09:54",
+          "REC_FIRST_DUMP_TIME": "2026-02-04T01:10:42.607000",
+          "REC_LAST_DUMP_TIME": "2026-02-04T01:20:36.107000"
+        }
+      ]
+    },
+    "FROSTY.APP.V_BINDUMP_TARE_DETAILS": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "GROWER_CODE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "TARE",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "BIN_COUNT",
+          "type": "NUMBER",
+          "ordinal": 5
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2025-12-23",
+          "SHIFT": 2,
+          "GROWER_CODE": "0051",
+          "TARE": 90,
+          "BIN_COUNT": 60
+        },
+        {
+          "RUN_DATE": "2025-11-17",
+          "SHIFT": 2,
+          "GROWER_CODE": "0644",
+          "TARE": 90,
+          "BIN_COUNT": 128
+        }
+      ]
+    },
+    "FROSTY.APP.V_PTRUN": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "PALLET_TR_CODE",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "CROP_YEAR",
+          "type": "NUMBER",
+          "ordinal": 10
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021841EZ4505",
+          "RUN_NUMBER": 4,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "PALLET_TR_CODE": "P",
+          "CROP_YEAR": 2025
+        },
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021831EZ4505",
+          "RUN_NUMBER": 3,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "PALLET_TR_CODE": "P",
+          "CROP_YEAR": 2025
+        }
+      ]
+    },
+    "FROSTY.APP.V_PTRUN_WITH_BIN_DETAILS": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "CROP_YEAR",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 12
+        },
+        {
+          "name": "LAST_UPDATED_BY",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "LAST_UPDATED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 14
+        },
+        {
+          "name": "ACTUAL_NET",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "ACTUAL_TARE",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "ACTUAL_GROSS",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "ACTUAL_DUMPER_HMS",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "FIRST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 19
+        },
+        {
+          "name": "LAST_DUMP_TIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 20
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021841EZ4505",
+          "RUN_NUMBER": 4,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "CROP_YEAR": 2025,
+          "BINS_SUBMITTED": 0,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": null,
+          "LAST_UPDATED_AT": null,
+          "ACTUAL_NET": 0,
+          "ACTUAL_TARE": 0,
+          "ACTUAL_GROSS": 0,
+          "ACTUAL_DUMPER_HMS": "00:00:00",
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null
+        },
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021831EZ4505",
+          "RUN_NUMBER": 3,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "CROP_YEAR": 2025,
+          "BINS_SUBMITTED": 0,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null,
+          "LAST_UPDATED_BY": null,
+          "LAST_UPDATED_AT": null,
+          "ACTUAL_NET": 0,
+          "ACTUAL_TARE": 0,
+          "ACTUAL_GROSS": 0,
+          "ACTUAL_DUMPER_HMS": "00:00:00",
+          "FIRST_DUMP_TIME": null,
+          "LAST_DUMP_TIME": null
+        }
+      ]
+    },
+    "FROSTY.APP.V_PTRUN_WITH_BIN_INPUT": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "VARIETY_USER_CD",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "UNIQUE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "GROWER",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "PALLET_TR_CODE",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "CROP_YEAR",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "BINS_SUBMITTED",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "SUBMITTED_BY",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "SUBMITTED_AT",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 13
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021841EZ4505",
+          "RUN_NUMBER": 4,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "PALLET_TR_CODE": "P",
+          "CROP_YEAR": 2025,
+          "BINS_SUBMITTED": 0,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null
+        },
+        {
+          "RUN_DATE": "2026-02-18",
+          "VARIETY_USER_CD": "BRAK",
+          "UNIQUE_RUN_KEY": "2026021831EZ4505",
+          "RUN_NUMBER": 3,
+          "SHIFT": "1",
+          "PACK_LINE": "APZ",
+          "GROWER": "4505",
+          "POOL": "C002",
+          "PALLET_TR_CODE": "P",
+          "CROP_YEAR": 2025,
+          "BINS_SUBMITTED": 0,
+          "SUBMITTED_BY": null,
+          "SUBMITTED_AT": null
+        }
+      ]
+    },
+    "FROSTY.APP.V_SIZER_WEIGHT_REC": {
+      "columns": [
+        {
+          "name": "RUN_DATE",
+          "type": "DATE",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "GROWER_CODE",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "REC_TOTAL_WEIGHT",
+          "type": "FLOAT",
+          "ordinal": 4
+        },
+        {
+          "name": "REC_ASSOCIATED_KEYS",
+          "type": "TEXT",
+          "ordinal": 5
+        }
+      ],
+      "sample": [
+        {
+          "RUN_DATE": "2024-10-17",
+          "SHIFT": "2.00000",
+          "GROWER_CODE": "3879",
+          "REC_TOTAL_WEIGHT": 5393184.3,
+          "REC_ASSOCIATED_KEYS": "2684:2967"
+        },
+        {
+          "RUN_DATE": "2023-11-01",
+          "SHIFT": "2.00000",
+          "GROWER_CODE": "1120",
+          "REC_TOTAL_WEIGHT": 51247529.8,
+          "REC_ASSOCIATED_KEYS": "1819:2026"
+        }
+      ]
+    },
+    "FROSTY.STAGING.APPLE_SIZER_HEADER_VIEW_03": {
+      "columns": [
+        {
+          "name": "BatchID",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "GrowerCode",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "GrowerName",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "VarietyName",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "StartTime",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 5
+        },
+        {
+          "name": "EndTime",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        },
+        {
+          "name": "Comment1",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "Comment1_Date",
+          "type": "DATE",
+          "ordinal": 8
+        },
+        {
+          "name": "Comment2",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "Comment3",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "Bins",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "SHIFT_CODE",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "SHIFT_NAME",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "SHIFT_DETAILS",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 15
+        }
+      ],
+      "sample": [
+        {
+          "BatchID": "759",
+          "GrowerCode": "0045",
+          "GrowerName": "COM/Beverly Orchard",
+          "VarietyName": "IQS-PINK-LADY",
+          "StartTime": "2022-08-01T16:00:45.940000",
+          "EndTime": "2022-08-02T01:14:28.040000",
+          "Comment1": "8-1-22",
+          "Comment1_Date": "0022-08-01",
+          "Comment2": null,
+          "Comment3": null,
+          "Bins": "0.0",
+          "SHIFT_CODE": "2.00000",
+          "SHIFT_NAME": "Shift 2",
+          "SHIFT_DETAILS": "0022-08-010045Shift 2",
+          "SHIFT_KEY": "0022-08-01-2-0045"
+        },
+        {
+          "BatchID": "764",
+          "GrowerCode": "4503",
+          "GrowerName": "SUNSET ORCHARD",
+          "VarietyName": "IQS KIKU/FUJI US1",
+          "StartTime": "2022-08-04T20:22:48.793000",
+          "EndTime": "2022-08-08T15:51:49.087000",
+          "Comment1": null,
+          "Comment1_Date": null,
+          "Comment2": null,
+          "Comment3": null,
+          "Bins": "0.0",
+          "SHIFT_CODE": "2.00000",
+          "SHIFT_NAME": "Shift 2",
+          "SHIFT_DETAILS": "2022-08-044503Shift 2",
+          "SHIFT_KEY": "2022-08-04-2-4503"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_APPLE_SIZER_DROPSUMMARY_03": {
+      "columns": [
+        {
+          "name": "DropSummaryId",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "EventId",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "SummaryGroupId",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "DropId",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "FruitCount",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "WeightGrams",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "AveFruitWeight",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "GradeIndex",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "GradeName",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "SizeIndex",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "SizeName",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "MinWeightGrams",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "ProductId",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "ProductName",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "QualityIndex",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "QualityName",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "SummaryGroupName",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "OrderId",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "VarietySizingMapId",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "SizingMapName",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "FruitCountNonReject",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "WeightGramsNonReject",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "COUNT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "SizeNum",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "PACKOUT_GROUP",
+          "type": "TEXT",
+          "ordinal": 26
+        },
+        {
+          "name": "weight_dec",
+          "type": "NUMBER",
+          "ordinal": 27
+        }
+      ],
+      "sample": [
+        {
+          "DropSummaryId": "813342",
+          "EventId": "3279",
+          "SummaryGroupId": "0",
+          "DropId": "6",
+          "FruitCount": "32",
+          "WeightGrams": "7619.100000000002",
+          "AveFruitWeight": "238.09687500000007",
+          "GradeIndex": "3",
+          "GradeName": "Slice",
+          "SizeIndex": "10",
+          "SizeName": "80",
+          "MinWeightGrams": "221.9",
+          "ProductId": "133840",
+          "ProductName": "216.Decay.GOOD 198.Decay.GOOD 175.Decay.GOOD 163.D",
+          "QualityIndex": "2",
+          "QualityName": "BAD",
+          "SummaryGroupName": "Packed Fruit",
+          "OrderId": "0",
+          "VarietySizingMapId": "201603528",
+          "SizingMapName": "Down Grade",
+          "FruitCountNonReject": "32",
+          "WeightGramsNonReject": "7619.100000000002",
+          "WEIGHT": "7619.10",
+          "COUNT": 32,
+          "SizeNum": 80,
+          "PACKOUT_GROUP": "Culls",
+          "weight_dec": 7619
+        },
+        {
+          "DropSummaryId": "813343",
+          "EventId": "3279",
+          "SummaryGroupId": "0",
+          "DropId": "2",
+          "FruitCount": "18",
+          "WeightGrams": "5979.5",
+          "AveFruitWeight": "332.19444444444446",
+          "GradeIndex": "3",
+          "GradeName": "Slice",
+          "SizeIndex": "13",
+          "SizeName": "56",
+          "MinWeightGrams": "311.3",
+          "ProductId": "133842",
+          "ProductName": "216.AA.GOOD 48.AA.GOOD 36.AA.GOOD 27.AA.GOOD 216.A",
+          "QualityIndex": "1",
+          "QualityName": "MODERATE",
+          "SummaryGroupName": "Packed Fruit",
+          "OrderId": "0",
+          "VarietySizingMapId": "201603528",
+          "SizingMapName": "Down Grade",
+          "FruitCountNonReject": "18",
+          "WeightGramsNonReject": "5979.5",
+          "WEIGHT": "5979.50",
+          "COUNT": 18,
+          "SizeNum": 56,
+          "PACKOUT_GROUP": "Culls",
+          "weight_dec": 5980
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_APPLE_SIZER_HEADER_VIEW_03": {
+      "columns": [
+        {
+          "name": "BatchID",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "GrowerCode",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "GrowerName",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "VarietyName",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "StartTime",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 5
+        },
+        {
+          "name": "EndTime",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        },
+        {
+          "name": "Comment1",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "Comment1_Date",
+          "type": "DATE",
+          "ordinal": 8
+        },
+        {
+          "name": "Comment2",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "Comment3",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "Bins",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "SHIFT_CODE",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "SHIFT_NAME",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "SHIFT_DETAILS",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "EventId",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "BatchId",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "EventType",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "EventDetails",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "EventTime",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "SizerId",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "RunningSeconds",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "FruitRunningSeconds",
+          "type": "TEXT",
+          "ordinal": 23
+        }
+      ],
+      "sample": [
+        {
+          "BatchID": "776",
+          "GrowerCode": "0068",
+          "GrowerName": "COM/CF I/Snow Ranch Orchard",
+          "VarietyName": "IQS - GRANNY",
+          "StartTime": "2022-08-16T15:56:00.693000",
+          "EndTime": "2022-08-17T00:25:16.777000",
+          "Comment1": "8-16-22",
+          "Comment1_Date": "0022-08-16",
+          "Comment2": null,
+          "Comment3": null,
+          "Bins": "323.0",
+          "SHIFT_CODE": "2.00000",
+          "SHIFT_NAME": "Shift 2",
+          "SHIFT_DETAILS": "0022-08-160068Shift 2",
+          "SHIFT_KEY": "0022-08-16-2-0068",
+          "EventId": "846",
+          "BatchId": "776",
+          "EventType": "BatchStart",
+          "EventDetails": null,
+          "EventTime": "2022-08-16 15:56:00.700000",
+          "SizerId": "0",
+          "RunningSeconds": "26252",
+          "FruitRunningSeconds": "29146"
+        },
+        {
+          "BatchID": "779",
+          "GrowerCode": "0007",
+          "GrowerName": "Allen Steve",
+          "VarietyName": "IQS-PINK-LADY",
+          "StartTime": "2022-08-17T23:00:30.470000",
+          "EndTime": "2022-08-18T00:33:12.450000",
+          "Comment1": "8-17-22",
+          "Comment1_Date": "0022-08-17",
+          "Comment2": null,
+          "Comment3": null,
+          "Bins": "48.0",
+          "SHIFT_CODE": "2.00000",
+          "SHIFT_NAME": "Shift 2",
+          "SHIFT_DETAILS": "0022-08-170007Shift 2",
+          "SHIFT_KEY": "0022-08-17-2-0007",
+          "EventId": "849",
+          "BatchId": "779",
+          "EventType": "BatchStart",
+          "EventDetails": null,
+          "EventTime": "2022-08-17 23:00:30.477000",
+          "SizerId": "0",
+          "RunningSeconds": "4484",
+          "FruitRunningSeconds": "4477"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_BINDUMP03_SHIFT_10MIN": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SHIFT_FLEX",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "lot",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "LOT_4D",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 6
+        },
+        {
+          "name": "BINS_COUNT",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "NET_SUM",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "MINUTES_COVERED",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 10
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-17-1",
+          "SHIFT": 1,
+          "SHIFT_FLEX": "on_shift",
+          "lot": "0052",
+          "LOT_4D": "0052",
+          "BUCKET_START": "2026-02-17T10:30:00",
+          "BINS_COUNT": 12,
+          "NET_SUM": 9327,
+          "MINUTES_COVERED": 10,
+          "RUN_KEY": "2026-02-17-1-0052"
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-17-2",
+          "SHIFT": 2,
+          "SHIFT_FLEX": "on_shift",
+          "lot": "0028",
+          "LOT_4D": "0028",
+          "BUCKET_START": "2026-02-17T21:10:00",
+          "BINS_COUNT": 1,
+          "NET_SUM": 893,
+          "MINUTES_COVERED": 10,
+          "RUN_KEY": "2026-02-17-2-0028"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_EQ_WITH_KEYS03": {
+      "columns": [
+        {
+          "name": "STATUS",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "PALLET_TICKET",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "VARIETY_ABBR",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "PALLET_STATUS",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "STORAGE",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "VARIETY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "GRADE",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "PACKAGE",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "SIZE_NUM",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "GRADE_ABBR",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "BRAND",
+          "type": "TEXT",
+          "ordinal": 11
+        },
+        {
+          "name": "PACK_LINE",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "PACK_LOC",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "LOCATION",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "FILLER_1",
+          "type": "TEXT",
+          "ordinal": 15
+        },
+        {
+          "name": "CARTONS_PACKED",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "CARTONS_SHIPPED",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "PACK_ABBR",
+          "type": "TEXT",
+          "ordinal": 18
+        },
+        {
+          "name": "BRAND_ABBR",
+          "type": "TEXT",
+          "ordinal": 19
+        },
+        {
+          "name": "STORAGE_ABBR",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "SIZE_ABBR",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "FILLER_2",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "USER_ID",
+          "type": "TEXT",
+          "ordinal": 23
+        },
+        {
+          "name": "POOL",
+          "type": "TEXT",
+          "ordinal": 24
+        },
+        {
+          "name": "SPECIAL_INV",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "CARTONS_AVAIL",
+          "type": "NUMBER",
+          "ordinal": 26
+        },
+        {
+          "name": "PALLET_TR_CODE",
+          "type": "TEXT",
+          "ordinal": 27
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "CARTONS",
+          "type": "NUMBER",
+          "ordinal": 29
+        },
+        {
+          "name": "ORDER_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 30
+        },
+        {
+          "name": "PACK_DATE",
+          "type": "TEXT",
+          "ordinal": 31
+        },
+        {
+          "name": "LAST_UPDATE_1",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "CROP_YEAR",
+          "type": "NUMBER",
+          "ordinal": 33
+        },
+        {
+          "name": "EXP_DOM_CD",
+          "type": "TEXT",
+          "ordinal": 34
+        },
+        {
+          "name": "WAX_CODE",
+          "type": "TEXT",
+          "ordinal": 35
+        },
+        {
+          "name": "RM_ROW_STACK_LV",
+          "type": "TEXT",
+          "ordinal": 36
+        },
+        {
+          "name": "DATE",
+          "type": "TEXT",
+          "ordinal": 37
+        },
+        {
+          "name": "COMMENT",
+          "type": "TEXT",
+          "ordinal": 38
+        },
+        {
+          "name": "LAST_UPDATE_2",
+          "type": "TEXT",
+          "ordinal": 39
+        },
+        {
+          "name": "LOT",
+          "type": "TEXT",
+          "ordinal": 40
+        },
+        {
+          "name": "STORAGE_2",
+          "type": "TEXT",
+          "ordinal": 41
+        },
+        {
+          "name": "VARIETY_2",
+          "type": "TEXT",
+          "ordinal": 42
+        },
+        {
+          "name": "GRADE_2",
+          "type": "TEXT",
+          "ordinal": 43
+        },
+        {
+          "name": "PACKAGE_2",
+          "type": "TEXT",
+          "ordinal": 44
+        },
+        {
+          "name": "BRAND_2",
+          "type": "TEXT",
+          "ordinal": 45
+        },
+        {
+          "name": "SIZE_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 46
+        },
+        {
+          "name": "SEQ_NUMBER",
+          "type": "NUMBER",
+          "ordinal": 47
+        },
+        {
+          "name": "_LAST_UPDATE",
+          "type": "TIMESTAMP_LTZ",
+          "ordinal": 48
+        },
+        {
+          "name": "SERVER",
+          "type": "TEXT",
+          "ordinal": 49
+        },
+        {
+          "name": "ORDERS",
+          "type": "TEXT",
+          "ordinal": 50
+        },
+        {
+          "name": "SKU",
+          "type": "TEXT",
+          "ordinal": 51
+        },
+        {
+          "name": "REPORT_SKU",
+          "type": "TEXT",
+          "ordinal": 52
+        },
+        {
+          "name": "PACK_DATE_FORMATTED",
+          "type": "DATE",
+          "ordinal": 53
+        },
+        {
+          "name": "ORIGINAL_PACK_DATE_FORMATTED",
+          "type": "DATE",
+          "ordinal": 54
+        },
+        {
+          "name": "DAYS_SINCE_PACK_DATE",
+          "type": "NUMBER",
+          "ordinal": 55
+        },
+        {
+          "name": "WEEK_BUCKET",
+          "type": "TEXT",
+          "ordinal": 56
+        },
+        {
+          "name": "WEEK_BUCKET_NUM",
+          "type": "NUMBER",
+          "ordinal": 57
+        },
+        {
+          "name": "TIMEWINDOW",
+          "type": "TEXT",
+          "ordinal": 58
+        },
+        {
+          "name": "STAGED",
+          "type": "TEXT",
+          "ordinal": 59
+        },
+        {
+          "name": "ORDER_NUMBER_CLEANED",
+          "type": "NUMBER",
+          "ordinal": 60
+        },
+        {
+          "name": "ORDER_NUMBER_CLEANED_VARCHAR",
+          "type": "TEXT",
+          "ordinal": 61
+        },
+        {
+          "name": "Process Code",
+          "type": "TEXT",
+          "ordinal": 62
+        },
+        {
+          "name": "Sell by - ccyymmdd",
+          "type": "TEXT",
+          "ordinal": 63
+        },
+        {
+          "name": "TODAY",
+          "type": "DATE",
+          "ordinal": 64
+        },
+        {
+          "name": "GROUP_CATEGORY",
+          "type": "TEXT",
+          "ordinal": 65
+        },
+        {
+          "name": "ON_HAND_CARTON",
+          "type": "NUMBER",
+          "ordinal": 66
+        },
+        {
+          "name": "FINAL_STAGE_STATUS",
+          "type": "TEXT",
+          "ordinal": 67
+        },
+        {
+          "name": "REASON",
+          "type": "TEXT",
+          "ordinal": 68
+        },
+        {
+          "name": "VWEQFC",
+          "type": "NUMBER",
+          "ordinal": 69
+        },
+        {
+          "name": "EQ_ON_HAND",
+          "type": "NUMBER",
+          "ordinal": 70
+        },
+        {
+          "name": "LABOR_KEY",
+          "type": "TEXT",
+          "ordinal": 71
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 72
+        }
+      ],
+      "sample": [
+        {
+          "STATUS": " ",
+          "PALLET_TICKET": "CF05415954",
+          "VARIETY_ABBR": "SMIT",
+          "PALLET_STATUS": "V",
+          "STORAGE": "0",
+          "VARIETY": "SM",
+          "GRADE": "6K",
+          "PACKAGE": "AT",
+          "SIZE_NUM": 9,
+          "GRADE_ABBR": "XFYS",
+          "BRAND": "7GX",
+          "PACK_LINE": "APS",
+          "PACK_LOC": "AP",
+          "LOCATION": "AP",
+          "FILLER_1": "      ",
+          "CARTONS_PACKED": 0,
+          "CARTONS_SHIPPED": 0,
+          "PACK_ABBR": "ISCA",
+          "BRAND_ABBR": "PI01",
+          "STORAGE_ABBR": "REG ",
+          "SIZE_ABBR": "110   ",
+          "FILLER_2": "  ",
+          "USER_ID": "ROSAURAL  ",
+          "POOL": "CMIP",
+          "SPECIAL_INV": "NZ    ",
+          "CARTONS_AVAIL": 0,
+          "PALLET_TR_CODE": "P",
+          "GROWER_NUMBER": "9995",
+          "CARTONS": 56,
+          "ORDER_NUMBER": 0,
+          "PACK_DATE": "20230530",
+          "LAST_UPDATE_1": "20230617",
+          "CROP_YEAR": 2023,
+          "EXP_DOM_CD": " ",
+          "WAX_CODE": "8",
+          "RM_ROW_STACK_LV": "02200000",
+          "DATE": "20230530",
+          "COMMENT": "MNBU0122234",
+          "LAST_UPDATE_2": "20230530",
+          "LOT": "        ",
+          "STORAGE_2": "0",
+          "VARIETY_2": "SM",
+          "GRADE_2": "6K",
+          "PACKAGE_2": "AT",
+          "BRAND_2": "7GX",
+          "SIZE_NUMBER": 9,
+          "SEQ_NUMBER": 1,
+          "_LAST_UPDATE": null,
+          "SERVER": "NORTH",
+          "ORDERS": "SMAT6K9NZ",
+          "SKU": "2023 SMIT XFYS ISCA PI01 NZ 110",
+          "REPORT_SKU": "NZ ISCA 110 XFYS",
+          "PACK_DATE_FORMATTED": "2023-05-30",
+          "ORIGINAL_PACK_DATE_FORMATTED": "2023-05-30",
+          "DAYS_SINCE_PACK_DATE": 995,
+          "WEEK_BUCKET": "10+",
+          "WEEK_BUCKET_NUM": "11.00000",
+          "TIMEWINDOW": "46+",
+          "STAGED": "ON HAND",
+          "ORDER_NUMBER_CLEANED": null,
+          "ORDER_NUMBER_CLEANED_VARCHAR": null,
+          "Process Code": "SHIP READY",
+          "Sell by - ccyymmdd": "20230530",
+          "TODAY": "2026-02-18",
+          "GROUP_CATEGORY": "AP",
+          "ON_HAND_CARTON": 56,
+          "FINAL_STAGE_STATUS": "ON HAND",
+          "REASON": "  ",
+          "VWEQFC": "1.000",
+          "EQ_ON_HAND": "56.000",
+          "LABOR_KEY": "2023-05-30-8",
+          "RUN_KEY": "2023-05-30-8-9995"
+        },
+        {
+          "STATUS": " ",
+          "PALLET_TICKET": "CF05415970",
+          "VARIETY_ABBR": "SMIT",
+          "PALLET_STATUS": "V",
+          "STORAGE": "0",
+          "VARIETY": "SM",
+          "GRADE": "6K",
+          "PACKAGE": "AT",
+          "SIZE_NUM": 11,
+          "GRADE_ABBR": "XFYS",
+          "BRAND": "7GX",
+          "PACK_LINE": "APS",
+          "PACK_LOC": "AP",
+          "LOCATION": "AP",
+          "FILLER_1": "      ",
+          "CARTONS_PACKED": 0,
+          "CARTONS_SHIPPED": 0,
+          "PACK_ABBR": "ISCA",
+          "BRAND_ABBR": "PI01",
+          "STORAGE_ABBR": "REG ",
+          "SIZE_ABBR": "88    ",
+          "FILLER_2": "  ",
+          "USER_ID": "APREPACK  ",
+          "POOL": "CMIP",
+          "SPECIAL_INV": "NZ    ",
+          "CARTONS_AVAIL": 0,
+          "PALLET_TR_CODE": "R",
+          "GROWER_NUMBER": "9995",
+          "CARTONS": -56,
+          "ORDER_NUMBER": 0,
+          "PACK_DATE": "20230615",
+          "LAST_UPDATE_1": "20230615",
+          "CROP_YEAR": 2023,
+          "EXP_DOM_CD": " ",
+          "WAX_CODE": "2",
+          "RM_ROW_STACK_LV": "02200000",
+          "DATE": "20230530",
+          "COMMENT": "MNBU0122234",
+          "LAST_UPDATE_2": "20230615",
+          "LOT": "290     ",
+          "STORAGE_2": "0",
+          "VARIETY_2": "SM",
+          "GRADE_2": "6K",
+          "PACKAGE_2": "AT",
+          "BRAND_2": "7GX",
+          "SIZE_NUMBER": 11,
+          "SEQ_NUMBER": 1,
+          "_LAST_UPDATE": null,
+          "SERVER": "NORTH",
+          "ORDERS": "SMAT6K11NZ",
+          "SKU": "2023 SMIT XFYS ISCA PI01 NZ 88",
+          "REPORT_SKU": "NZ ISCA 88 XFYS",
+          "PACK_DATE_FORMATTED": "2023-06-15",
+          "ORIGINAL_PACK_DATE_FORMATTED": "2023-05-30",
+          "DAYS_SINCE_PACK_DATE": 995,
+          "WEEK_BUCKET": "10+",
+          "WEEK_BUCKET_NUM": "11.00000",
+          "TIMEWINDOW": "46+",
+          "STAGED": "ON HAND",
+          "ORDER_NUMBER_CLEANED": null,
+          "ORDER_NUMBER_CLEANED_VARCHAR": null,
+          "Process Code": "SHIP READY",
+          "Sell by - ccyymmdd": "20230530",
+          "TODAY": "2026-02-18",
+          "GROUP_CATEGORY": "AP",
+          "ON_HAND_CARTON": -56,
+          "FINAL_STAGE_STATUS": "ON HAND",
+          "REASON": "CV",
+          "VWEQFC": "1.000",
+          "EQ_ON_HAND": "-56.000",
+          "LABOR_KEY": "2023-06-15-2",
+          "RUN_KEY": "2023-06-15-2-9995"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_LOT_DUMPER_TIME_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SHIFT_FLEX",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "lot",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "LOT_4D",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "LOT_MINUTES_AT_DUMPER",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "LOT_HOURS_AT_DUMPER",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "LOT_MINUTES_SINCE_SHIFT_START",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "SHIFT_MINUTES_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "SHIFT_HOURS_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "SHIFT_MINUTES_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "SHIFT_HOURS_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "LOT_PCT_OF_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "LOT_MINUTES_FROM_PCT",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "LOT_PCT_OF_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "IS_CURRENT_LOT",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "LAST_BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 17
+        },
+        {
+          "name": "SHIFT_MINUTES_REMAINING",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "SHIFT_PCT_COMPLETE",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "SHIFT_PROJECT_TO_EOS_MULT",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "SHIFT_REMAINING_ONLY_MULT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "LOT_FORWARD_MULT",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "LOT_PROJECTED_MINUTES_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "LOT_PROJECTED_HOURS_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 26
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-14-1",
+          "SHIFT": 1,
+          "SHIFT_FLEX": "all",
+          "lot": "0102",
+          "LOT_4D": "0102",
+          "LOT_MINUTES_AT_DUMPER": 160,
+          "LOT_HOURS_AT_DUMPER": "2.6667",
+          "LOT_MINUTES_SINCE_SHIFT_START": "140.0000",
+          "SHIFT_MINUTES_ELAPSED": "510.0000000000",
+          "SHIFT_HOURS_ELAPSED": "8.5000",
+          "SHIFT_MINUTES_TOTAL": "510.0000",
+          "SHIFT_HOURS_TOTAL": "8.5000",
+          "LOT_PCT_OF_ELAPSED": "0.274510",
+          "LOT_MINUTES_FROM_PCT": "140.0000",
+          "LOT_PCT_OF_TOTAL": "0.274510",
+          "IS_CURRENT_LOT": 0,
+          "LAST_BUCKET_START": "2026-02-14T08:10:00",
+          "SHIFT_MINUTES_REMAINING": "0.00",
+          "SHIFT_PCT_COMPLETE": "1.000000",
+          "SHIFT_PROJECT_TO_EOS_MULT": "1.000000",
+          "SHIFT_REMAINING_ONLY_MULT": "1.000000",
+          "LOT_FORWARD_MULT": "1.000000",
+          "LOT_PROJECTED_MINUTES_IF_CONTINUES": null,
+          "LOT_PROJECTED_HOURS_IF_CONTINUES": null,
+          "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES": null,
+          "RUN_KEY": "2026-02-14-1-0102"
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-14-1",
+          "SHIFT": 1,
+          "SHIFT_FLEX": "all",
+          "lot": "1023",
+          "LOT_4D": "1023",
+          "LOT_MINUTES_AT_DUMPER": 180,
+          "LOT_HOURS_AT_DUMPER": "3.0000",
+          "LOT_MINUTES_SINCE_SHIFT_START": "180.0000",
+          "SHIFT_MINUTES_ELAPSED": "510.0000000000",
+          "SHIFT_HOURS_ELAPSED": "8.5000",
+          "SHIFT_MINUTES_TOTAL": "510.0000",
+          "SHIFT_HOURS_TOTAL": "8.5000",
+          "LOT_PCT_OF_ELAPSED": "0.352941",
+          "LOT_MINUTES_FROM_PCT": "180.0000",
+          "LOT_PCT_OF_TOTAL": "0.352941",
+          "IS_CURRENT_LOT": 0,
+          "LAST_BUCKET_START": "2026-02-14T11:40:00",
+          "SHIFT_MINUTES_REMAINING": "0.00",
+          "SHIFT_PCT_COMPLETE": "1.000000",
+          "SHIFT_PROJECT_TO_EOS_MULT": "1.000000",
+          "SHIFT_REMAINING_ONLY_MULT": "1.000000",
+          "LOT_FORWARD_MULT": "1.000000",
+          "LOT_PROJECTED_MINUTES_IF_CONTINUES": null,
+          "LOT_PROJECTED_HOURS_IF_CONTINUES": null,
+          "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES": null,
+          "RUN_KEY": "2026-02-14-1-1023"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_PTRUN_N_REPORT_03": {
+      "columns": [
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DATE_D",
+          "type": "DATE",
+          "ordinal": 2
+        },
+        {
+          "name": "DAY_LABEL",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "PACKDATE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 6
+        },
+        {
+          "name": "RUNS",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "VARIETY_LIST",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "VARIETY_ABBR_LIST",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "KPI_VARIETY_NAME_LIST",
+          "type": "TEXT",
+          "ordinal": 10
+        },
+        {
+          "name": "PACKS_MANHOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "BIN_HOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 12
+        }
+      ],
+      "sample": [
+        {
+          "RUN_KEY": "2026-02-12-2-0102",
+          "DATE_D": "2026-02-12",
+          "DAY_LABEL": "2026-02-12",
+          "SHIFT": "2",
+          "GROWER_NUMBER": "0102",
+          "PACKDATE_RUN_KEY": "2026-02-12-2",
+          "RUNS": "3",
+          "VARIETY_LIST": "EA",
+          "VARIETY_ABBR_LIST": "HONY",
+          "KPI_VARIETY_NAME_LIST": "HONEYCRISP",
+          "PACKS_MANHOUR_TARGET": "7.60000000",
+          "BIN_HOUR_TARGET": "55.00000000"
+        },
+        {
+          "RUN_KEY": "2026-02-14-1-0102",
+          "DATE_D": "2026-02-14",
+          "DAY_LABEL": "2026-02-14",
+          "SHIFT": "1",
+          "GROWER_NUMBER": "0102",
+          "PACKDATE_RUN_KEY": "2026-02-14-1",
+          "RUNS": "1",
+          "VARIETY_LIST": "EA",
+          "VARIETY_ABBR_LIST": "HONY",
+          "KPI_VARIETY_NAME_LIST": "HONEYCRISP",
+          "PACKS_MANHOUR_TARGET": "7.60000000",
+          "BIN_HOUR_TARGET": "55.00000000"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_SHIFT_10MIN_KPI_A_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 3
+        },
+        {
+          "name": "MINUTES_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "MINUTES_WORKED",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "EMPLOYEE_COUNT",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "BINS_DUMPED",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "RUN_KEYS",
+          "type": "ARRAY",
+          "ordinal": 8
+        },
+        {
+          "name": "RUN_COUNT",
+          "type": "NUMBER",
+          "ordinal": 9
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-16-1",
+          "SHIFT": "1",
+          "BUCKET_START": "2026-02-16T10:30:00",
+          "MINUTES_ELAPSED": 10,
+          "MINUTES_WORKED": 10,
+          "EMPLOYEE_COUNT": 1,
+          "BINS_DUMPED": 0,
+          "RUN_KEYS": "[]",
+          "RUN_COUNT": 0
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-16-1",
+          "SHIFT": "1",
+          "BUCKET_START": "2026-02-16T09:20:00",
+          "MINUTES_ELAPSED": 10,
+          "MINUTES_WORKED": 10,
+          "EMPLOYEE_COUNT": 1,
+          "BINS_DUMPED": 0,
+          "RUN_KEYS": "[]",
+          "RUN_COUNT": 0
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_SHIFT_10MIN_RUN_BRIDGE_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "RUN_BINS_IN_BUCKET",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "RUN_SHARE",
+          "type": "FLOAT",
+          "ordinal": 6
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-12-2",
+          "SHIFT": "2",
+          "BUCKET_START": "2026-02-12T15:30:00",
+          "RUN_KEY": "UNASSIGNED",
+          "RUN_BINS_IN_BUCKET": 0,
+          "RUN_SHARE": 1.0
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-12-2",
+          "SHIFT": "2",
+          "BUCKET_START": "2026-02-12T15:40:00",
+          "RUN_KEY": "2026-02-12-2-1782",
+          "RUN_BINS_IN_BUCKET": 10,
+          "RUN_SHARE": 1.0
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_SHIFT_STATUS_MIN_01": {
+      "columns": [
+        {
+          "name": "SHIFT_DAY_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "WORK_MINUTES_REMAINING",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "PCT_COMPLETE",
+          "type": "NUMBER",
+          "ordinal": 3
+        },
+        {
+          "name": "MULTIPLIER_PROJECT_TO_EOS",
+          "type": "NUMBER",
+          "ordinal": 4
+        },
+        {
+          "name": "HOURS_COMPLETE",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "HOURS_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 6
+        }
+      ],
+      "sample": [
+        {
+          "SHIFT_DAY_KEY": "2026-02-17-1",
+          "WORK_MINUTES_REMAINING": "0.00",
+          "PCT_COMPLETE": "1.000000",
+          "MULTIPLIER_PROJECT_TO_EOS": null,
+          "HOURS_COMPLETE": "8.5000",
+          "HOURS_TOTAL": "8.5000"
+        },
+        {
+          "SHIFT_DAY_KEY": "2026-02-15-1",
+          "WORK_MINUTES_REMAINING": "0.00",
+          "PCT_COMPLETE": "1.000000",
+          "MULTIPLIER_PROJECT_TO_EOS": null,
+          "HOURS_COMPLETE": "8.5000",
+          "HOURS_TOTAL": "8.5000"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DQ_TIMESTAMPCATEGORY_WH_A_03": {
+      "columns": [
+        {
+          "name": "JOB",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SCHEDULE",
+          "type": "DATE",
+          "ordinal": 2
+        },
+        {
+          "name": "BADGE #",
+          "type": "NUMBER",
+          "ordinal": 3
+        },
+        {
+          "name": "WORKING CODE",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "START TIME",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "STOP TIME",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "LUNCH TIME",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "STOP TIME STAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 8
+        },
+        {
+          "name": "START TIME STAMP",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 9
+        },
+        {
+          "name": "PUNCH IN",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "PUNCH OUT",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "ERROR FLAG",
+          "type": "TEXT",
+          "ordinal": 12
+        },
+        {
+          "name": "APPORVED USER",
+          "type": "TEXT",
+          "ordinal": 13
+        },
+        {
+          "name": "APPROVED DATE",
+          "type": "DATE",
+          "ordinal": 14
+        },
+        {
+          "name": "APPROVED TIME",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "POSTED CODE",
+          "type": "TEXT",
+          "ordinal": 16
+        },
+        {
+          "name": "POSTED USER",
+          "type": "TEXT",
+          "ordinal": 17
+        },
+        {
+          "name": "POSTED DATE",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "POSTED TIME",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "TARDY FLAG",
+          "type": "TEXT",
+          "ordinal": 20
+        },
+        {
+          "name": "TARDY COMMENT",
+          "type": "TEXT",
+          "ordinal": 21
+        },
+        {
+          "name": "CHANGE USER",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "CHANGE DATE",
+          "type": "DATE",
+          "ordinal": 23
+        },
+        {
+          "name": "CHANGE TIME",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "CREATE USER ID",
+          "type": "TEXT",
+          "ordinal": 25
+        },
+        {
+          "name": "CREATE DATE",
+          "type": "DATE",
+          "ordinal": 26
+        },
+        {
+          "name": " CREATE TIME",
+          "type": "NUMBER",
+          "ordinal": 27
+        },
+        {
+          "name": "SERVER",
+          "type": "TEXT",
+          "ordinal": 28
+        },
+        {
+          "name": "ADJUSTED_PUNCH_IN_DATETIME",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 29
+        },
+        {
+          "name": "ADJUSTED_PUNCH_OUT_DATETIME",
+          "type": "TIMESTAMP_LTZ",
+          "ordinal": 30
+        },
+        {
+          "name": "TOTAL_TIME_MINUTES",
+          "type": "NUMBER",
+          "ordinal": 31
+        },
+        {
+          "name": "CLOCKED_STATUS",
+          "type": "TEXT",
+          "ordinal": 32
+        },
+        {
+          "name": "JOB_CODE",
+          "type": "TEXT",
+          "ordinal": 33
+        },
+        {
+          "name": "CATEGORY",
+          "type": "TEXT",
+          "ordinal": 34
+        },
+        {
+          "name": "HEADER",
+          "type": "TEXT",
+          "ordinal": 35
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 36
+        },
+        {
+          "name": "COMPOSITE_KEY",
+          "type": "TEXT",
+          "ordinal": 37
+        },
+        {
+          "name": "WAREHOUSE",
+          "type": "TEXT",
+          "ordinal": 38
+        },
+        {
+          "name": "SCHEDULE_DATE",
+          "type": "DATE",
+          "ordinal": 39
+        },
+        {
+          "name": "SCHEDULEDATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 40
+        }
+      ],
+      "sample": [
+        {
+          "JOB": "2050A120  ",
+          "SCHEDULE": "2024-06-08",
+          "BADGE #": 23109,
+          "WORKING CODE": "F",
+          "START TIME": 630,
+          "STOP TIME": 2330,
+          "LUNCH TIME": 30,
+          "STOP TIME STAMP": "2024-06-08T23:30:00",
+          "START TIME STAMP": "2024-06-08T06:30:00",
+          "PUNCH IN": 65500,
+          "PUNCH OUT": 110000,
+          "ERROR FLAG": " ",
+          "APPORVED USER": "PAULASUP  ",
+          "APPROVED DATE": "2024-06-10",
+          "APPROVED TIME": 103141,
+          "POSTED CODE": "P",
+          "POSTED USER": "JENNIFERK ",
+          "POSTED DATE": 20240611,
+          "POSTED TIME": 82726,
+          "TARDY FLAG": "I",
+          "TARDY COMMENT": "                              ",
+          "CHANGE USER": "JENNIFERK ",
+          "CHANGE DATE": "2024-06-10",
+          "CHANGE TIME": 102837,
+          "CREATE USER ID": "CTCLOCK   ",
+          "CREATE DATE": "2024-06-08",
+          " CREATE TIME": 70045,
+          "SERVER": "N",
+          "ADJUSTED_PUNCH_IN_DATETIME": "2024-06-08T06:55:00",
+          "ADJUSTED_PUNCH_OUT_DATETIME": "2024-06-08T11:00:00-07:00",
+          "TOTAL_TIME_MINUTES": 245,
+          "CLOCKED_STATUS": "Clocked Out",
+          "JOB_CODE": "2050",
+          "CATEGORY": "Shipping",
+          "HEADER": "Operations",
+          "SHIFT": "1",
+          "COMPOSITE_KEY": "2024-06-081N",
+          "WAREHOUSE": "A",
+          "SCHEDULE_DATE": "2024-06-08",
+          "SCHEDULEDATE_SHIFT_KEY": "2024-06-08-1"
+        },
+        {
+          "JOB": "1050A100  ",
+          "SCHEDULE": "2024-06-08",
+          "BADGE #": 17733,
+          "WORKING CODE": "F",
+          "START TIME": 2000,
+          "STOP TIME": 600,
+          "LUNCH TIME": 30,
+          "STOP TIME STAMP": "2024-06-09T06:00:00",
+          "START TIME STAMP": "2024-06-08T20:00:00",
+          "PUNCH IN": 175400,
+          "PUNCH OUT": 22300,
+          "ERROR FLAG": " ",
+          "APPORVED USER": "NFSUP     ",
+          "APPROVED DATE": "2024-06-09",
+          "APPROVED TIME": 143734,
+          "POSTED CODE": "P",
+          "POSTED USER": "JENNIFERK ",
+          "POSTED DATE": 20240611,
+          "POSTED TIME": 82726,
+          "TARDY FLAG": " ",
+          "TARDY COMMENT": "                              ",
+          "CHANGE USER": "NFSUP     ",
+          "CHANGE DATE": "2024-06-09",
+          "CHANGE TIME": 143734,
+          "CREATE USER ID": "CTCLOCK   ",
+          "CREATE DATE": "2024-06-08",
+          " CREATE TIME": 175502,
+          "SERVER": "N",
+          "ADJUSTED_PUNCH_IN_DATETIME": "2024-06-08T17:54:00",
+          "ADJUSTED_PUNCH_OUT_DATETIME": "2024-06-09T02:23:00-07:00",
+          "TOTAL_TIME_MINUTES": 0,
+          "CLOCKED_STATUS": "Clocked Out",
+          "JOB_CODE": "1050",
+          "CATEGORY": "Cleaning & Sanitation",
+          "HEADER": "Production",
+          "SHIFT": "1",
+          "COMPOSITE_KEY": "2024-06-081N",
+          "WAREHOUSE": "A",
+          "SCHEDULE_DATE": "2024-06-08",
+          "SCHEDULEDATE_SHIFT_KEY": "2024-06-08-1"
+        }
+      ]
+    },
+    "FROSTY.STAGING.DT_SHIFT_10MIN_KPI_A_PER_RUN03_DT": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "MINUTES_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "MINUTES_WORKED_ALLOC",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "EMPLOYEE_COUNT_ALLOC",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "BINS_DUMPED",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "SIZER_PACKOUT_PCT",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "SIZER_PACKS_EST_21",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "BINS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "EST_PACKS_PER_MAN_HOUR",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "PACKS_MANHOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "BIN_HOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "STAMPER_CARTONS",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "STAMPER_WEIGHT",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "STAMPER_EQS",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "STAMPER_EQS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 18
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-16-1",
+          "SHIFT": "1",
+          "BUCKET_START": "2026-02-16T10:20:00",
+          "RUN_KEY": "UNASSIGNED",
+          "MINUTES_ELAPSED": "10.000000",
+          "MINUTES_WORKED_ALLOC": "10.00",
+          "EMPLOYEE_COUNT_ALLOC": "1.00",
+          "BINS_DUMPED": "0.00",
+          "SIZER_PACKOUT_PCT": "0.000000",
+          "SIZER_PACKS_EST_21": "0.00",
+          "BINS_PER_HOUR": "0.0000",
+          "EST_PACKS_PER_MAN_HOUR": "0.0000",
+          "PACKS_MANHOUR_TARGET": null,
+          "BIN_HOUR_TARGET": null,
+          "STAMPER_CARTONS": "0.000000",
+          "STAMPER_WEIGHT": "0.000000",
+          "STAMPER_EQS": "0.000000",
+          "STAMPER_EQS_PER_HOUR": null
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-15-1",
+          "SHIFT": "1",
+          "BUCKET_START": "2026-02-15T07:40:00",
+          "RUN_KEY": "UNASSIGNED",
+          "MINUTES_ELAPSED": "10.000000",
+          "MINUTES_WORKED_ALLOC": "50.00",
+          "EMPLOYEE_COUNT_ALLOC": "5.00",
+          "BINS_DUMPED": "0.00",
+          "SIZER_PACKOUT_PCT": "0.000000",
+          "SIZER_PACKS_EST_21": "0.00",
+          "BINS_PER_HOUR": "0.0000",
+          "EST_PACKS_PER_MAN_HOUR": "0.0000",
+          "PACKS_MANHOUR_TARGET": null,
+          "BIN_HOUR_TARGET": null,
+          "STAMPER_CARTONS": "0.000000",
+          "STAMPER_WEIGHT": "0.000000",
+          "STAMPER_EQS": "0.000000",
+          "STAMPER_EQS_PER_HOUR": null
+        }
+      ]
+    },
+    "FROSTY.STAGING.PACK_CLASSIFICATION": {
+      "columns": [
+        {
+          "name": "PACK_ABBR",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "CLASSIFICATION",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "PACK_TYPE",
+          "type": "TEXT",
+          "ordinal": 3
+        }
+      ],
+      "sample": [
+        {
+          "PACK_ABBR": "I4MA",
+          "CLASSIFICATION": "Mailer",
+          "PACK_TYPE": "Bulk"
+        },
+        {
+          "PACK_ABBR": "I3PA",
+          "CLASSIFICATION": "Pouch",
+          "PACK_TYPE": "Bag"
+        }
+      ]
+    },
+    "FROSTY.STAGING.VW_LOT_DUMPER_TIME_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "SHIFT_FLEX",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "lot",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "LOT_4D",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "LOT_MINUTES_AT_DUMPER",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "LOT_HOURS_AT_DUMPER",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "LOT_MINUTES_SINCE_SHIFT_START",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "SHIFT_MINUTES_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "SHIFT_HOURS_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "SHIFT_MINUTES_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "SHIFT_HOURS_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "LOT_PCT_OF_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "LOT_MINUTES_FROM_PCT",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "LOT_PCT_OF_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "IS_CURRENT_LOT",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "LAST_BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 17
+        },
+        {
+          "name": "SHIFT_MINUTES_REMAINING",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "SHIFT_PCT_COMPLETE",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "SHIFT_PROJECT_TO_EOS_MULT",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "SHIFT_REMAINING_ONLY_MULT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "LOT_FORWARD_MULT",
+          "type": "NUMBER",
+          "ordinal": 22
+        },
+        {
+          "name": "LOT_PROJECTED_MINUTES_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "LOT_PROJECTED_HOURS_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 26
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-13-1",
+          "SHIFT": 1,
+          "SHIFT_FLEX": "all",
+          "lot": "1783",
+          "LOT_4D": "1783",
+          "LOT_MINUTES_AT_DUMPER": 520,
+          "LOT_HOURS_AT_DUMPER": "8.6667",
+          "LOT_MINUTES_SINCE_SHIFT_START": "500.0000",
+          "SHIFT_MINUTES_ELAPSED": "510.0000000000",
+          "SHIFT_HOURS_ELAPSED": "8.5000",
+          "SHIFT_MINUTES_TOTAL": "510.0000",
+          "SHIFT_HOURS_TOTAL": "8.5000",
+          "LOT_PCT_OF_ELAPSED": "0.980392",
+          "LOT_MINUTES_FROM_PCT": "500.0000",
+          "LOT_PCT_OF_TOTAL": "0.980392",
+          "IS_CURRENT_LOT": 1,
+          "LAST_BUCKET_START": "2026-02-13T14:50:00",
+          "SHIFT_MINUTES_REMAINING": "0.00",
+          "SHIFT_PCT_COMPLETE": "1.000000",
+          "SHIFT_PROJECT_TO_EOS_MULT": "1.000000",
+          "SHIFT_REMAINING_ONLY_MULT": "0.000000",
+          "LOT_FORWARD_MULT": "1.000000",
+          "LOT_PROJECTED_MINUTES_IF_CONTINUES": "500.0000",
+          "LOT_PROJECTED_HOURS_IF_CONTINUES": "8.3333",
+          "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES": "0.980392",
+          "RUN_KEY": "2026-02-13-1-1783"
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-17-2",
+          "SHIFT": 2,
+          "SHIFT_FLEX": "all",
+          "lot": "0150",
+          "LOT_4D": "0150",
+          "LOT_MINUTES_AT_DUMPER": 180,
+          "LOT_HOURS_AT_DUMPER": "3.0000",
+          "LOT_MINUTES_SINCE_SHIFT_START": "180.0000",
+          "SHIFT_MINUTES_ELAPSED": "510.0000000000",
+          "SHIFT_HOURS_ELAPSED": "8.5000",
+          "SHIFT_MINUTES_TOTAL": "510.0000",
+          "SHIFT_HOURS_TOTAL": "8.5000",
+          "LOT_PCT_OF_ELAPSED": "0.352941",
+          "LOT_MINUTES_FROM_PCT": "180.0000",
+          "LOT_PCT_OF_TOTAL": "0.352941",
+          "IS_CURRENT_LOT": 1,
+          "LAST_BUCKET_START": "2026-02-18T01:20:00",
+          "SHIFT_MINUTES_REMAINING": "0.00",
+          "SHIFT_PCT_COMPLETE": "1.000000",
+          "SHIFT_PROJECT_TO_EOS_MULT": "1.000000",
+          "SHIFT_REMAINING_ONLY_MULT": "0.000000",
+          "LOT_FORWARD_MULT": "1.000000",
+          "LOT_PROJECTED_MINUTES_IF_CONTINUES": "180.0000",
+          "LOT_PROJECTED_HOURS_IF_CONTINUES": "3.0000",
+          "LOT_PROJECTED_PCT_OF_TOTAL_IF_CONTINUES": "0.352941",
+          "RUN_KEY": "2026-02-17-2-0150"
+        }
+      ]
+    },
+    "FROSTY.STAGING.VW_RUN_TOTALS_FAST_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DAY_LABEL",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "PACKDATE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 5
+        },
+        {
+          "name": "RUN_SEQ_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "VARIETY_ABBR",
+          "type": "TEXT",
+          "ordinal": 7
+        },
+        {
+          "name": "KPI_VARIETY_NAME",
+          "type": "TEXT",
+          "ordinal": 8
+        },
+        {
+          "name": "GROWER_NUMBER",
+          "type": "TEXT",
+          "ordinal": 9
+        },
+        {
+          "name": "DUMPER_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 10
+        },
+        {
+          "name": "BINS_PRE_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "BINS_ON_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "BINS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "COMPUTECH_EQS",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "COMPUTECH_PPB",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "STAMPER_EQS",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "STAMPER_PPMH",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "BIN_HOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "PACKS_MANHOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "BINS_DELTA",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "BINS_DELTA_PCT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "BINS_TARGET_COLOR",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "PACKS_DELTA",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "PACKS_DELTA_PCT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "PACKS_TARGET_COLOR",
+          "type": "TEXT",
+          "ordinal": 25
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-13-1",
+          "DAY_LABEL": "2026-02-13",
+          "PACKDATE_RUN_KEY": "2026-02-13-1",
+          "SHIFT": "1",
+          "RUN_KEY": "2026-02-13-1-1783",
+          "RUN_SEQ_SHIFT": 1,
+          "VARIETY_ABBR": "HONY",
+          "KPI_VARIETY_NAME": "HONEYCRISP",
+          "GROWER_NUMBER": "1783",
+          "DUMPER_START": "2026-02-13T06:00:00",
+          "BINS_PRE_SHIFT": 17,
+          "BINS_ON_SHIFT": 407,
+          "BINS_PER_HOUR": "48.840000",
+          "COMPUTECH_EQS": "3951.176",
+          "COMPUTECH_PPB": "9.318811321",
+          "STAMPER_EQS": "3991.028782",
+          "STAMPER_PPMH": "6.410604672057",
+          "BIN_HOUR_TARGET": "55.00000000",
+          "PACKS_MANHOUR_TARGET": "7.60000000",
+          "BINS_DELTA": "-6.16000000",
+          "BINS_DELTA_PCT": "-0.112000000000",
+          "BINS_TARGET_COLOR": "#FFCDD2",
+          "PACKS_DELTA": "-1.189395327943",
+          "PACKS_DELTA_PCT": "-0.156499385256",
+          "PACKS_TARGET_COLOR": "#FFCDD2"
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-12-1",
+          "DAY_LABEL": "2026-02-12",
+          "PACKDATE_RUN_KEY": "2026-02-12-1",
+          "SHIFT": "1",
+          "RUN_KEY": "2026-02-12-1-0028",
+          "RUN_SEQ_SHIFT": 1,
+          "VARIETY_ABBR": "GALA",
+          "KPI_VARIETY_NAME": "GALA",
+          "GROWER_NUMBER": "0028",
+          "DUMPER_START": "2026-02-12T06:00:00",
+          "BINS_PRE_SHIFT": 14,
+          "BINS_ON_SHIFT": 420,
+          "BINS_PER_HOUR": "48.461538",
+          "COMPUTECH_EQS": "8240.179",
+          "COMPUTECH_PPB": "18.986587558",
+          "STAMPER_EQS": "8255.791950",
+          "STAMPER_PPMH": "11.370309124297",
+          "BIN_HOUR_TARGET": "55.00000000",
+          "PACKS_MANHOUR_TARGET": "10.30000000",
+          "BINS_DELTA": "-6.53846200",
+          "BINS_DELTA_PCT": "-0.118881127273",
+          "BINS_TARGET_COLOR": "#FFCDD2",
+          "PACKS_DELTA": "1.070309124297",
+          "PACKS_DELTA_PCT": "0.103913507213",
+          "PACKS_TARGET_COLOR": "#C8E6C9"
+        }
+      ]
+    },
+    "FROSTY.STAGING.VW_SHIFT_10MIN_KPI_A_PER_RUN03_V2_MAT": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "SHIFT",
+          "type": "NUMBER",
+          "ordinal": 2
+        },
+        {
+          "name": "BUCKET_START",
+          "type": "TIMESTAMP_NTZ",
+          "ordinal": 3
+        },
+        {
+          "name": "RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "MINUTES_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "MINUTES_WORKED_ALLOC",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "EMPLOYEE_COUNT_ALLOC",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "BINS_DUMPED",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "SIZER_PACKOUT_PCT",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "SIZER_PACKS_EST_21",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "BINS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "EST_PACKS_PER_MAN_HOUR",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "PACKS_MANHOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "BIN_HOUR_TARGET",
+          "type": "NUMBER",
+          "ordinal": 14
+        },
+        {
+          "name": "STAMPER_EQS",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "STAMPER_EQS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 16
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2025-10-13-1",
+          "SHIFT": "1.00000",
+          "BUCKET_START": "2025-10-13T14:00:00",
+          "RUN_KEY": "2025-10-13-1-1781",
+          "MINUTES_ELAPSED": "10.000000",
+          "MINUTES_WORKED_ALLOC": "832.000000",
+          "EMPLOYEE_COUNT_ALLOC": "84.000000",
+          "BINS_DUMPED": "0.000000",
+          "SIZER_PACKOUT_PCT": "0.000000",
+          "SIZER_PACKS_EST_21": "0.000000",
+          "BINS_PER_HOUR": "0.000000",
+          "EST_PACKS_PER_MAN_HOUR": "0.000000",
+          "PACKS_MANHOUR_TARGET": "7.600000",
+          "BIN_HOUR_TARGET": "55.000000",
+          "STAMPER_EQS": "0.000000",
+          "STAMPER_EQS_PER_HOUR": "0.000000"
+        },
+        {
+          "DATE_SHIFT_KEY": "2025-10-13-1",
+          "SHIFT": "1.00000",
+          "BUCKET_START": "2025-10-13T14:10:00",
+          "RUN_KEY": "2025-10-13-1-1781",
+          "MINUTES_ELAPSED": "10.000000",
+          "MINUTES_WORKED_ALLOC": "830.000000",
+          "EMPLOYEE_COUNT_ALLOC": "83.000000",
+          "BINS_DUMPED": "6.000000",
+          "SIZER_PACKOUT_PCT": "0.000000",
+          "SIZER_PACKS_EST_21": "0.000000",
+          "BINS_PER_HOUR": "36.000000",
+          "EST_PACKS_PER_MAN_HOUR": "0.000000",
+          "PACKS_MANHOUR_TARGET": "7.600000",
+          "BIN_HOUR_TARGET": "55.000000",
+          "STAMPER_EQS": "38.585610",
+          "STAMPER_EQS_PER_HOUR": "231.513659"
+        }
+      ]
+    },
+    "FROSTY.STAGING.VW_SHIFT_TOTALS_FAST_03": {
+      "columns": [
+        {
+          "name": "DATE_SHIFT_KEY",
+          "type": "TEXT",
+          "ordinal": 1
+        },
+        {
+          "name": "DAY_LABEL",
+          "type": "TEXT",
+          "ordinal": 2
+        },
+        {
+          "name": "PACKDATE_RUN_KEY",
+          "type": "TEXT",
+          "ordinal": 3
+        },
+        {
+          "name": "SHIFT",
+          "type": "TEXT",
+          "ordinal": 4
+        },
+        {
+          "name": "SHIFT_HOURS_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 5
+        },
+        {
+          "name": "SHIFT_HOURS_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 6
+        },
+        {
+          "name": "BINS_PRE_SHIFT_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 7
+        },
+        {
+          "name": "BINS_ON_SHIFT_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 8
+        },
+        {
+          "name": "TOTAL_BINS",
+          "type": "NUMBER",
+          "ordinal": 9
+        },
+        {
+          "name": "BINS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 10
+        },
+        {
+          "name": "BIN_HOUR_TARGET_WEIGHTED",
+          "type": "NUMBER",
+          "ordinal": 11
+        },
+        {
+          "name": "BPH_DELTA",
+          "type": "NUMBER",
+          "ordinal": 12
+        },
+        {
+          "name": "BPH_DELTA_PCT",
+          "type": "NUMBER",
+          "ordinal": 13
+        },
+        {
+          "name": "BPH_TARGET_COLOR",
+          "type": "TEXT",
+          "ordinal": 14
+        },
+        {
+          "name": "STAMPER_EQS_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 15
+        },
+        {
+          "name": "MINUTES_WORKED_TOTAL",
+          "type": "NUMBER",
+          "ordinal": 16
+        },
+        {
+          "name": "STAMPER_PPMH",
+          "type": "NUMBER",
+          "ordinal": 17
+        },
+        {
+          "name": "STAMPER_EQS_PER_HOUR",
+          "type": "NUMBER",
+          "ordinal": 18
+        },
+        {
+          "name": "PACKS_MANHOUR_TARGET_WEIGHTED",
+          "type": "NUMBER",
+          "ordinal": 19
+        },
+        {
+          "name": "PACKS_DELTA",
+          "type": "NUMBER",
+          "ordinal": 20
+        },
+        {
+          "name": "PACKS_DELTA_PCT",
+          "type": "NUMBER",
+          "ordinal": 21
+        },
+        {
+          "name": "PACKS_TARGET_COLOR",
+          "type": "TEXT",
+          "ordinal": 22
+        },
+        {
+          "name": "ON_SHIFT_BPH",
+          "type": "NUMBER",
+          "ordinal": 23
+        },
+        {
+          "name": "BINS_TARGET_FULL_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 24
+        },
+        {
+          "name": "BINS_AT_CUR_ONSHIFT_RATE_FULL_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 25
+        },
+        {
+          "name": "BINS_REMAINING_TO_TARGET",
+          "type": "NUMBER",
+          "ordinal": 26
+        },
+        {
+          "name": "PCT_OF_TARGET_ACHIEVED",
+          "type": "NUMBER",
+          "ordinal": 27
+        },
+        {
+          "name": "PACKS_PER_BIN",
+          "type": "NUMBER",
+          "ordinal": 28
+        },
+        {
+          "name": "BINS_AT_TARGET_ELAPSED",
+          "type": "NUMBER",
+          "ordinal": 29
+        },
+        {
+          "name": "BINS_AT_TARGET_ELAPSED_COLOR",
+          "type": "TEXT",
+          "ordinal": 30
+        },
+        {
+          "name": "IS_CURRENT_SHIFT",
+          "type": "NUMBER",
+          "ordinal": 31
+        }
+      ],
+      "sample": [
+        {
+          "DATE_SHIFT_KEY": "2026-02-17-1",
+          "DAY_LABEL": "YESTERDAY",
+          "PACKDATE_RUN_KEY": "2026-02-17-1",
+          "SHIFT": "1",
+          "SHIFT_HOURS_ELAPSED": "8.500000000000",
+          "SHIFT_HOURS_TOTAL": "8.5000000000",
+          "BINS_PRE_SHIFT_TOTAL": 16,
+          "BINS_ON_SHIFT_TOTAL": 488,
+          "TOTAL_BINS": 504,
+          "BINS_PER_HOUR": "59.294118",
+          "BIN_HOUR_TARGET_WEIGHTED": "48.040816326531",
+          "BPH_DELTA": "11.253301673469",
+          "BPH_DELTA_PCT": "0.234244597281",
+          "BPH_TARGET_COLOR": "#C8E6C9",
+          "STAMPER_EQS_TOTAL": "5615.704882",
+          "MINUTES_WORKED_TOTAL": "42416.00",
+          "STAMPER_PPMH": "7.943754548284",
+          "STAMPER_EQS_PER_HOUR": "660.671162588235",
+          "PACKS_MANHOUR_TARGET_WEIGHTED": "8.338775510204",
+          "PACKS_DELTA": "-0.395020961920",
+          "PACKS_DELTA_PCT": "-0.047371578889",
+          "PACKS_TARGET_COLOR": "#FFF59D",
+          "ON_SHIFT_BPH": "59.755102",
+          "BINS_TARGET_FULL_SHIFT": "408.346938775514",
+          "BINS_AT_CUR_ONSHIFT_RATE_FULL_SHIFT": "504.000000000000",
+          "BINS_REMAINING_TO_TARGET": "-95.653061224486",
+          "PCT_OF_TARGET_ACHIEVED": "1.234245",
+          "PACKS_PER_BIN": "11.142271591270",
+          "BINS_AT_TARGET_ELAPSED": "424.346938775514",
+          "BINS_AT_TARGET_ELAPSED_COLOR": "#C8E6C9",
+          "IS_CURRENT_SHIFT": 0
+        },
+        {
+          "DATE_SHIFT_KEY": "2026-02-18-1",
+          "DAY_LABEL": "TODAY",
+          "PACKDATE_RUN_KEY": "2026-02-18-1",
+          "SHIFT": "1",
+          "SHIFT_HOURS_ELAPSED": "5.948100000000",
+          "SHIFT_HOURS_TOTAL": "8.5000000000",
+          "BINS_PRE_SHIFT_TOTAL": 14,
+          "BINS_ON_SHIFT_TOTAL": 300,
+          "TOTAL_BINS": 314,
+          "BINS_PER_HOUR": "52.789967",
+          "BIN_HOUR_TARGET_WEIGHTED": "63.000000000000",
+          "BPH_DELTA": "-10.210033000000",
+          "BPH_DELTA_PCT": "-0.162064015873",
+          "BPH_TARGET_COLOR": "#FFCDD2",
+          "STAMPER_EQS_TOTAL": "5481.762438",
+          "MINUTES_WORKED_TOTAL": "28409.00",
+          "STAMPER_PPMH": "11.577519317118",
+          "STAMPER_EQS_PER_HOUR": "921.598903515408",
+          "PACKS_MANHOUR_TARGET_WEIGHTED": "10.400000000000",
+          "PACKS_DELTA": "1.177519317118",
+          "PACKS_DELTA_PCT": "0.113223011261",
+          "PACKS_TARGET_COLOR": "#C8E6C9",
+          "ON_SHIFT_BPH": "47.533123",
+          "BINS_TARGET_FULL_SHIFT": "535.500000000000",
+          "BINS_AT_CUR_ONSHIFT_RATE_FULL_SHIFT": "453.720513041348",
+          "BINS_REMAINING_TO_TARGET": "221.500000000000",
+          "PCT_OF_TARGET_ACHIEVED": "0.586368",
+          "PACKS_PER_BIN": "17.457842159236",
+          "BINS_AT_TARGET_ELAPSED": "388.730300000000",
+          "BINS_AT_TARGET_ELAPSED_COLOR": "#FFCDD2",
+          "IS_CURRENT_SHIFT": 1
+        }
+      ]
+    }
+  }
+}

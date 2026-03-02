@@ -1,0 +1,11 @@
+# FROSTY.DBT_DEV_DBT_DEV - objects we create (DT, etc.) - your role has CREATE here
+version: 2
+
+sources:
+  - name: frosty_dbt_dev
+    description: "FROSTY.DBT_DEV_DBT_DEV - objects created by our scripts/dbt"
+    database: FROSTY
+    schema: DBT_DEV_DBT_DEV
+    tables:
+      - name: DT_INV_ON_HAND_SKU_GRAIN
+        description: "Pre-aggregated on-hand inventory at SKU x week grain"

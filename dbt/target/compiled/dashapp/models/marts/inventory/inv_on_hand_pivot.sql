@@ -1,0 +1,19 @@
+-- On-hand inventory pivot/detail. Thin wrapper over DT_INV_ON_HAND_SKU_GRAIN.
+
+
+select
+  GROUP_CATEGORY,
+  FINAL_STAGE_STATUS,
+  VARIETY_ABBR,
+  SKU,
+  WEEK_BUCKET,
+  WEEK_BUCKET_NUM,
+  PACK_ABBR,
+  GRADE_ABBR,
+  SIZE_ABBR,
+  POOL,
+  "Process Code",
+  CARTONS,
+  EQ_ON_HAND,
+  CARTONS_AVAIL
+from FROSTY.DBT_DEV_DBT_DEV.DT_INV_ON_HAND_SKU_GRAIN

@@ -1,0 +1,24 @@
+version: 2
+models:
+  - name: inv_on_hand_pivot
+    description: "On-hand inventory at SKU x week grain. Source for pivot and SKU detail."
+    columns:
+      - name: VARIETY_ABBR
+        description: "Variety abbreviation"
+      - name: SKU
+        description: "SKU (crop year, variety, grade, pack, brand, special, size)"
+      - name: WEEK_BUCKET
+        description: "Age bucket in weeks (0, 1, 2, ..., 10+)"
+      - name: CARTONS
+        description: "Sum of cartons"
+      - name: EQ_ON_HAND
+        description: "Sum of EQs on hand"
+  - name: inv_changes_today
+    description: "Packed, shipped, staged totals for today. Used for Changes for Today widget."
+    columns:
+      - name: change_type
+        description: "Packed, Shipped, or Staged"
+      - name: cartons
+        description: "Sum of cartons"
+      - name: eq_on_hand
+        description: "Sum of EQs"

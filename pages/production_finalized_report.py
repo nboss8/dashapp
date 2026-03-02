@@ -14,6 +14,7 @@ load_dotenv()
 dash.register_page(__name__, path="/production/finalized-report", name="Production Finalized Report")
 
 layout = html.Div([
+    dcc.Interval(id="pfr-interval", interval=900_000, n_intervals=0),
     dbc.Container([
         page_header("Production Finalized Report", "/", right_slot=None),
         html.P(

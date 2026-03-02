@@ -27,7 +27,80 @@
     opacity: 0.5 !important;
 }
 
-/* TV root: fit typical TV (e.g. 1920x1080), no scrollbars */
+/* TV page: fluid layout – compact KPIs/run tiles, charts get most space, all visible in 100vh */
+.tv-root.tv-page {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden !important;
+}
+.tv-root.tv-page #tv-main-block {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+/* Compact KPI cards so charts can be the main focus */
+.tv-root.tv-page #tv-cards-row > div > div {
+    min-height: 88px !important;
+    padding: 10px 14px !important;
+}
+.tv-root.tv-page #tv-cards-row > div > div > p:first-of-type {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+}
+.tv-root.tv-page #tv-cards-row > div > div > h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+}
+.tv-root.tv-page #tv-cards-row > div > div > p:last-of-type {
+    font-size: 0.7rem !important;
+}
+/* Charts get most of the space – larger min so they stay readable */
+.tv-root.tv-page .tv-chart-row {
+    flex: 1 1 0;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+}
+.tv-root.tv-page .tv-chart-row > div,
+.tv-root.tv-page .tv-chart-row .col,
+.tv-root.tv-page .tv-chart-row [class*="col-"] {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+.tv-root.tv-page .tv-chart-row .js-plotly-plot,
+.tv-root.tv-page .tv-chart-row .plotly,
+.tv-root.tv-page .tv-chart-row .svg-container {
+    height: 100% !important;
+    min-height: 0;
+}
+/* Compact run tiles so both rows fit without being cut off */
+.tv-root.tv-page .tv-runs-section {
+    flex-shrink: 0;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+.tv-root.tv-page .tv-current-run-title {
+    font-size: 1rem !important;
+    margin-bottom: 8px !important;
+}
+.tv-root.tv-page .tv-run-tile {
+    min-height: 100px !important;
+    padding: 12px 16px !important;
+}
+.tv-root.tv-page .tv-run-tile-label {
+    font-size: 0.75rem !important;
+    margin-bottom: 4px !important;
+}
+.tv-root.tv-page .tv-run-tile-value {
+    font-size: 1.25rem !important;
+}
+
+/* TV root (other pages e.g. PFR that use .tv-root): keep default */
 .tv-root {
     width: 100vw;
     height: 100vh;

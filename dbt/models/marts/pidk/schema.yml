@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: pidk_run_totals
+    description: "PIDK Run totals"
+    columns:
+      - name: RUN_KEY
+        description: "Run identifier (packdate-shift-lot)"
+        tests:
+          - not_null
+      - name: PACKDATE_RUN_KEY
+        tests:
+          - not_null
+  - name: pidk_shift_totals
+    description: "PIDK Shift totals"
+    columns:
+      - name: PACKDATE_RUN_KEY
+        tests:
+          - not_null
+      # Shift column uses quoted identifier "Shift" - skip test to avoid Snowflake case mismatch
+      - name: DAY_LABEL
+        tests:
+          - not_null

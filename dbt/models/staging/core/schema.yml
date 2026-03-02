@@ -1,0 +1,12 @@
+version: 2
+models:
+  - name: stg_ptrun_report
+    description: "PTUN report - day labels, run keys"
+  - name: stg_run_totals
+    description: "Run totals - bins, BPH, PPMH"
+  - name: stg_shift_totals
+    description: "Shift totals"
+  - name: stg_shift_10min_kpi
+    description: "10-min bucket KPIs per run"
+  - name: stg_lot_dumper_time
+    description: "Lot dumper time - current lot flag"

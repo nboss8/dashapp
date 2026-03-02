@@ -1,0 +1,30 @@
+# systemd service for Columbia Fruit Analytics Dash app.
+# Copy to: /etc/systemd/system/dashapp.service
+# Enable: sudo systemctl enable dashapp
+# Start:  sudo systemctl start dashapp
+
+[Unit]
+Description=Columbia Fruit Analytics Dash App
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/dashapp
+EnvironmentFile=/opt/dashapp/.env
+
+# systemd creates /run/dashapp on boot (tmpfs-safe)
+RuntimeDirectory=dashapp
+RuntimeDirectoryMode=0750
+
+# Ensure log directory exists
+ExecStartPre=/bin/mkdir -p /var/log/dashapp
+ExecStartPre=/bin/chown www-data:www-data /var/log/dashapp
+
+ExecStart=/opt/dashapp/venv/bin/gunicorn -c gunicorn.conf.py server:server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

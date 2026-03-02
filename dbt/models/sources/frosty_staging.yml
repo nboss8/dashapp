@@ -1,0 +1,28 @@
+# FROSTY.STAGING - existing dynamic tables (read-only, do not modify)
+# All new dbt objects are created in DBT_DEV schema only.
+version: 2
+
+sources:
+  - name: frosty_staging
+    description: "FROSTY.STAGING - existing dynamic tables (read-only, do not modify)"
+    database: FROSTY
+    schema: STAGING
+    tables:
+      - name: DQ_PTRUN_N_REPORT_03
+        description: "Existing dynamic table - PTRUN report (day labels, run keys)"
+      - name: VW_RUN_TOTALS_FAST_03
+        description: "Existing dynamic table - run totals (bins, BPH, PPMH)"
+      - name: VW_SHIFT_TOTALS_FAST_03
+        description: "Existing dynamic table - shift totals"
+      - name: DT_SHIFT_10MIN_KPI_A_PER_RUN03_DT
+        description: "Existing dynamic table - 10-min bucket KPIs per run (BPH chart, employee)"
+      - name: DQ_APPLE_SIZER_HEADER_VIEW_03
+        description: "Existing dynamic table - sizer batch header/events"
+      - name: DQ_APPLE_SIZER_DROPSUMMARY_03
+        description: "Existing dynamic table - sizer drop summary by grade/size"
+      - name: DQ_EQ_WITH_KEYS03
+        description: "Existing dynamic table - EQ cartons with run keys"
+      - name: PACK_CLASSIFICATION
+        description: "Existing table - pack abbreviation to classification mapping"
+      - name: VW_LOT_DUMPER_TIME_03
+        description: "Existing dynamic table - lot dumper time, IS_CURRENT_LOT"

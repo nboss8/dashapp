@@ -1,0 +1,8 @@
+version: 2
+models:
+  - name: tv_shift_totals
+    description: "TV shift totals"
+  - name: tv_chart_data
+    description: "TV chart data"
+  - name: tv_current_runs
+    description: "TV current runs"

@@ -1,0 +1,45 @@
+# Columbia Fruit Analytics - dbt project
+# All models are created in DBT_DEV schema only. No changes to FROSTY.STAGING or FROSTY.APP.
+name: 'dashapp'
+version: '1.0.0'
+config-version: 2
+
+profile: 'dashapp'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dashapp:
+    staging:
+      +materialized: ephemeral
+      core:
+        +tags: ['core', 'staging']
+      sizer:
+        +tags: ['sizer', 'staging']
+      quality:
+        +tags: ['quality', 'staging']
+      pfr:
+        +tags: ['pfr', 'staging']
+    marts:
+      +schema: DBT_DEV
+      +materialized: view
+      core:
+        +tags: ['core', 'marts']
+      pidk:
+        +tags: ['pidk', 'marts']
+      tv:
+        +tags: ['tv', 'marts']
+      pfr:
+        +tags: ['pfr', 'marts']
+      inventory:
+        +tags: ['inventory', 'marts']

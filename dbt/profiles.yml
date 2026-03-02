@@ -1,0 +1,17 @@
+# dbt Snowflake profile - uses env vars from .env
+# Run dbt from dbt/ folder with: dbt parse --profiles-dir .
+# Or from project root: .\scripts\run_dbt.ps1 parse
+# Alternative: set DBT_PROFILES_DIR to this folder's path
+dashapp:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_TOKEN', env_var('SNOWFLAKE_PASSWORD', '')) }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'FROSTY') }}"
+      schema: DBT_DEV
+      threads: 4
+      client_session_keep_alive: false

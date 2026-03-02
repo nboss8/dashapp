@@ -1,0 +1,16 @@
+version: 2
+models:
+  - name: time_spine_daily
+    description: "Time spine for MetricFlow - daily granularity (5 years back, 30 days forward)"
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        description: "Base date column for daily granularity"
+        granularity: day
+  - name: day_labels
+    description: "Distinct day labels for dropdown"
+  - name: shift_10min_kpi
+    description: "10-min bucket KPIs"
+  - name: run_slicer_refs
+    description: "Run keys for slicers"

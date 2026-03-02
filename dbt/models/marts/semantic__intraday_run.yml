@@ -1,0 +1,210 @@
+# =============================================================================
+# dbt Semantic Layer – Intraday / Production Run Domain
+# =============================================================================
+# One file per domain (intraday, inventory, shipping, etc.) is the best practice.
+# High-cardinality tables stay separate. Joins happen automatically via entities.
+# =============================================================================
+
+semantic_models:
+  # ---------------------------------------------------------------------------
+  # 1. Center Run Core (main fact grain)
+  # ---------------------------------------------------------------------------
+  - name: intraday_run_core
+    description: |
+      Core production run KPIs at run-lot grain.
+      Primary source for volume, bins, stamper rates, variety/shift slicing.
+      Links to sizer drops and labor via run_id and packdate_run_id.
+    model: ref('pidk_run_totals')
+    defaults:
+      agg_time_dimension: run_date
+    entities:
+      - name: run_lot_id
+        type: primary
+        expr: '"PACKDATE_RUN_KEY" || ''|'' || "Lot"'
+        description: Unique run + lot identifier
+      - name: run_id
+        type: foreign
+        expr: '"RUN_KEY"'
+        description: Shared run key (links to sizer and labor)
+      - name: packdate_run_id
+        type: foreign
+        expr: '"PACKDATE_RUN_KEY"'
+        description: Date+run composite for shift-level joins
+    dimensions:
+      - name: run_date
+        type: time
+        expr: TRY_TO_DATE(SPLIT_PART("PACKDATE_RUN_KEY", '_', 1))
+        type_params:
+          time_granularity: day
+        description: Run date extracted from PACKDATE_RUN_KEY (assumes YYYYMMDD_*)
+      - name: shift
+        type: categorical
+        expr: '"Shift"'
+      - name: variety
+        type: categorical
+        expr: '"Variety"'
+      - name: lot
+        type: categorical
+        expr: '"Lot"'
+      - name: day_label
+        type: categorical
+        expr: '"DAY_LABEL"'
+    measures:
+      - name: total_bins_pre_shift
+        description: Bins before shift start
+        expr: '"BinsPreShift"'
+        agg: sum
+      - name: total_bins_on_shift
+        description: Bins processed during shift
+        expr: '"BinsOnShift"'
+        agg: sum
+      - name: bins_per_hour
+        description: Average bins per hour
+        expr: '"BinsPerHour"'
+        agg: average
+      - name: stamper_ppmh
+        description: Stamper packs per man-hour
+        expr: '"StamperPPMH"'
+        agg: average
+      - name: run_count
+        description: Distinct run count
+        expr: '"RUN_KEY"'
+        agg: count_distinct
+
+  # ---------------------------------------------------------------------------
+  # 2. Sizer Drops (high cardinality – 10–20k rows per run)
+  # ---------------------------------------------------------------------------
+  - name: sizer_drops
+    description: |
+      Detailed sizer drop records by grade/size per event.
+      Keep separate to preserve full detail.
+    model: ref('pidk_sizer_drops')
+    defaults:
+      agg_time_dimension: drop_date
+    entities:
+      - name: drop_id
+        type: primary
+        expr: '"DropSummaryId"'
+      - name: event_id
+        type: foreign
+        expr: event_id
+    dimensions:
+      - name: drop_date
+        type: time
+        expr: current_date()
+        type_params:
+          time_granularity: day
+        description: Placeholder for measure aggregation (no event timestamp in mart)
+      - name: grade_name
+        type: categorical
+        expr: grade_name
+      - name: size_name
+        type: categorical
+        expr: size_name
+      - name: packout_group
+        type: categorical
+        expr: packout_group
+    measures:
+      - name: total_drop_count
+        description: Distinct drop summary rows
+        expr: '"DropSummaryId"'
+        agg: count_distinct
+      - name: total_drop_weight
+        description: Total weight across drops
+        expr: weight_dec
+        agg: sum
+      - name: avg_drop_weight
+        description: Average weight per drop
+        expr: weight_dec
+        agg: average
+
+  # ---------------------------------------------------------------------------
+  # 3. Labor Shifts (10-min buckets – many employees per shift)
+  # ---------------------------------------------------------------------------
+  - name: labor_shifts
+    description: |
+      10-minute labor and efficiency buckets per run.
+      Links to runs via run_id.
+    model: ref('shift_10min_kpi')
+    defaults:
+      agg_time_dimension: bucket_start
+    entities:
+      - name: shift_bucket_id
+        type: primary
+        expr: 'date_shift_key || ''_'' || run_key || ''_'' || bucket_start'
+      - name: run_id
+        type: foreign
+        expr: run_key
+      - name: shift_id
+        type: foreign
+        expr: date_shift_key
+        description: Date+shift composite for shift-level grouping
+    dimensions:
+      - name: bucket_start
+        type: time
+        expr: date_trunc('day', bucket_start)
+        type_params:
+          time_granularity: day
+      - name: shift
+        type: categorical
+        expr: shift
+    measures:
+      - name: total_minutes_worked
+        description: Total minutes worked (allocated) across buckets
+        expr: minutes_worked_alloc
+        agg: sum
+      - name: total_shift_hours
+        description: Total shift hours (minutes / 60)
+        expr: minutes_worked_alloc / 60.0
+        agg: sum
+      - name: employee_count
+        description: Employee count (allocated) per bucket
+        expr: employee_count_alloc
+        agg: sum
+      - name: total_bins_dumped
+        description: Bins dumped in bucket
+        expr: bins_dumped
+        agg: sum
+
+  # ---------------------------------------------------------------------------
+  # 4. Sizer Events (bridge table)
+  # ---------------------------------------------------------------------------
+  - name: sizer_events
+    description: |
+      Bridge: connects sizer_drops (event_id) to center runs (run_id).
+      Required for "Sizer drops for run X" queries.
+    model: ref('pidk_sizer_events')
+    entities:
+      - name: event_id
+        type: primary
+        expr: '"EventId"'
+      - name: run_id
+        type: foreign
+        expr: '"RUN_KEY"'
+      - name: packdate_run_id
+        type: foreign
+        expr: '"PACKDATE_RUN_KEY"'
+
+# =============================================================================
+# Pre-defined metrics (for AI/NLQ and Dash)
+# =============================================================================
+metrics:
+  - name: total_bins_on_shift
+    type: simple
+    type_params:
+      measure: total_bins_on_shift
+    label: Total Bins On Shift
+    description: Total bins processed on shift (from intraday_run_core)
+  - name: total_shift_hours
+    type: simple
+    type_params:
+      measure: total_shift_hours
+    label: Total Shift Hours
+    description: Total labor hours (from labor_shifts)
+  - name: bins_per_labor_hour
+    type: ratio
+    type_params:
+      numerator: total_bins_on_shift
+      denominator: total_shift_hours
+    label: Bins Per Labor Hour
+    description: Bins per labor hour (cross-model, joined on run_id)

@@ -1,0 +1,5 @@
+## Caching Standard
+- Define `build_tv_payload(selected_date=None)` → 8-tuple (cards, fig1, fig2, run_content, header, last_updated, cached_at, duration_sec).
+- Bottom: `from services.cache_manager import register_report; register_report(build_tv_payload)`
+- Refresh via dbt `report_cache_config` (today=300s, yesterday=86400s).
+- Migrate old globals/threads after testing.

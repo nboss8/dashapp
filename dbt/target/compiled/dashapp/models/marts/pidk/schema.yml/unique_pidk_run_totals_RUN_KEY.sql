@@ -1,0 +1,14 @@
+
+    
+    
+
+select
+    RUN_KEY as unique_field,
+    count(*) as n_records
+
+from FROSTY.DBT_DEV_DBT_DEV.pidk_run_totals
+where RUN_KEY is not null
+group by RUN_KEY
+having count(*) > 1
+
+

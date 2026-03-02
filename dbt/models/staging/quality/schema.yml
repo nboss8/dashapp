@@ -1,0 +1,20 @@
+version: 2
+models:
+  - name: stg_eq_cartons
+    description: "EQ cartons with run keys"
+    columns:
+      - name: run_key
+        description: "Run identifier"
+      - name: pack_abbr
+        description: "Pack abbreviation"
+      - name: grade_abbr
+        description: "Grade abbreviation"
+      - name: cartons
+        description: "Carton count"
+  - name: stg_pack_classification
+    description: "Pack abbr to classification mapping"
+    columns:
+      - name: pack_abbr
+        description: "Pack abbreviation"
+      - name: classification
+        description: "Classification (Mailer, Pouch, etc)"

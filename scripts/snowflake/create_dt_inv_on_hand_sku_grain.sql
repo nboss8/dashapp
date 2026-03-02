@@ -1,0 +1,39 @@
+-- Pre-aggregated on-hand inventory at SKU x week grain.
+-- Source: DQ_EQ_WITH_KEYS03 (1M+ rows). Use for pivot and SKU detail — no app queries to source.
+-- Created in DBT_DEV_DBT_DEV (your role can CREATE only here). Dev: target_lag 15 min. Prod: change to '5 minutes'.
+CREATE OR REPLACE DYNAMIC TABLE FROSTY.DBT_DEV_DBT_DEV.DT_INV_ON_HAND_SKU_GRAIN
+  target_lag = '15 minutes'
+  refresh_mode = AUTO
+  initialize = ON_SCHEDULE
+  warehouse = CT_WH
+AS
+SELECT
+  GROUP_CATEGORY,
+  FINAL_STAGE_STATUS,
+  TRIM(VARIETY_ABBR) AS VARIETY_ABBR,
+  SKU,
+  WEEK_BUCKET,
+  WEEK_BUCKET_NUM,
+  TRIM(PACK_ABBR) AS PACK_ABBR,
+  TRIM(GRADE_ABBR) AS GRADE_ABBR,
+  TRIM(SIZE_ABBR) AS SIZE_ABBR,
+  TRIM(POOL) AS POOL,
+  "Process Code",
+  SUM(CARTONS) AS CARTONS,
+  SUM(EQ_ON_HAND) AS EQ_ON_HAND,
+  SUM(CARTONS_AVAIL) AS CARTONS_AVAIL
+FROM FROSTY.STAGING.DQ_EQ_WITH_KEYS03
+WHERE CARTONS_AVAIL > 0
+  AND GROUP_CATEGORY IN ('AP', 'OA', 'CH', 'OC')
+GROUP BY
+  GROUP_CATEGORY,
+  FINAL_STAGE_STATUS,
+  TRIM(VARIETY_ABBR),
+  SKU,
+  WEEK_BUCKET,
+  WEEK_BUCKET_NUM,
+  TRIM(PACK_ABBR),
+  TRIM(GRADE_ABBR),
+  TRIM(SIZE_ABBR),
+  TRIM(POOL),
+  "Process Code";

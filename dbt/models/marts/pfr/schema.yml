@@ -1,0 +1,16 @@
+version: 2
+models:
+  - name: pfr_header
+    description: "PFR - main header rows"
+  - name: pfr_groups
+    description: "PFR - groups for dropdown"
+  - name: pfr_sizer_profile
+    description: "PFR - sizer grade/size matrix"
+  - name: pfr_processor
+    description: "PFR - processor net weight"
+  - name: pfr_cull_defects
+    description: "PFR - cull defect counts"
+  - name: pfr_pressure
+    description: "PFR - pressure by fruit size"
+  - name: pfr_cull_headers
+    description: "PFR - QC temps, inspector"

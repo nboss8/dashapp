@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: stg_sizer_header
+    description: "Sizer batch header - events"
+    columns:
+      - name: batch_id
+        description: "Batch identifier"
+      - name: event_id
+        description: "Event identifier"
+      - name: shift_key
+        description: "Links to run_key"
+  - name: stg_sizer_dropsummary
+    description: "Sizer drop summary by grade/size"
+    columns:
+      - name: event_id
+        description: "Event identifier"
+      - name: grade_name
+        description: "Grade name"
+      - name: size_name
+        description: "Size name"
+      - name: weight_dec
+        description: "Weight (decimal)"

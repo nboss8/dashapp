@@ -67,10 +67,22 @@ layout = html.Div([
                             ], className="pidk-card-actions d-flex align-items-center gap-1"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
+                            html.Div([
+                                html.Span("Slice by Run ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
+                                dcc.Dropdown(
+                                    id="pidk-run-slicer",
+                                    options=[{"label": "All", "value": "ALL"}],
+                                    value="ALL",
+                                    clearable=False,
+                                    className="tv-date-dropdown",
+                                    style={"minWidth": "160px"},
+                                ),
+                            ], style={"marginBottom": "8px", "display": "flex", "alignItems": "center"}),
                             dcc.Loading(
                                 html.Div(id="pidk-run-totals-table", className="pidk-table-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body p-0"),
@@ -88,10 +100,22 @@ layout = html.Div([
                             ], className="pidk-card-actions d-flex align-items-center gap-1"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
+                            html.Div([
+                                html.Span("Slice by Shift ", style={"color": "#aaa", "fontSize": "0.8rem", "marginRight": "6px"}),
+                                dcc.Dropdown(
+                                    id="pidk-shift-slicer",
+                                    options=[{"label": "All", "value": "ALL"}],
+                                    value="ALL",
+                                    clearable=False,
+                                    className="tv-date-dropdown",
+                                    style={"minWidth": "160px"},
+                                ),
+                            ], style={"marginBottom": "8px", "display": "flex", "alignItems": "center"}),
                             dcc.Loading(
                                 html.Div(id="pidk-shift-totals-table", className="pidk-table-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body p-0"),
@@ -108,7 +132,7 @@ layout = html.Div([
                             html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "bph"}, className="pidk-expand-btn"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
-                            html.Div(id="pidk-filter-badge", style={"marginBottom": "4px", "minHeight": "0"}),
+                            html.Div(id="pidk-sliced-label-bph", className="pidk-sliced-label", style={"marginBottom": "6px", "minHeight": "18px"}),
                             dcc.Loading(
                                 html.Div(
                                     dcc.Graph(id="pidk-bph-chart", config={"displayModeBar": False, "displaylogo": False},
@@ -117,6 +141,7 @@ layout = html.Div([
                                 ),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body"),
@@ -154,10 +179,12 @@ layout = html.Div([
                             html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "sizer"}, className="pidk-expand-btn"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
+                            html.Div(id="pidk-sliced-label-sizer", className="pidk-sliced-label", style={"marginBottom": "6px", "minHeight": "18px"}),
                             dcc.Loading(
                                 html.Div(id="pidk-sizer-matrix", className="pidk-table-wrapper pidk-sizer-matrix-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body"),
@@ -172,10 +199,12 @@ layout = html.Div([
                             html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "employee"}, className="pidk-expand-btn"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
+                            html.Div(id="pidk-sliced-label-employee", className="pidk-sliced-label", style={"marginBottom": "6px", "minHeight": "18px"}),
                             dcc.Loading(
                                 html.Div(id="pidk-employee-summary", className="pidk-table-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body p-0"),
@@ -188,10 +217,12 @@ layout = html.Div([
                             html.Button(_PIDK_ICON_EXPAND, id={"type": "pidk-expand-btn", "index": "computech"}, className="pidk-expand-btn"),
                         ], className="pidk-card-header pidk-card-header-centered"),
                         dbc.CardBody([
+                            html.Div(id="pidk-sliced-label-eq", className="pidk-sliced-label", style={"marginBottom": "6px", "minHeight": "18px"}),
                             dcc.Loading(
                                 html.Div(id="pidk-eq-matrix", className="pidk-table-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                             html.Div("Package Type", style={
@@ -205,6 +236,7 @@ layout = html.Div([
                                 html.Div(id="pidk-package-type-table", className="pidk-table-wrapper"),
                                 type="circle",
                                 color="#64B5F6",
+                                delay_show=180,
                                 fullscreen=False,
                             ),
                         ], className="pidk-card-body p-0"),

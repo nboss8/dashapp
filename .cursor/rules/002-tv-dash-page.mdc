@@ -1,0 +1,5 @@
+## Callback: update_tv
+- Inputs: tv-interval, tv-date-store.
+- get_cached_data('tv', 'today' if None else 'yesterday').
+- Unpack cached[:6] → outputs.
+- Interval trigger skips if non-today (date change refreshes).

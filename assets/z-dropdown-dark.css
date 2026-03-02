@@ -1,0 +1,113 @@
+/* ═══ Dash 4.0 Dropdown Dark Theme ═══
+   Dash 4 rewrote dcc.Dropdown with custom classes (.dash-dropdown-*)
+   and CSS variables (--Dash-Fill-*). Override both for dark theme. */
+
+/* Override Dash CSS variables scoped to our dark dropdowns */
+#pidk-day-label-dropdown,
+#pidk-sizer-event-dropdown,
+#tv-date-dropdown,
+.tv-date-dropdown {
+    --Dash-Fill-Inverse-Strong: #1a1a1a;
+    --Dash-Stroke-Strong: #555;
+    --Dash-Text-Strong: #fff;
+    --Dash-Text-Primary: #fff;
+    --Dash-Text-Weak: #ccc;
+    --Dash-Text-Disabled: #999;
+    --Dash-Fill-Primary-Hover: rgba(255,255,255,0.08);
+    --Dash-Fill-Primary-Active: rgba(255,255,255,0.12);
+    --Dash-Fill-Interactive-Strong: #1565C0;
+    --Dash-Fill-Interactive-Weak: rgba(21,101,192,0.15);
+    --Dash-Shading-Strong: rgba(0,0,0,0.5);
+    --Dash-Shading-Weak: rgba(0,0,0,0.3);
+}
+
+/* Direct class overrides for the CONTROL (trigger button) */
+#pidk-day-label-dropdown .dash-dropdown,
+#pidk-sizer-event-dropdown .dash-dropdown,
+#tv-date-dropdown .dash-dropdown,
+.tv-date-dropdown .dash-dropdown {
+    background-color: #1a1a1a !important;
+    border-color: #555 !important;
+    color: #fff !important;
+}
+
+#pidk-day-label-dropdown .dash-dropdown-value,
+#pidk-sizer-event-dropdown .dash-dropdown-value,
+#tv-date-dropdown .dash-dropdown-value,
+.tv-date-dropdown .dash-dropdown-value,
+#pidk-day-label-dropdown .dash-dropdown-placeholder,
+#pidk-sizer-event-dropdown .dash-dropdown-placeholder,
+#tv-date-dropdown .dash-dropdown-placeholder,
+.tv-date-dropdown .dash-dropdown-placeholder {
+    color: #fff !important;
+}
+
+#pidk-day-label-dropdown .dash-dropdown-trigger-icon,
+#pidk-sizer-event-dropdown .dash-dropdown-trigger-icon,
+#tv-date-dropdown .dash-dropdown-trigger-icon,
+.tv-date-dropdown .dash-dropdown-trigger-icon {
+    color: #fff !important;
+    fill: #fff !important;
+}
+
+/* MENU / content panel (may be portaled) */
+#pidk-day-label-dropdown .dash-dropdown-content,
+#pidk-sizer-event-dropdown .dash-dropdown-content,
+#tv-date-dropdown .dash-dropdown-content,
+.tv-date-dropdown .dash-dropdown-content {
+    background-color: #1a1a1a !important;
+    border-color: #555 !important;
+}
+
+#pidk-day-label-dropdown .dash-dropdown-option,
+#pidk-sizer-event-dropdown .dash-dropdown-option,
+#tv-date-dropdown .dash-dropdown-option,
+.tv-date-dropdown .dash-dropdown-option {
+    color: #fff !important;
+}
+
+#pidk-day-label-dropdown .dash-dropdown-option:hover,
+#pidk-sizer-event-dropdown .dash-dropdown-option:hover,
+#tv-date-dropdown .dash-dropdown-option:hover,
+.tv-date-dropdown .dash-dropdown-option:hover {
+    background-color: #1565C0 !important;
+    color: #fff !important;
+}
+
+#pidk-day-label-dropdown .dash-dropdown-option[data-highlighted],
+#pidk-sizer-event-dropdown .dash-dropdown-option[data-highlighted],
+#tv-date-dropdown .dash-dropdown-option[data-highlighted],
+.tv-date-dropdown .dash-dropdown-option[data-highlighted],
+#pidk-day-label-dropdown .dash-dropdown-option[data-state="checked"],
+#pidk-sizer-event-dropdown .dash-dropdown-option[data-state="checked"],
+#tv-date-dropdown .dash-dropdown-option[data-state="checked"],
+.tv-date-dropdown .dash-dropdown-option[data-state="checked"] {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
+/* Search input inside dropdown */
+#pidk-day-label-dropdown .dash-dropdown-search,
+#pidk-sizer-event-dropdown .dash-dropdown-search,
+#tv-date-dropdown .dash-dropdown-search,
+.tv-date-dropdown .dash-dropdown-search,
+#pidk-day-label-dropdown .dash-dropdown-search-container,
+#pidk-sizer-event-dropdown .dash-dropdown-search-container,
+#tv-date-dropdown .dash-dropdown-search-container,
+.tv-date-dropdown .dash-dropdown-search-container {
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+    border-color: #555 !important;
+}
+
+/* Global fallback: if the dropdown-content is portaled outside the wrapper div */
+.dash-dropdown-content {
+    background-color: #1a1a1a !important;
+    border-color: #555 !important;
+}
+.dash-dropdown-option {
+    color: #fff !important;
+}
+.dash-dropdown-option:hover {
+    background-color: #1565C0 !important;
+}

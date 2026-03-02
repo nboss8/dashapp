@@ -1,0 +1,229 @@
+/* Phase 10: PIDK Dark Theme Visual Upgrade
+   Scoped under .pidk-root for Production Intra Day KPIs page. */
+
+/* Smooth fade-in for updated content (eliminates flicker) */
+@keyframes pidkContentFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.pidk-content-fade {
+  animation: pidkContentFade 0.18s ease-out forwards;
+}
+
+/* Sliced-by labels (show filter context in each visual) */
+.pidk-root .pidk-sliced-label {
+  color: #64B5F6;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Section headers - larger, bolder, accent border */
+.pidk-root .pidk-card-header {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    min-height: 34px !important;
+    line-height: 1.1 !important;
+    border-bottom: 1px solid #3a3a3a !important;
+    background-color: #252525 !important;
+}
+
+.pidk-root .pidk-card-header span:first-child,
+.pidk-root .pidk-card-title span {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+}
+
+/* Centered titles with actions on the right */
+.pidk-root .pidk-card-header-centered {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: start !important;
+}
+.pidk-root .pidk-card-header-centered .pidk-card-title {
+    grid-column: 2 !important;
+    justify-self: center !important;
+    align-self: start !important;
+    text-align: center !important;
+}
+.pidk-root .pidk-card-header-centered .pidk-card-actions,
+.pidk-root .pidk-card-header-centered .pidk-expand-btn {
+    grid-column: 3 !important;
+    justify-self: end !important;
+    align-self: start !important;
+}
+
+/* Compact control area (expand/export) and shift controls slightly down */
+.pidk-root .pidk-card-header .pidk-expand-btn,
+.pidk-root .pidk-card-header .btn {
+    padding: 3px 6px !important;
+    font-size: 0.75rem !important;
+    min-height: 24px !important;
+    line-height: 1 !important;
+    margin-top: 0 !important;
+}
+
+.pidk-root .pidk-card-header .pidk-expand-btn img {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+/* Condense page top/header area for less vertical scrolling */
+.pidk-root .pidk-page-header-wrap .row {
+    margin-bottom: 0.1rem !important;
+}
+.pidk-root .pidk-page-header-wrap a {
+    font-size: 0.85rem !important;
+}
+.pidk-root .pidk-page-header-wrap h5 {
+    font-size: clamp(0.85rem, 1.7vw, 1rem) !important;
+}
+
+/* Card containers - solid border, slight refinement */
+.pidk-root .pidk-table-card {
+    border: 1px solid #3a3a3a !important;
+    border-radius: 10px !important;
+}
+
+/* Dash DataTable dark theme overrides (Run Totals, Shift Totals) */
+.pidk-root .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner td,
+.pidk-root .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th {
+    font-size: 0.95rem !important;
+    padding: 10px 14px !important;
+}
+
+.pidk-root .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner thead th {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Base tbody cells - no !important on background/color so style_data_conditional can apply green/red/yellow */
+.pidk-root .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tbody td {
+    border-color: #333 !important;
+}
+
+
+.pidk-root .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tbody tr.dash-row-selected td {
+    background-color: #2d4a6f !important;
+    color: #fff !important;
+}
+
+/* Sizer Profile & Computech - lean matrix tables */
+.pidk-root .pidk-sizer-matrix,
+.pidk-root .pidk-eq-matrix {
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+}
+
+.pidk-root .pidk-sizer-matrix th,
+.pidk-root .pidk-eq-matrix th {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    padding: 4px 7px !important;
+    font-weight: 600 !important;
+}
+
+.pidk-root .pidk-sizer-matrix td,
+.pidk-root .pidk-eq-matrix td {
+    padding: 4px 7px !important;
+}
+
+/* Employee Count - lean KPI card */
+.pidk-root .pidk-employee-summary {
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+}
+
+.pidk-root .pidk-employee-summary th {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    padding: 4px 7px !important;
+}
+
+.pidk-root .pidk-employee-summary td {
+    color: #ddd !important;
+    padding: 4px 7px !important;
+}
+
+/* Package Type - lean table */
+.pidk-root .pidk-package-type {
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+}
+
+.pidk-root .pidk-package-type th {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    padding: 4px 7px !important;
+}
+
+.pidk-root .pidk-package-type td {
+    color: #ddd !important;
+    padding: 4px 7px !important;
+}
+
+/* Section spacing */
+.pidk-root .mt-3.g-3 {
+    margin-top: 1.5rem !important;
+    gap: 1.5rem !important;
+}
+
+/* Colored table (Run Totals, Shift Totals) - Power BI style */
+.pidk-root .pidk-colored-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.pidk-root .pidk-colored-table th,
+.pidk-root .pidk-colored-table td {
+    padding: 4px 7px;
+    text-align: center;
+    border: 1px solid #333;
+    line-height: 1.1;
+}
+.pidk-root .pidk-colored-table thead th {
+    background-color: #2a2a2a;
+    color: #fff;
+    font-weight: 600;
+}
+.pidk-root .pidk-colored-table tbody td {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-green,
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-yellow,
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-red {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-green {
+    background-color: #C8E6C9 !important;
+}
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-yellow {
+    background-color: #FFF9C4 !important;
+}
+.pidk-root .pidk-table-wrapper .pidk-colored-table td.tv-cell-red {
+    background-color: #FFCDD2 !important;
+}
+
+/* AG Grid KPI conditional coloring - Power BI style (legacy, kept if AG Grid used elsewhere) */
+.ag-theme-alpine-dark .cell-green {
+    background-color: #C8E6C9 !important;
+    color: #1a1a1a !important;
+    font-weight: 600;
+}
+
+.ag-theme-alpine-dark .cell-yellow {
+    background-color: #FFF9C4 !important;
+    color: #1a1a1a !important;
+    font-weight: 600;
+}
+
+.ag-theme-alpine-dark .cell-red {
+    background-color: #FFCDD2 !important;
+    color: #1a1a1a !important;
+    font-weight: 600;
+}

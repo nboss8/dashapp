@@ -1,0 +1,24 @@
+# FROSTY.APP - production/finalized tables (read-only, do not modify)
+# All new dbt objects are created in DBT_DEV schema only.
+version: 2
+
+sources:
+  - name: frosty_app
+    description: "FROSTY.APP - production/finalized tables (read-only, do not modify)"
+    database: FROSTY
+    schema: APP
+    tables:
+      - name: POWERBI_PRODUCTION_HEADER_MAT
+        description: "Production header materialized - finalized run metadata for PFR"
+      - name: PTRUN_SIZER_DROP_SNAPSHOT
+        description: "Sizer drop snapshot - grade/size weights per run"
+      - name: PTRUN_SIZER_PACKED
+        description: "Sizer packed - packed quality/grade/size per run"
+      - name: PTRUN_PROCESSOR_VIEW_PBIX
+        description: "Processor view - net weight by size for PFR"
+      - name: PTRUN_CULL_DEFECT
+        description: "Cull defect counts by type per run"
+      - name: PTRUN_PRESSURE_DETAIL
+        description: "Pressure detail by fruit size per run"
+      - name: PTRUN_CULL_HEADER
+        description: "Cull header - bin/tub temp, CMI inspector per run"

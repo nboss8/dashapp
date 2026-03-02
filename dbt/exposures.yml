@@ -1,0 +1,32 @@
+version: 2
+exposures:
+  - name: pidk_page
+    type: dashboard
+    description: "Production Intra Day KPIs Dash page"
+    depends_on:
+      - ref('pidk_run_totals')
+      - ref('pidk_shift_totals')
+      - ref('pidk_sizer_events')
+      - ref('pidk_sizer_drops')
+      - ref('pidk_eq')
+      - ref('day_labels')
+      - ref('shift_10min_kpi')
+      - ref('run_slicer_refs')
+  - name: tv_display_page
+    type: dashboard
+    description: "TV Display Dash page"
+    depends_on:
+      - ref('tv_shift_totals')
+      - ref('tv_chart_data')
+      - ref('tv_current_runs')
+  - name: pfr_page
+    type: dashboard
+    description: "Production Finalized Report Dash page"
+    depends_on:
+      - ref('pfr_header')
+      - ref('pfr_groups')
+      - ref('pfr_sizer_profile')
+      - ref('pfr_processor')
+      - ref('pfr_cull_defects')
+      - ref('pfr_pressure')
+      - ref('pfr_cull_headers')

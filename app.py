@@ -1,3 +1,17 @@
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s: %(message)s',
+    force=True
+)
+logger = logging.getLogger(__name__)
+logger.info("🔧 Logging enabled — cache debug ACTIVE")
+
+# 🔥 Silence the extremely noisy Snowflake connector logs (keeps [Cache] debug readable)
+logging.getLogger("snowflake.connector").setLevel(logging.WARNING)
+logging.getLogger("snowflake.connector.connection").setLevel(logging.WARNING)
+logging.getLogger("snowflake").setLevel(logging.WARNING)
+
 import dash
 from dash import html, dcc, page_container, page_registry, clientside_callback, Input, Output
 import dash_ag_grid as dag
@@ -27,8 +41,15 @@ app.index_string = """<!DOCTYPE html>
     #pidk-day-label-dropdown,
     #pidk-sizer-event-dropdown,
     #pfr-group-dropdown,
+    #inv-filter-group,
+    #inv-filter-variety,
+    #inv-filter-pack,
+    #inv-filter-grade,
+    #inv-filter-size,
+    #inv-filter-stage,
     #tv-date-dropdown,
-    .tv-date-dropdown {
+    .tv-date-dropdown,
+    .inv-dropdown {
         --Dash-Fill-Inverse-Strong: #1a1a1a;
         --Dash-Stroke-Strong: #555;
         --Dash-Text-Strong: #fff;
@@ -89,6 +110,7 @@ app.layout = dbc.Container([
     dcc.Download(id="pfr-download-pdf"),
     dcc.Download(id="pfr-download-zip"),
     dcc.Download(id="ag-grid-csv-download"),
+    dcc.Download(id="inv-csv-download"),
     html.Div(page_container, id="page-content", className="mt-4")
 ], fluid=True, className="p-0")
 
@@ -97,6 +119,13 @@ from dash import callback
 # Register page callbacks (must run before app starts)
 from callbacks.pidk import *  # noqa: F401
 from callbacks.pfr import *  # noqa: F401
+from callbacks.inventory import *  # noqa: F401
+from callbacks.tv import *  # noqa: F401
+
+# === CACHE WARM-UP AFTER ALL REPORTS REGISTERED ===
+from services.cache_manager import load_persistent_cache
+load_persistent_cache()
+logger.info("✅ Persistent cache warm-up triggered from app.py (all slugs ready)")
 
 @callback(
     Output('navbar-container', 'style'),

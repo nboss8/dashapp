@@ -11,7 +11,7 @@ from components.ag_grid_table import create_ag_grid_table
 from services.inventory_data import (
     get_pivot_data,
     get_sku_detail,
-    get_sku_total_count,
+    get_sku_pallet_grain,
     get_filter_options,
     filters_from_store,
     inv_cache_identifier,
@@ -31,7 +31,7 @@ _INV_DROPDOWN_IDS = [
 ]
 
 
-def _store_from_dropdowns(g, v, p, gr, s, st):
+def _store_from_dropdowns(g, v, p, gr, s, st, grower, run_type):
     return {
         "group_category": None if g == "ALL" else g,
         "variety": None if v == "ALL" else v,
@@ -41,6 +41,8 @@ def _store_from_dropdowns(g, v, p, gr, s, st):
         "pool": None,
         "process_code": None,
         "final_stage_status": None if st == "ALL" else st,
+        "grower_number": None if grower == "ALL" else grower,
+        "run_type": None if run_type == "ALL" else run_type,
     }
 
 
@@ -174,6 +176,26 @@ _th_style = {"padding": "6px 8px", "textAlign": "center", "color": "#fff", "back
 _td_style = {"padding": "4px 8px", "color": "#ddd", "backgroundColor": "#1a1a1a", "border": "1px solid #333", "fontSize": "0.8rem"}
 
 
+def _build_pallets_drill_table(pallets_df, use_eq):
+    """Build inline pallets sub-table for selected SKU (pallet_ticket, grower, pallet_source_flag, run_type, cartons/eq). Pallet Tr Code hidden."""
+    if pallets_df is None or pallets_df.empty:
+        return html.P("No pallets for this SKU", style={"color": "#999", "fontSize": "0.8rem", "padding": "8px"})
+    cols = ["pallet_ticket", "grower_number", "pallet_source_flag", "run_type"]
+    measure = "eq_on_hand" if use_eq else "cartons"
+    cols = [c for c in cols if c in pallets_df.columns] + [measure]
+    display = pallets_df[[c for c in cols if c in pallets_df.columns]].copy()
+    for c in display.columns:
+        if c not in (measure,):
+            display[c] = display[c].fillna("—").astype(str)
+    return create_ag_grid_table(
+        display,
+        id_prefix="inv-pallets-drill",
+        export_filename="pallet_drill.csv",
+        pinned_cols=2,
+        preserve_numeric_columns=[measure],
+    )
+
+
 def _build_changes_display(changes_df, use_eq):
     """Extract Packed, Shipped, Staged values from changes df."""
     if changes_df is None or changes_df.empty:
@@ -194,25 +216,46 @@ def _build_changes_display(changes_df, use_eq):
         Output("inv-filter-grade", "options"),
         Output("inv-filter-size", "options"),
         Output("inv-filter-stage", "options"),
+        Output("inv-filter-grower", "options"),
+        Output("inv-filter-run-type", "options"),
     ],
     Input("inv-interval", "n_intervals"),
 )
 def _load_inv_filter_options(_n_intervals):
-    """Load filter dropdown options when Pallet Inventory page loads (inv-interval only exists on this page)."""
+    """Load filter dropdown options from cache when warm (instant), else fallback to get_filter_options."""
+    default = [{"label": "All", "value": "ALL"}]
+    run_opts = [{"label": "All", "value": "ALL"}, {"label": "Production", "value": "Production"}, {"label": "Repack", "value": "Repack"}]
+    try:
+        payload = get_cached_data("inventory", "default")
+        opts = payload.get("filter_opts") or {}
+        if opts:
+            return (
+                opts.get("group_category", default),
+                opts.get("variety", default),
+                opts.get("pack", default),
+                opts.get("grade", default),
+                opts.get("size", default),
+                opts.get("final_stage_status", default),
+                opts.get("grower_number", default),
+                run_opts,
+            )
+    except Exception:
+        pass
     try:
         opts = get_filter_options()
         return (
-            opts.get("group_category", [{"label": "All", "value": "ALL"}]),
-            opts.get("variety", [{"label": "All", "value": "ALL"}]),
-            opts.get("pack", [{"label": "All", "value": "ALL"}]),
-            opts.get("grade", [{"label": "All", "value": "ALL"}]),
-            opts.get("size", [{"label": "All", "value": "ALL"}]),
-            opts.get("final_stage_status", [{"label": "All", "value": "ALL"}]),
+            opts.get("group_category", default),
+            opts.get("variety", default),
+            opts.get("pack", default),
+            opts.get("grade", default),
+            opts.get("size", default),
+            opts.get("final_stage_status", default),
+            opts.get("grower_number", default),
+            run_opts,
         )
     except Exception as e:
         logging.getLogger(__name__).warning("Pallet Inventory: get_filter_options failed: %s", e)
-        default = [{"label": "All", "value": "ALL"}]
-        return default, default, default, default, default, default
+        return default, default, default, default, default, default, default, run_opts
 
 
 @callback(
@@ -223,9 +266,11 @@ def _load_inv_filter_options(_n_intervals):
     Input("inv-filter-grade", "value"),
     Input("inv-filter-size", "value"),
     Input("inv-filter-stage", "value"),
+    Input("inv-filter-grower", "value"),
+    Input("inv-filter-run-type", "value"),
 )
-def _sync_filters(g, v, p, gr, s, st):
-    return _store_from_dropdowns(g, v, p, gr, s, st)
+def _sync_filters(g, v, p, gr, s, st, grower, run_type):
+    return _store_from_dropdowns(g, v, p, gr, s, st, grower, run_type)
 
 
 @callback(
@@ -317,17 +362,12 @@ def _update_inventory(_n_intervals, filters, metric, sku_page):
     else:
         f = filters_from_store(filters) if filters else {}
         page = sku_page or 1
-    print(f"[DEBUG INV] callback fired by {triggered_id}, f={f}, use_eq={use_eq}{' (reset slicers)' if metric_trigger else ''}", flush=True)
-    # Cache key = group + stage only; variety, pack, grade, size, week_bucket filtered in-memory
     base_filters = _base_filters_only(f)
     identifier = inv_cache_identifier(base_filters, use_eq)
-    print(f"[DEBUG INV] identifier={identifier}", flush=True)
     payload = get_cached_data("inventory", identifier)
-    print(f"[DEBUG INV] payload keys={list(payload.keys()) if payload else 'NONE'}, sku_all_df shape={payload.get('sku_all_df').shape if payload.get('sku_all_df') is not None else 'NO DF'}", flush=True)
     sku_all = payload.get("sku_all_df")
     changes_detail = payload.get("changes_detail_df")
     filtered_sku = _apply_fine_filters_to_df(sku_all, f)
-    print(f"[DEBUG INV] filtered_sku shape={filtered_sku.shape}", flush=True)
     if changes_detail is not None and not changes_detail.empty:
         filtered_changes = _apply_fine_filters_to_df(changes_detail, f)
         changes_df = derive_changes_from_detail(filtered_changes, use_eq)
@@ -362,15 +402,17 @@ def _update_inventory(_n_intervals, filters, metric, sku_page):
     Input("inv-filter-grade", "value"),
     Input("inv-filter-size", "value"),
     Input("inv-filter-stage", "value"),
+    Input("inv-filter-grower", "value"),
+    Input("inv-filter-run-type", "value"),
     State("inv-sku-page", "data"),
     prevent_initial_call=True,
 )
-def _sku_page_control(prev_clicks, next_clicks, g, v, p, gr, s, st, page):
+def _sku_page_control(prev_clicks, next_clicks, g, v, p, gr, s, st, grower, run_type, page):
     tid = ctx.triggered_id
     if not tid:
         return no_update
     p = page or 1
-    if tid in ("inv-filter-group", "inv-filter-variety", "inv-filter-pack", "inv-filter-grade", "inv-filter-size", "inv-filter-stage"):
+    if tid in ("inv-filter-group", "inv-filter-variety", "inv-filter-pack", "inv-filter-grade", "inv-filter-size", "inv-filter-stage", "inv-filter-grower", "inv-filter-run-type"):
         return 1
     if tid == "inv-sku-prev" and p > 1:
         return p - 1
@@ -406,9 +448,17 @@ def _export_csv(pivot_clicks, sku_clicks, filters, metric, sku_page):
         pivot = pivot.reset_index()
         return dcc.send_data_frame(pivot.to_csv, "pallet_inventory_pivot.csv", index=False)
     if tid == "inv-export-sku-btn":
-        df = get_sku_detail(f, page_size=None, use_eq=use_eq)
+        # Export at pallet grain so CSV includes pallet_ticket, grower_number, run_type
+        df = get_sku_pallet_grain(f, use_eq=use_eq, max_rows=100_000)
+        df = _apply_fine_filters_to_df(df, f)
         if df is None or df.empty:
             return no_update
+        # Order columns: SKU/dims first, then pallet_ticket, grower_number, run_type, then measures
+        prefer = ["sku", "variety_abbr", "week_bucket", "pack_abbr", "grade_abbr", "size_abbr",
+                  "pallet_ticket", "grower_number", "pallet_source_flag", "run_type", "cartons", "eq_on_hand"]
+        cols = [c for c in prefer if c in df.columns]
+        cols += [c for c in df.columns if c not in cols]
+        df = df[cols]
         return dcc.send_data_frame(df.to_csv, "pallet_inventory_sku.csv", index=False)
     return no_update
 
@@ -420,8 +470,10 @@ def _export_csv(pivot_clicks, sku_clicks, filters, metric, sku_page):
     Output("inv-filter-grade", "value"),
     Output("inv-filter-size", "value"),
     Output("inv-filter-stage", "value"),
-        Output("inv-filters-store", "data", allow_duplicate=True),
-        Output("inv-sku-page", "data", allow_duplicate=True),
+    Output("inv-filter-grower", "value"),
+    Output("inv-filter-run-type", "value"),
+    Output("inv-filters-store", "data", allow_duplicate=True),
+    Output("inv-sku-page", "data", allow_duplicate=True),
     Input("inv-clear-filters", "n_clicks"),
     prevent_initial_call=True,
 )
@@ -434,9 +486,46 @@ def _clear_all_filters(n_clicks):
         "ALL",
         "ALL",
         "ALL",
+        "ALL",
+        "ALL",
         {},
         1,
     )
+
+
+@callback(
+    Output("inv-sku-drill-detail", "children"),
+    Input("inv-sku-grid", "selectedRows"),
+    State("inv-filters-store", "data"),
+    State("inv-metric-toggle", "value"),
+)
+def _sku_drill_on_row_select(selected_rows, filters, metric):
+    """When user selects an SKU row, show pallets behind it inline."""
+    if not selected_rows or len(selected_rows) == 0:
+        return html.P("Click an SKU row to see pallets behind it", style={"color": "#888", "fontSize": "0.8rem", "fontStyle": "italic", "padding": "8px"})
+    row = selected_rows[0]
+    sku = row.get("sku") or row.get("SKU")
+    if not sku:
+        return html.P("No SKU in selected row", style={"color": "#999", "fontSize": "0.8rem", "padding": "8px"})
+    use_eq = metric == "eqs"
+    f = filters_from_store(filters) if filters else {}
+    base_filters = _base_filters_only(f)
+    identifier = inv_cache_identifier(base_filters, use_eq)
+    payload = get_cached_data("inventory", identifier)
+    pallets_df = payload.get("pallets_df")
+    if pallets_df is None or pallets_df.empty:
+        return html.P(f"No pallet data for {sku}", style={"color": "#999", "fontSize": "0.8rem", "padding": "8px"})
+    sku_col = "sku" if "sku" in pallets_df.columns else "SKU"
+    if sku_col not in pallets_df.columns:
+        return html.P("Pallet data has no SKU column", style={"color": "#999", "fontSize": "0.8rem", "padding": "8px"})
+    filtered = pallets_df[pallets_df[sku_col].astype(str).str.strip() == str(sku).strip()]
+    filtered = _apply_fine_filters_to_df(filtered, f)
+    if filtered.empty:
+        return html.P(f"No pallets for SKU {sku} with current filters", style={"color": "#999", "fontSize": "0.8rem", "padding": "8px"})
+    return html.Div([
+        html.P(f"Pallets for SKU {sku}", style={"color": "#64B5F6", "fontSize": "0.85rem", "fontWeight": "600", "marginBottom": "8px"}),
+        _build_pallets_drill_table(filtered, use_eq),
+    ], className="sku-drill-panel")
 
 
 @callback(
@@ -449,7 +538,7 @@ def _update_clear_button(filters):
     """Color Clear button if any filter active."""
     if not filters:
         return "secondary", True
-    slicer_fields = ["group_category", "variety", "pack", "grade", "size", "final_stage_status"]
+    slicer_fields = ["group_category", "variety", "pack", "grade", "size", "final_stage_status", "grower_number", "run_type"]
     active = any(filters.get(field) is not None for field in slicer_fields)
     if active:
         return "primary", False

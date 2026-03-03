@@ -17,7 +17,9 @@ If this is missing, the app will default to `DBT_DEV` and you’ll see errors li
 ### Prerequisites
 
 1. Run dbt to create mart views: `dbt run` (from the `dbt/` folder)
-2. For Pallet Inventory: run `scripts/snowflake/create_dt_inv_on_hand_sku_grain.sql` to create the DT source
+2. Deploy Snowflake Dynamic Tables: `python scripts/deploy_snowflake_dt.py` (from project root; loads `.env`)
+   - Creates `DT_INV_ON_HAND_SKU_GRAIN` (Pallet Inventory)
+   - Creates `DT_CARTON_DAILY_SNAPSHOT_EQ` (Packed Inventory Trends)
 
 ## Development standards
 

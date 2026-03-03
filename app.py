@@ -1,11 +1,23 @@
 import logging
+import os
+import multiprocessing
+from dotenv import load_dotenv
+
+load_dotenv()
+# Early main-process detection (critical for Windows spawn mode)
+if multiprocessing.current_process().name == "MainProcess":
+    os.environ["IS_MAIN_DASH_PROCESS"] = "true"
+else:
+    os.environ["IS_MAIN_DASH_PROCESS"] = "false"
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(name)s: %(message)s',
     force=True
 )
 logger = logging.getLogger(__name__)
-logger.info("🔧 Logging enabled — cache debug ACTIVE")
+if os.environ.get("IS_MAIN_DASH_PROCESS") == "true":
+    logger.info("🔧 Logging enabled — cache debug ACTIVE")
 
 # 🔥 Silence the extremely noisy Snowflake connector logs (keeps [Cache] debug readable)
 logging.getLogger("snowflake.connector").setLevel(logging.WARNING)
@@ -16,9 +28,8 @@ import dash
 from dash import html, dcc, page_container, page_registry, clientside_callback, Input, Output
 import dash_ag_grid as dag
 import dash_bootstrap_components as dbc
-from dotenv import load_dotenv
 
-load_dotenv()
+from services.background_config import background_callback_manager
 
 app = dash.Dash(
     __name__,
@@ -26,6 +37,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.DARKLY, dag.themes.BASE, dag.themes.ALPINE],
     suppress_callback_exceptions=True,
     title="Columbia Fruit Analytics",
+    background_callback_manager=background_callback_manager,
 )
 
 # Inject dropdown dark theme last so it overrides Bootstrap; dcc.Dropdown menu is portaled to body
@@ -47,9 +59,15 @@ app.index_string = """<!DOCTYPE html>
     #inv-filter-grade,
     #inv-filter-size,
     #inv-filter-stage,
+    #trends-filter-source,
+    #trends-filter-crop-year,
+    #trends-filter-variety,
+    #trends-filter-report-group,
+    #trends-yoy,
     #tv-date-dropdown,
     .tv-date-dropdown,
-    .inv-dropdown {
+    .inv-dropdown,
+    .trends-dropdown {
         --Dash-Fill-Inverse-Strong: #1a1a1a;
         --Dash-Stroke-Strong: #555;
         --Dash-Text-Strong: #fff;
@@ -65,12 +83,14 @@ app.index_string = """<!DOCTYPE html>
     #pidk-sizer-event-dropdown .dash-dropdown,
     #pfr-group-dropdown .dash-dropdown,
     #tv-date-dropdown .dash-dropdown,
-    .tv-date-dropdown .dash-dropdown {
+    .tv-date-dropdown .dash-dropdown,
+    .trends-dropdown .dash-dropdown {
         background-color: #1a1a1a !important; border-color: #555 !important; color: #fff !important;
     }
     #pidk-day-label-dropdown .dash-dropdown-value,
     #pidk-sizer-event-dropdown .dash-dropdown-value,
     #pfr-group-dropdown .dash-dropdown-value,
+    .trends-dropdown .dash-dropdown-value,
     #pidk-day-label-dropdown .dash-dropdown-placeholder,
     #pidk-sizer-event-dropdown .dash-dropdown-placeholder,
     #pfr-group-dropdown .dash-dropdown-placeholder,
@@ -85,6 +105,25 @@ app.index_string = """<!DOCTYPE html>
     .dash-dropdown-option[data-state="checked"] { background-color: #333 !important; color: #fff !important; }
     .dash-dropdown-search-container,
     .dash-dropdown-search { background-color: #1a1a1a !important; color: #fff !important; border-color: #555 !important; }
+    /* Agent chat markdown dark theme */
+    .agent-messages .agent-markdown p, .agent-messages .agent-markdown li, .agent-messages .agent-markdown code { color: #e5e7eb; }
+    .agent-messages .agent-markdown pre { background: #111; border-radius: 6px; padding: 0.5rem; overflow-x: auto; }
+    .agent-messages .agent-markdown pre code { background: none; padding: 0; }
+    /* Agent charts – dark theme polish */
+    .agent-messages .vega-embed {
+        background: #1a1a1a !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+        overflow: hidden;
+    }
+    .agent-messages .vega-embed .vega-actions a {
+        color: #0ea5e9 !important;
+        background: rgba(255,255,255,0.1) !important;
+        border-radius: 4px !important;
+    }
+    .agent-messages .vega-embed .vega-actions a:hover {
+        background: rgba(255,255,255,0.2) !important;
+    }
     </style>
 </head>
 <body>
@@ -120,12 +159,9 @@ from dash import callback
 from callbacks.pidk import *  # noqa: F401
 from callbacks.pfr import *  # noqa: F401
 from callbacks.inventory import *  # noqa: F401
+from callbacks.trends import *  # noqa: F401
 from callbacks.tv import *  # noqa: F401
-
-# === CACHE WARM-UP AFTER ALL REPORTS REGISTERED ===
-from services.cache_manager import load_persistent_cache
-load_persistent_cache()
-logger.info("✅ Persistent cache warm-up triggered from app.py (all slugs ready)")
+from callbacks.agent_chat import *  # noqa: F401
 
 @callback(
     Output('navbar-container', 'style'),
@@ -144,4 +180,7 @@ def health():
 
 
 if __name__ == "__main__":
+    from services.cache_manager import load_persistent_cache
+    load_persistent_cache()
+    logger.info("✅ Persistent cache warm-up triggered from app.py (all slugs ready)")
     app.run(debug=True, dev_tools_ui=False, host="0.0.0.0", port=8050)

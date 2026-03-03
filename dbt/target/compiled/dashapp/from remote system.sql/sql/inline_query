@@ -1,1 +1,1 @@
-select current_user(), current_role(), current_warehouse(), current_database(), current_schema()
+select count(*) as non_null_variety from FROSTY.DBT_DEV_DBT_DEV.inv_on_hand_pivot where VARIETY_ABBR is not null and trim(cast(VARIETY_ABBR as varchar)) != ''

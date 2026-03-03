@@ -21,10 +21,11 @@ from services.snowflake_service import query
 logger = logging.getLogger(__name__)
 
 # Globals - styled exactly like tv_data.py
-_builders = {}      # slug → build_func
-_caches = {}        # slug → {period: payload}
-_locks = {}         # slug → Lock
-_threads = {}       # (slug, period) → Thread
+_builders = {}       # slug → build_func
+_caches = {}         # slug → {period: payload}
+_locks = {}          # slug → Lock
+_threads = {}        # (slug, period) → Thread
+_refresh_specs = {}  # slug → [(period, cache_key), ...] for manual refresh
 _config = None
 
 # Env override for production: set REPORT_CACHE_DIR=/app/cache and mount a volume
@@ -134,6 +135,9 @@ def register_report(build_func, get_options_func=None, prewarm_all_options=False
     slug = os.path.splitext(caller_file)[0].replace('_data', '').lower()
 
     _builders[slug] = build_func
+    if os.environ.get("IS_MAIN_DASH_PROCESS") != "true":
+        return
+
     print(f"[OK] Registered report: {slug}")
 
     # Load config and start threads for this report
@@ -166,6 +170,20 @@ def register_report(build_func, get_options_func=None, prewarm_all_options=False
             t = threading.Thread(target=_prewarm_worker, daemon=True)
             t.start()
             print(f"Background prewarm started ({len(vals)} dates)")
+
+    # Build refresh specs for manual refresh (only explicit historical keys, not inferred)
+    specs = []
+    for _, row in slug_cfg.iterrows():
+        period = row['period']
+        if period == 'today':
+            specs.append(('today', None))
+        elif period == 'yesterday':
+            specs.append(('yesterday', None))
+        elif historical_refresh_keys:
+            for k in historical_refresh_keys:
+                specs.append(('historical', k))
+    if specs:
+        _refresh_specs[slug] = specs
 
     for _, row in slug_cfg.iterrows():
         period = row['period']
@@ -223,12 +241,45 @@ def _refresh(slug, period, lock, cache_key=None):
 
         print(f"[refresh] {slug}/{cache_key} @ {datetime.now():%H:%M:%S}")
     except Exception as e:
+        logger.exception("Cache refresh error %s/%s: %s", slug, period, e)
         print(f"[ERROR] Cache refresh error {slug}/{period}: {e}")
+        raise
+
+def trigger_manual_refresh(slug: str) -> tuple[bool, str]:
+    """
+    Manually refresh all cache keys for a slug. Runs synchronously.
+    Returns (success, message). Best for admin/Caching page.
+    """
+    if slug not in _builders:
+        return False, f"Unknown slug: {slug}"
+    lock = _locks.get(slug)
+    if not lock:
+        return False, f"No lock for {slug}"
+    specs = _refresh_specs.get(slug)
+    if not specs:
+        return False, f"No refresh spec for {slug}"
+    try:
+        for period, cache_key in specs:
+            if period == 'historical':
+                _refresh(slug, 'historical', lock, cache_key)
+            else:
+                _refresh(slug, period, lock, None)
+        return True, "Refreshed"
+    except Exception as e:
+        logger.exception("Manual refresh failed for %s: %s", slug, e)
+        return False, str(e)
+
+
+def get_registered_slugs_with_refresh():
+    """Slugs that support manual refresh (have refresh specs)."""
+    return list(_refresh_specs.keys())
+
 
 def get_cache_status():
-    """Read-only status for Caching page. Returns {slug: {cache_key: cached_at_str}}."""
+    """Read-only status for Caching page. Returns {slug: {cache_key: cached_at_str}}.
+    Includes slugs with refresh_specs even if cache is empty (shows 'No keys')."""
     result = {}
-    for slug in _builders:
+    for slug in sorted(set(_builders.keys()) | set(_refresh_specs.keys())):
         lock = _locks.get(slug)
         if lock is None:
             continue
@@ -238,12 +289,14 @@ def get_cache_status():
             for k, payload in entries.items():
                 if isinstance(payload, dict) and "_cached_at" in payload:
                     sub[k] = str(payload.get("_cached_at", "-"))
+                elif isinstance(payload, dict) and "payload" in payload:
+                    sub[k] = str(payload.get("cached_at", "-"))
                 elif hasattr(payload, "__getitem__") and len(payload) >= 7:
                     sub[k] = str(payload[6])
                 else:
                     sub[k] = "-"
-            if sub:
-                result[slug] = dict(sub)
+            if sub or slug in _refresh_specs:
+                result[slug] = dict(sub) if sub else {}
     return result
 
 
@@ -272,12 +325,17 @@ def get_cached_data(slug: str, identifier: str = 'today'):
     
     lock = _locks.setdefault(slug, threading.RLock())
     with lock:
+        _caches.setdefault(slug, {})
         if period == 'today':
             ckey = 'today'
         elif period == 'yesterday':
             ckey = 'yesterday'
         else:
             ckey = identifier
-        if ckey not in _caches.get(slug, {}):
+        if ckey not in _caches[slug]:
             _refresh(slug, period, lock, ckey if period == 'historical' else None)
+        if ckey not in _caches[slug]:
+            raise RuntimeError(
+                f"Cache build failed for report '{slug}' key '{ckey}'. Check server logs for errors."
+            )
         return _caches[slug][ckey]

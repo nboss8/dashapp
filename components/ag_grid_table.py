@@ -52,9 +52,9 @@ def create_ag_grid_table(
         if col in cell_style_rules:
             col_def["cellStyle"] = cell_style_rules[col]
         if col in preserve_numeric_columns:
-            # Round to 1 decimal; show whole numbers without .0
+            # Round to 1 decimal; show whole numbers without .0 (body must be inside function so return is legal)
             col_def["valueFormatter"] = {
-                "function": "var n = params.value; if (n == null || n === undefined) return '—'; n = Number(n); return (n % 1 === 0) ? String(n) : n.toFixed(1);"
+                "function": "function(params) { var n = params.value; if (n == null || n === undefined) return '—'; n = Number(n); return (n % 1 === 0) ? String(n) : n.toFixed(1); }"
             }
         column_defs.append(col_def)
 
@@ -86,7 +86,7 @@ def create_ag_grid_table(
                         "filter": True,
                         "resizable": True,
                         "suppressHeaderFilterButton": True,
-                        "suppressMenu": True,
+                        "suppressHeaderMenuButton": True,
                         "wrapHeaderText": True,
                         "autoHeaderHeight": True,
                     },

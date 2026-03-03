@@ -113,10 +113,51 @@ sudo ufw enable
 
 ---
 
+## Dedicated Agent Service (Recommended for Responsive Chat)
+
+The chatbot can queue behind heavy report callbacks. To avoid that, run the agent in its own process:
+
+**Local development** (two terminals):
+
+```bash
+# Terminal 1: main app
+make run
+
+# Terminal 2: agent service
+make run-agent
+```
+
+Set in `.env` (or export before starting the main app):
+
+```
+AGENT_SERVICE_URL=http://127.0.0.1:8051
+```
+
+**Production** — run the agent as a separate systemd service:
+
+```bash
+sudo cp deployment/dashapp-agent.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable dashapp-agent
+sudo systemctl start dashapp-agent
+```
+
+Add to `.env`:
+
+```
+AGENT_SERVICE_URL=http://127.0.0.1:8051
+```
+
+The agent service uses the same Snowflake credentials from `.env`. It listens on port 8051 by default (override with `AGENT_SERVICE_PORT`).
+
+---
+
 ## Useful Commands
 
 | Command | Purpose |
 |---------|---------|
+| `make run` | Run Dash app (dev) |
+| `make run-agent` | Run dedicated agent service |
 | `make prod-test` | Run gunicorn locally on 127.0.0.1:8050 |
 | `make deploy` | Git pull + restart (run from /opt/dashapp) |
 | `make logs` | Tail dashapp service logs |

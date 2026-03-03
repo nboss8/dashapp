@@ -108,7 +108,8 @@ def _pfr_background_worker():
 
 
 _pfr_background_thread = threading.Thread(target=_pfr_background_worker, daemon=True)
-_pfr_background_thread.start()
+if os.environ.get("IS_MAIN_DASH_PROCESS") == "true":
+    _pfr_background_thread.start()
 
 
 def load_main_for_group(run_date, grower, variety, pool):

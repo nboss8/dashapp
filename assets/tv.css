@@ -342,6 +342,50 @@
 .pidk-expand-btn:hover {
     background: #555 !important;
 }
+
+/* Packed Inventory Trends – expand/fullscreen for charts */
+.trends-tile-wrapper {
+    position: relative;
+    transition: z-index 0.2s ease;
+}
+.trends-tile-wrapper.trends-tile-expanded {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    background: #1a1a1a !important;
+    padding: 1rem !important;
+    overflow: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+.trends-tile-wrapper.trends-tile-expanded .trends-chart-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.trends-tile-wrapper.trends-tile-expanded .card-body {
+    flex: 1;
+    min-height: 60vh;
+}
+.trends-tile-wrapper.trends-tile-expanded .js-plotly-plot,
+.trends-tile-wrapper.trends-tile-expanded .plotly {
+    min-height: 60vh !important;
+}
+.trends-expand-btn {
+    background: #444 !important;
+    border: 1px solid #555 !important;
+    color: #fff !important;
+    font-size: 0.9rem !important;
+    padding: 6px 8px !important;
+    cursor: pointer !important;
+    border-radius: 4px !important;
+}
+.trends-expand-btn:hover {
+    background: #555 !important;
+}
 .pidk-card-body {
     padding: 0 !important;
 }

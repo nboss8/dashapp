@@ -33,6 +33,12 @@ INV_COL_MAP = {
     "size_abbr": ["SIZE_ABBR"],
     "pool": ["POOL"],
     "process_code": ['"Process Code"'],
+    "grower_number": ["GROWER_NUMBER"],
+    "run_type": ["RUN_TYPE"],
+    "pallet_source_flag": ["PALLET_SOURCE_FLAG"],
+    "pallet_tr_code": ["PALLET_TR_CODE"],
+    "pallet_ticket": ["PALLET_TICKET"],
+    "crop_year": ["CROP_YEAR"],
     "cartons": ["CARTONS"],
     "eq_on_hand": ["EQ_ON_HAND"],
     "cartons_avail": ["CARTONS_AVAIL"],
@@ -57,6 +63,8 @@ def _build_where(filters):
         ("pool", "POOL"),
         ("process_code", '"Process Code"'),
         ("final_stage_status", "FINAL_STAGE_STATUS"),
+        ("grower_number", "GROWER_NUMBER"),
+        ("run_type", "RUN_TYPE"),
         # Week age filter (used when clicking pivot cells)
         ("week_bucket", "WEEK_BUCKET"),
     ]
@@ -194,35 +202,50 @@ def get_sku_all(filters=None, use_eq=False, max_rows=2000):
 # Max rows for pre-fetched SKU-by-week cache (used for instant pivot-cell filtering)
 _SKU_BY_WEEK_MAX_ROWS = 5000
 
-# Dimensions in cache key (coarse) vs in-memory (fine). Only group + stage trigger cache rebuild.
-IN_CACHE_KEY_DIMS = frozenset(("group_category", "final_stage_status"))
+# Dimensions in cache key (coarse) vs in-memory (fine). group/stage/grower/run_type trigger cache; variety/pack/grade/size/week in-mem.
+IN_CACHE_KEY_DIMS = frozenset(("group_category", "final_stage_status", "grower_number", "run_type"))
 IN_MEMORY_FILTER_DIMS = frozenset(("variety", "week_bucket", "pack", "grade", "size"))
 
 
-def get_sku_all_by_week(filters=None, use_eq=False, max_rows=None):
+def get_sku_pallet_grain(filters=None, use_eq=False, max_rows=None):
     """
-    Fetch SKU-level rows at (SKU, variety, week_bucket, pack, grade, size) grain for in-memory filtering.
-    Use base (cache-key) filters only. Returns DataFrame with sku, variety_abbr, week_bucket, pack_abbr,
-    grade_abbr, size_abbr, cartons, eq_on_hand.
+    Raw pallet-grain rows for SKU agg + pallet drill. Base filters only.
     """
     max_rows = max_rows or _SKU_BY_WEEK_MAX_ROWS
     f = _base_filters_only(filters)
     where_clause, params = _build_where(f)
     where_sql = f"WHERE {where_clause}" if where_clause else ""
     params = list(params) + [max_rows]
+    crop_year_col = '"CROP_YEAR"'  # Quoted identifier for Snowflake
     sql = f"""
-    SELECT SKU, VARIETY_ABBR, WEEK_BUCKET, WEEK_BUCKET_NUM,
-           PACK_ABBR, GRADE_ABBR, SIZE_ABBR,
-           SUM(CARTONS) AS CARTONS, SUM(EQ_ON_HAND) AS EQ_ON_HAND
+    SELECT SKU, VARIETY_ABBR, WEEK_BUCKET, WEEK_BUCKET_NUM, PACK_ABBR, GRADE_ABBR, SIZE_ABBR,
+           GROWER_NUMBER, PALLET_TR_CODE, PALLET_TICKET, {crop_year_col}, PALLET_SOURCE_FLAG, RUN_TYPE,
+           CARTONS, EQ_ON_HAND, CARTONS_AVAIL
     FROM {DBT_SCHEMA}.inv_on_hand_pivot
     {where_sql}
-    GROUP BY SKU, VARIETY_ABBR, WEEK_BUCKET, WEEK_BUCKET_NUM, PACK_ABBR, GRADE_ABBR, SIZE_ABBR
-    ORDER BY VARIETY_ABBR, SKU, WEEK_BUCKET_NUM NULLS LAST
+    ORDER BY VARIETY_ABBR, SKU, PALLET_TR_CODE
     LIMIT %s
     """
     df = query(sql, params=params)
-    df = _normalize_df_columns(df, INV_COL_MAP) if df is not None else pd.DataFrame()
-    return df
+    return _normalize_df_columns(df, INV_COL_MAP) if df is not None else pd.DataFrame()
+
+def get_sku_all_by_week(filters=None, use_eq=False, max_rows=None):
+    """
+    SKU agg from pallet grain (for table). Base filters only.
+    Uses normalized (lowercase) column names to match get_sku_pallet_grain output.
+    """
+    pallet_df = get_sku_pallet_grain(filters, use_eq, max_rows)
+    if pallet_df.empty:
+        return pd.DataFrame()
+    group_cols = ["sku", "variety_abbr", "week_bucket", "week_bucket_num", "pack_abbr", "grade_abbr", "size_abbr"]
+    existing = [c for c in group_cols if c in pallet_df.columns]
+    if not existing:
+        existing = ["sku", "variety_abbr"]
+    agg_cols = {c: "sum" for c in ["cartons", "eq_on_hand"] if c in pallet_df.columns}
+    agg_cols = agg_cols or {"cartons": "sum", "eq_on_hand": "sum"}
+    agg = pallet_df.groupby(existing, as_index=False).agg(agg_cols)
+    sort_cols = [c for c in ["variety_abbr", "sku", "week_bucket_num"] if c in agg.columns]
+    return agg.sort_values(sort_cols) if sort_cols else agg
 
 
 def _base_filters_only(filters):
@@ -313,10 +336,27 @@ def build_inv_payload(filters, use_eq):
     _start = time.perf_counter()
     f = _base_filters_only(filters or {})
     changes_detail_df = get_changes_today_detail(f)
-    sku_all_df = get_sku_all_by_week(f, use_eq=use_eq)
+    pallet_df = get_sku_pallet_grain(f, use_eq=use_eq)
+    if pallet_df.empty:
+        sku_all_df = pd.DataFrame()
+    else:
+        # Grain: sku, variety, week, pack, grade, size (use normalized lowercase col names)
+        group_cols = ["sku", "variety_abbr", "week_bucket", "week_bucket_num", "pack_abbr", "grade_abbr", "size_abbr"]
+        existing = [c for c in group_cols if c in pallet_df.columns]
+        if not existing:
+            existing = ["sku", "variety_abbr"]
+        agg_cols = {c: "sum" for c in ["cartons", "eq_on_hand"] if c in pallet_df.columns}
+        agg_cols = agg_cols or {"cartons": "sum", "eq_on_hand": "sum"}
+        sku_all_df = pallet_df.groupby(existing, as_index=False).agg(agg_cols)
+        sort_cols = [c for c in ["variety_abbr", "sku", "week_bucket_num"] if c in sku_all_df.columns]
+        if sort_cols:
+            sku_all_df = sku_all_df.sort_values(sort_cols)
+    filter_opts = get_filter_options()
     return {
         "changes_detail_df": changes_detail_df,
         "sku_all_df": sku_all_df,
+        "pallets_df": pallet_df,  # Raw for SKU drill
+        "filter_opts": filter_opts,
         "_cached_at": datetime.now().isoformat(),
         "_cached_duration_seconds": round(time.perf_counter() - _start, 2),
     }
@@ -347,6 +387,8 @@ def _fetch_filter_options():
         ("POOL", "pool"),
         ('"Process Code"', "process_code"),
         ("FINAL_STAGE_STATUS", "final_stage_status"),
+        ("GROWER_NUMBER", "grower_number"),
+        ("RUN_TYPE", "run_type"),
     ]
     result = {}
     for sql_col, key in cols:
@@ -466,6 +508,8 @@ def filters_from_store(store):
             "process_code",
             "final_stage_status",
             "week_bucket",
+            "grower_number",
+            "run_type",
         )
     }
 

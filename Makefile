@@ -1,8 +1,12 @@
-.PHONY: run prod-test deploy logs restart status dbt-parse dbt-run dbt-test
+.PHONY: run prod-test run-agent deploy logs restart status dbt-parse dbt-run dbt-test
 
 # Local development (Flask debug server)
 run:
 	python app.py
+
+# Dedicated agent service — run in separate terminal so chat doesn't queue behind reports
+run-agent:
+	python agent_service.py
 
 # Production test: gunicorn on TCP (override socket for local testing)
 prod-test:

@@ -41,6 +41,8 @@ layout = html.Div([
         "process_code": None,
         "final_stage_status": None,
         "week_bucket": None,
+        "grower_number": None,
+        "run_type": None,
     }),
     dcc.Store(id="inv-sku-page", data=1),
     dbc.Container([
@@ -57,6 +59,8 @@ layout = html.Div([
             dbc.Col([html.Label("Grade", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-grade", options=opts["grade"], value="ALL", clearable=False, className="inv-dropdown")], width=1),
             dbc.Col([html.Label("Size", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-size", options=opts["size"], value="ALL", clearable=False, className="inv-dropdown")], width=1),
             dbc.Col([html.Label("Stage", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-stage", options=opts["final_stage_status"], value="ALL", clearable=False, className="inv-dropdown")], width=1),
+            dbc.Col([html.Label("Grower", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-grower", options=opts.get("grower_number", [{"label": "All", "value": "ALL"}]), value="ALL", clearable=False, className="inv-dropdown")], width=1),
+            dbc.Col([html.Label("Run Type", style={"color": "#ccc", "fontSize": "0.8rem"}), dcc.Dropdown(id="inv-filter-run-type", options=[{"label": "All", "value": "ALL"}, {"label": "Production", "value": "Production"}, {"label": "Repack", "value": "Repack"}], value="ALL", clearable=False, className="inv-dropdown")], width=1),
         ], className="mb-3 g-2"),
         # Clear Filters button
         dbc.Row(
@@ -127,6 +131,8 @@ layout = html.Div([
                             fullscreen=False,
                         ),
                         html.Div(id="inv-sku-pagination", className="mt-2"),
+                        dcc.Store(id="inv-sku-selected", data=None),
+                        html.Div(id="inv-sku-drill-detail", className="sku-drill-wrapper mt-3"),
                     ]),
                 ]),
             ], width=5),

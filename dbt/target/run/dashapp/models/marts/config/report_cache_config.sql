@@ -16,6 +16,8 @@ WITH config AS (
 UNION ALL SELECT 'pidk', 'today', 300
 UNION ALL SELECT 'pidk', 'historical', 86400
 UNION ALL SELECT 'grower_bins', 'today', 1800  -- 30 min
+UNION ALL SELECT 'inventory', 'historical', 900  -- 15 min (default + default_eq keys)
+UNION ALL SELECT 'trends', 'historical', 86400  -- 1 day (DT refreshes daily)
 )
 SELECT * FROM config
     )

@@ -9,3 +9,5 @@ sources:
     tables:
       - name: DT_INV_ON_HAND_SKU_GRAIN
         description: "Pre-aggregated on-hand inventory at SKU x week grain"
+      - name: DT_CARTON_DAILY_SNAPSHOT_EQ
+        description: "Daily carton snapshot at EQ grain with SOURCE, GROWER, POOL. AP, OA, CH, OC. Refresh 1/day."

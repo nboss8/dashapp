@@ -1,0 +1,398 @@
+name: PALLET_INVENTORY_TRENDS
+description: Pallet inventory and packed trends analyst. On-hand by SKU and week age, daily snapshots for YOY, aging risk. Tables in FROSTY.DBT_DEV_DBT_DEV.
+tables:
+  - name: DT_CARTON_DAILY_SNAPSHOT_EQ
+    base_table:
+      database: FROSTY
+      schema: DBT_DEV_DBT_DEV
+      table: DT_CARTON_DAILY_SNAPSHOT_EQ
+    dimensions:
+      - name: CROP_YEAR
+        expr: CROP_YEAR
+        data_type: NUMBER
+      - name: GROUP_CATEGORY
+        expr: GROUP_CATEGORY
+        data_type: VARCHAR
+      - name: GROWER_NUMBER
+        expr: GROWER_NUMBER
+        data_type: VARCHAR
+      - name: ON_HAND_END_OF_DAY
+        expr: ON_HAND_END_OF_DAY
+        data_type: NUMBER
+      - name: PACK_ABBR
+        expr: PACK_ABBR
+        data_type: VARCHAR
+      - name: PACKED_THAT_DAY
+        expr: PACKED_THAT_DAY
+        data_type: NUMBER
+      - name: POOL
+        expr: POOL
+        data_type: VARCHAR
+      - name: REPORT_GROUP
+        expr: REPORT_GROUP
+        data_type: VARCHAR
+      - name: SHIPPED_THAT_DAY_NET
+        expr: SHIPPED_THAT_DAY_NET
+        data_type: NUMBER
+      - name: SIZE_ABBR
+        expr: SIZE_ABBR
+        data_type: VARCHAR
+      - name: SOURCE
+        expr: SOURCE
+        data_type: VARCHAR
+      - name: SPECIAL_INV
+        expr: SPECIAL_INV
+        data_type: VARCHAR
+      - name: VARIETY_ABBR
+        expr: VARIETY_ABBR
+        data_type: VARCHAR
+    time_dimensions:
+      - name: DATE
+        expr: DATE
+        data_type: DATE
+    facts:
+      - name: AVG_AGE_ON_HAND_DAYS
+        expr: AVG_AGE_ON_HAND_DAYS
+        data_type: NUMBER
+      - name: AVG_AGE_SHIPPED_DAYS
+        expr: AVG_AGE_SHIPPED_DAYS
+        data_type: NUMBER
+      - name: ON_HAND_END_OF_DAY_EQ
+        expr: ON_HAND_END_OF_DAY_EQ
+        data_type: NUMBER
+      - name: PACKED_THAT_DAY_EQ
+        expr: PACKED_THAT_DAY_EQ
+        data_type: NUMBER
+      - name: SHIPPED_THAT_DAY_NET_EQ
+        expr: SHIPPED_THAT_DAY_NET_EQ
+        data_type: NUMBER
+  - name: DT_INV_ON_HAND_SKU_GRAIN
+    base_table:
+      database: FROSTY
+      schema: DBT_DEV_DBT_DEV
+      table: DT_INV_ON_HAND_SKU_GRAIN
+    dimensions:
+      - name: CARTONS
+        expr: CARTONS
+        data_type: NUMBER
+      - name: CARTONS_AVAIL
+        expr: CARTONS_AVAIL
+        data_type: NUMBER
+      - name: CROP_YEAR
+        expr: CROP_YEAR
+        data_type: NUMBER
+      - name: FINAL_STAGE_STATUS
+        expr: FINAL_STAGE_STATUS
+        data_type: VARCHAR
+      - name: GRADE_ABBR
+        expr: GRADE_ABBR
+        data_type: VARCHAR
+      - name: GROUP_CATEGORY
+        expr: GROUP_CATEGORY
+        data_type: VARCHAR
+      - name: GROWER_NUMBER
+        expr: GROWER_NUMBER
+        data_type: VARCHAR
+      - name: PACK_ABBR
+        expr: PACK_ABBR
+        data_type: VARCHAR
+      - name: PALLET_SOURCE_FLAG
+        expr: PALLET_SOURCE_FLAG
+        data_type: VARCHAR
+      - name: PALLET_TICKET
+        expr: PALLET_TICKET
+        data_type: VARCHAR
+      - name: PALLET_TR_CODE
+        expr: PALLET_TR_CODE
+        data_type: VARCHAR
+      - name: POOL
+        expr: POOL
+        data_type: VARCHAR
+      - name: PROCESS_CODE
+        expr: '"Process Code"'
+        data_type: VARCHAR
+      - name: RUN_TYPE
+        expr: RUN_TYPE
+        data_type: VARCHAR
+      - name: SIZE_ABBR
+        expr: SIZE_ABBR
+        data_type: VARCHAR
+      - name: SKU
+        expr: SKU
+        data_type: VARCHAR
+      - name: VARIETY_ABBR
+        expr: VARIETY_ABBR
+        data_type: VARCHAR
+      - name: WEEK_BUCKET
+        expr: WEEK_BUCKET
+        data_type: VARCHAR
+    facts:
+      - name: EQ_ON_HAND
+        expr: EQ_ON_HAND
+        data_type: NUMBER
+      - name: WEEK_BUCKET_NUM
+        expr: WEEK_BUCKET_NUM
+        data_type: NUMBER
+  - name: INV_CHANGES_TODAY
+    base_table:
+      database: FROSTY
+      schema: DBT_DEV_DBT_DEV
+      table: INV_CHANGES_TODAY
+    dimensions:
+      - name: CARTONS
+        expr: CARTONS
+        data_type: NUMBER
+      - name: CHANGE_TYPE
+        expr: CHANGE_TYPE
+        data_type: VARCHAR
+      - name: FINAL_STAGE_STATUS
+        expr: FINAL_STAGE_STATUS
+        data_type: VARCHAR
+      - name: GRADE_ABBR
+        expr: GRADE_ABBR
+        data_type: VARCHAR
+      - name: GROUP_CATEGORY
+        expr: GROUP_CATEGORY
+        data_type: VARCHAR
+      - name: PACK_ABBR
+        expr: PACK_ABBR
+        data_type: VARCHAR
+      - name: POOL
+        expr: POOL
+        data_type: VARCHAR
+      - name: PROCESS_CODE
+        expr: '"Process Code"'
+        data_type: VARCHAR
+      - name: SIZE_ABBR
+        expr: SIZE_ABBR
+        data_type: VARCHAR
+      - name: SKU
+        expr: SKU
+        data_type: VARCHAR
+      - name: VARIETY_ABBR
+        expr: VARIETY_ABBR
+        data_type: VARCHAR
+    facts:
+      - name: EQ_ON_HAND
+        expr: EQ_ON_HAND
+        data_type: NUMBER
+  - name: INV_ON_HAND_PIVOT
+    base_table:
+      database: FROSTY
+      schema: DBT_DEV_DBT_DEV
+      table: INV_ON_HAND_PIVOT
+    dimensions:
+      - name: CARTONS
+        expr: CARTONS
+        data_type: NUMBER
+      - name: CARTONS_AVAIL
+        expr: CARTONS_AVAIL
+        data_type: NUMBER
+      - name: CROP_YEAR
+        expr: CROP_YEAR
+        data_type: NUMBER
+      - name: FINAL_STAGE_STATUS
+        expr: FINAL_STAGE_STATUS
+        data_type: VARCHAR
+      - name: GRADE_ABBR
+        expr: GRADE_ABBR
+        data_type: VARCHAR
+      - name: GROUP_CATEGORY
+        expr: GROUP_CATEGORY
+        data_type: VARCHAR
+      - name: GROWER_NUMBER
+        expr: GROWER_NUMBER
+        data_type: VARCHAR
+      - name: PACK_ABBR
+        expr: PACK_ABBR
+        data_type: VARCHAR
+      - name: PALLET_SOURCE_FLAG
+        expr: PALLET_SOURCE_FLAG
+        data_type: VARCHAR
+      - name: PALLET_TICKET
+        expr: PALLET_TICKET
+        data_type: VARCHAR
+      - name: PALLET_TR_CODE
+        expr: PALLET_TR_CODE
+        data_type: VARCHAR
+      - name: POOL
+        expr: POOL
+        data_type: VARCHAR
+      - name: PROCESS_CODE
+        expr: '"Process Code"'
+        data_type: VARCHAR
+      - name: RUN_TYPE
+        expr: RUN_TYPE
+        data_type: VARCHAR
+      - name: SIZE_ABBR
+        expr: SIZE_ABBR
+        data_type: VARCHAR
+      - name: SKU
+        expr: SKU
+        data_type: VARCHAR
+      - name: VARIETY_ABBR
+        expr: VARIETY_ABBR
+        data_type: VARCHAR
+      - name: WEEK_BUCKET
+        expr: WEEK_BUCKET
+        data_type: VARCHAR
+    facts:
+      - name: EQ_ON_HAND
+        expr: EQ_ON_HAND
+        data_type: NUMBER
+      - name: WEEK_BUCKET_NUM
+        expr: WEEK_BUCKET_NUM
+        data_type: NUMBER
+
+verified_queries:
+  - name: Total on-hand cartons
+    question: What is total on-hand inventory in cartons?
+    use_as_onboarding_question: true
+    sql: |
+      SELECT SUM(CARTONS) AS "Total Cartons"
+      FROM __INV_ON_HAND_PIVOT
+  - name: Total on-hand EQs
+    question: What is total on-hand inventory in EQs?
+    use_as_onboarding_question: true
+    sql: |
+      SELECT SUM(EQ_ON_HAND) AS "Total EQs"
+      FROM __INV_ON_HAND_PIVOT
+  - name: On-hand by variety
+    question: Show on-hand cartons by variety.
+    sql: |
+      SELECT VARIETY_ABBR AS "Variety", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      GROUP BY VARIETY_ABBR
+      ORDER BY "Cartons" DESC
+  - name: On-hand by week age bucket
+    question: Show on-hand inventory by week age bucket.
+    sql: |
+      SELECT WEEK_BUCKET AS "Week Age", WEEK_BUCKET_NUM, SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      GROUP BY WEEK_BUCKET, WEEK_BUCKET_NUM
+      ORDER BY WEEK_BUCKET_NUM NULLS LAST
+  - name: Variety by week age pivot
+    question: Show variety by weeks age pivot with cartons and EQs.
+    sql: |
+      SELECT VARIETY_ABBR AS "Variety", WEEK_BUCKET AS "Week Age", WEEK_BUCKET_NUM, SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      GROUP BY VARIETY_ABBR, WEEK_BUCKET, WEEK_BUCKET_NUM
+      ORDER BY VARIETY_ABBR, WEEK_BUCKET_NUM NULLS LAST
+  - name: Top SKUs by cartons
+    question: What are the top 20 SKUs by on-hand cartons?
+    sql: |
+      SELECT SKU, VARIETY_ABBR AS "Variety", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      GROUP BY SKU, VARIETY_ABBR
+      ORDER BY "Cartons" DESC
+      LIMIT 20
+  - name: Changes today breakdown
+    question: What are today packed shipped and staged totals?
+    use_as_onboarding_question: true
+    sql: |
+      SELECT CHANGE_TYPE AS "Change Type", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_CHANGES_TODAY
+      GROUP BY CHANGE_TYPE
+      ORDER BY CHANGE_TYPE
+  - name: On-hand over time last 30 days
+    question: Show on-hand end of day over the last 30 days.
+    sql: |
+      SELECT DATE AS "Date", SUM(ON_HAND_END_OF_DAY) AS "On Hand Cartons", SUM(ON_HAND_END_OF_DAY_EQ) AS "On Hand EQs"
+      FROM __DT_CARTON_DAILY_SNAPSHOT_EQ
+      WHERE DATE >= DATEADD(day, -30, CURRENT_DATE)
+      GROUP BY DATE
+      ORDER BY DATE
+  - name: On-hand trends by group category
+    question: Show on-hand cartons over time by crop or group category.
+    sql: |
+      SELECT DATE AS "Date", GROUP_CATEGORY AS "Crop", SUM(ON_HAND_END_OF_DAY) AS "On Hand Cartons", SUM(ON_HAND_END_OF_DAY_EQ) AS "On Hand EQs"
+      FROM __DT_CARTON_DAILY_SNAPSHOT_EQ
+      WHERE DATE >= DATEADD(year, -1, CURRENT_DATE)
+      GROUP BY DATE, GROUP_CATEGORY
+      ORDER BY DATE, GROUP_CATEGORY
+  - name: Apples on-hand
+    question: What is on-hand inventory for apples?
+    sql: |
+      SELECT SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE GROUP_CATEGORY = 'AP'
+  - name: Cherries on-hand
+    question: What is on-hand inventory for cherries?
+    sql: |
+      SELECT SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE GROUP_CATEGORY = 'CH'
+  - name: Production vs repack run type
+    question: Break down on-hand by production vs repack run type.
+    sql: |
+      SELECT RUN_TYPE AS "Run Type", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE RUN_TYPE IS NOT NULL
+      GROUP BY RUN_TYPE
+      ORDER BY "Cartons" DESC
+  - name: On-hand by grower
+    question: Show on-hand by grower number.
+    sql: |
+      SELECT GROWER_NUMBER AS "Grower", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE GROWER_NUMBER IS NOT NULL
+      GROUP BY GROWER_NUMBER
+      ORDER BY "Cartons" DESC
+      LIMIT 50
+  - name: On-hand by pool
+    question: Show on-hand by pool.
+    sql: |
+      SELECT POOL AS "Pool", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE POOL IS NOT NULL
+      GROUP BY POOL
+      ORDER BY "Cartons" DESC
+  - name: On-hand by grade
+    question: Show on-hand by grade.
+    sql: |
+      SELECT GRADE_ABBR AS "Grade", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE GRADE_ABBR IS NOT NULL
+      GROUP BY GRADE_ABBR
+      ORDER BY "Cartons" DESC
+  - name: On-hand by pack
+    question: Show on-hand by pack.
+    sql: |
+      SELECT PACK_ABBR AS "Pack", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE PACK_ABBR IS NOT NULL
+      GROUP BY PACK_ABBR
+      ORDER BY "Cartons" DESC
+  - name: On-hand by final stage status
+    question: Show on-hand by final stage status.
+    sql: |
+      SELECT FINAL_STAGE_STATUS AS "Final Stage", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE FINAL_STAGE_STATUS IS NOT NULL
+      GROUP BY FINAL_STAGE_STATUS
+      ORDER BY "Cartons" DESC
+  - name: Aging risk avg age on hand
+    question: What is average age on hand by source and crop year?
+    sql: |
+      SELECT SOURCE AS "Source", CROP_YEAR AS "Crop Year", AVG(AVG_AGE_ON_HAND_DAYS) AS "Average Age Days", SUM(ON_HAND_END_OF_DAY) AS "On Hand Cartons"
+      FROM __DT_CARTON_DAILY_SNAPSHOT_EQ
+      WHERE DATE >= DATEADD(day, -90, CURRENT_DATE)
+      GROUP BY SOURCE, CROP_YEAR
+      ORDER BY "Average Age Days" DESC
+  - name: Packed and shipped daily totals
+    question: Show packed and shipped that day over the last 14 days.
+    sql: |
+      SELECT DATE AS "Date", SUM(PACKED_THAT_DAY) AS "Packed Cartons", SUM(PACKED_THAT_DAY_EQ) AS "Packed EQs",
+             SUM(SHIPPED_THAT_DAY_NET) AS "Shipped Cartons", SUM(SHIPPED_THAT_DAY_NET_EQ) AS "Shipped EQs"
+      FROM __DT_CARTON_DAILY_SNAPSHOT_EQ
+      WHERE DATE >= DATEADD(day, -14, CURRENT_DATE)
+      GROUP BY DATE
+      ORDER BY DATE
+  - name: On-hand by crop year
+    question: Show on-hand by crop year.
+    sql: |
+      SELECT CROP_YEAR AS "Crop Year", SUM(CARTONS) AS "Cartons", SUM(EQ_ON_HAND) AS "EQs On Hand"
+      FROM __INV_ON_HAND_PIVOT
+      WHERE CROP_YEAR IS NOT NULL
+      GROUP BY CROP_YEAR
+      ORDER BY CROP_YEAR DESC

@@ -1,0 +1,24 @@
+# Dedicated agent service — keeps chat responsive (no queueing behind report callbacks).
+# Copy to: /etc/systemd/system/dashapp-agent.service
+# Enable:  sudo systemctl enable dashapp-agent
+# Start:   sudo systemctl start dashapp-agent
+#
+# In main app .env, add: AGENT_SERVICE_URL=http://127.0.0.1:8051
+
+[Unit]
+Description=Columbia Fruit Analytics Agent Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/dashapp
+EnvironmentFile=/opt/dashapp/.env
+
+ExecStart=/opt/dashapp/venv/bin/python agent_service.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

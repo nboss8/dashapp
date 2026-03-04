@@ -1,4 +1,4 @@
-#!C:\Users\natha\OneDrive\Desktop\dash_app_cursor\dashapp\venv_dbt\Scripts\python.exe
+#!C:\dash_app\venv_dbt\Scripts\python.exe
 
 import sys
 import json

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 AGENT_NAME = "SNOWFLAKE"
 USE_REST = os.getenv("AGENT_USE_REST_API", "false").lower() == "true"
-USE_STREAM = os.getenv("AGENT_STREAM", "false").lower() == "true"
+USE_STREAM = os.getenv("AGENT_STREAM", "true").lower() == "true"
 
 
 def _msg_to_api_format(msg: dict) -> dict:
@@ -100,6 +100,53 @@ def _parse_sse_stream(response: requests.Response) -> dict:
     return last_response or {"role": "assistant", "content": [{"type": "text", "text": ""}]}
 
 
+def stream_agent_rest_generator(question: str, history: list | None = None):
+    """
+    Call Cortex Agent via REST with stream=True; yield accumulated content list for each SSE event.
+    Used by the chat UI for live thinking/SQL/results. Raises on auth/network errors.
+    """
+    account = os.getenv("SNOWFLAKE_ACCOUNT", "").strip()
+    token = os.getenv("SNOWFLAKE_TOKEN", "").strip()
+    database = os.getenv("SNOWFLAKE_DATABASE", "FROSTY")
+    schema = os.getenv("DBT_SCHEMA", "DBT_DEV_DBT_DEV")
+    if not account or not token:
+        raise ValueError("SNOWFLAKE_ACCOUNT and SNOWFLAKE_TOKEN required for REST API")
+    if ".snowflakecomputing.com" in account:
+        base = account if account.startswith("https://") else f"https://{account}"
+    else:
+        base = f"https://{account}.snowflakecomputing.com"
+    url = f"{base}/api/v2/databases/{database}/schemas/{schema}/agents/{AGENT_NAME}:run"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+    }
+    messages = []
+    for msg in (history or []):
+        messages.append(_msg_to_api_format(msg))
+    body = {"messages": messages, "stream": True}
+    timeout = 120
+    logger.info("[Agent] REST stream: %s", question[:80])
+    resp = requests.post(url, headers=headers, json=body, timeout=timeout, stream=True)
+    resp.raise_for_status()
+    last_content: list = []
+    for line in resp.iter_lines(decode_unicode=True):
+        if not line or not line.startswith("data: "):
+            continue
+        raw = line[6:].strip()
+        if raw == "[DONE]" or not raw:
+            continue
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(data, dict) and "content" in data and isinstance(data["content"], list):
+            last_content = data["content"]
+            yield last_content
+    if last_content:
+        yield last_content
+
+
 def _call_agent_via_service(question: str, history: list | None = None) -> dict:
     """
     Call agent via dedicated agent service (separate process).
@@ -120,12 +167,20 @@ def _call_agent_via_service(question: str, history: list | None = None) -> dict:
     return data
 
 
+def can_use_stream() -> bool:
+    """True when Cortex REST API is used (no agent service) so the UI can stream deltas."""
+    if os.getenv("AGENT_SERVICE_URL"):
+        return False
+    return bool(USE_REST and os.getenv("SNOWFLAKE_ACCOUNT") and os.getenv("SNOWFLAKE_TOKEN"))
+
+
 def call_agent(question: str, history: list | None = None) -> dict:
     """
     Send a question to the Snowflake Cortex Agent.
     When AGENT_SERVICE_URL is set, calls the dedicated agent service (no queueing).
     Otherwise prefers REST API when AGENT_USE_REST_API=true; falls back to DATA_AGENT_RUN SQL.
     Returns the raw response (role, content array, metadata).
+    When using REST, stream=True so responses are aggregated from SSE.
     Supports multi-turn: pass history from dcc.Store.
     """
     if os.getenv("AGENT_SERVICE_URL"):

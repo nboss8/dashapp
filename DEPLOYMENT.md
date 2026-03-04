@@ -150,6 +150,30 @@ AGENT_SERVICE_URL=http://127.0.0.1:8051
 
 The agent service uses the same Snowflake credentials from `.env`. It listens on port 8051 by default (override with `AGENT_SERVICE_PORT`).
 
+### Streaming chat (real-time thinking/SQL)
+
+To get Snowsight-style live updates (thinking steps, SQL, results) in the home chatbot, use the Cortex REST API with streaming. Copy from `.env.example` and set:
+
+```
+AGENT_USE_REST_API=true
+AGENT_STREAM=true
+SNOWFLAKE_ACCOUNT=your_account
+SNOWFLAKE_TOKEN=your_token
+```
+
+Streaming is only used when the main app calls Cortex directly (no `AGENT_SERVICE_URL`). To verify SSE from Cortex (optional):
+
+```bash
+curl -X POST "https://YOUR_ACCOUNT.snowflakecomputing.com/api/v2/databases/FROSTY/schemas/DBT_DEV_DBT_DEV/agents/SNOWFLAKE:run" \
+  -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" \
+  -H "Accept: text/event-stream" \
+  -d '{"messages":[{"role":"user","content":[{"type":"text","text":"Hello"}]}],"stream":true}'
+```
+
+You should see `data: {...}` lines streamed back.
+
+**Multi-turn:** Chat history is sent with each request; streaming uses the same history so follow-up questions work. If the stream fails to start (e.g. network), the app falls back to a single non-streaming `call_agent` response. If a chunk fails mid-stream, the error is appended to the conversation and the stream is cleared.
+
 ---
 
 ## Useful Commands

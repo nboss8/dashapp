@@ -109,12 +109,14 @@ app.index_string = """<!DOCTYPE html>
     .agent-messages .agent-markdown p, .agent-messages .agent-markdown li, .agent-messages .agent-markdown code { color: #e5e7eb; }
     .agent-messages .agent-markdown pre { background: #111; border-radius: 6px; padding: 0.5rem; overflow-x: auto; }
     .agent-messages .agent-markdown pre code { background: none; padding: 0; }
-    /* Agent charts – dark theme polish */
+    /* Agent charts – dark theme polish + ensure hover/tooltips work */
+    .agent-messages .agent-vega-container,
     .agent-messages .vega-embed {
         background: #1a1a1a !important;
         border-radius: 8px !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
         overflow: hidden;
+        pointer-events: auto;
     }
     .agent-messages .vega-embed .vega-actions a {
         color: #0ea5e9 !important;
@@ -124,6 +126,54 @@ app.index_string = """<!DOCTYPE html>
     .agent-messages .vega-embed .vega-actions a:hover {
         background: rgba(255,255,255,0.2) !important;
     }
+    .agent-messages .agent-vega-container { cursor: crosshair; }
+    .agent-messages .vega-embed .vega-tooltip,
+    .agent-messages .mark-tooltip {
+        background: #2a2a2a !important;
+        color: #e5e7eb !important;
+        border: 1px solid #555 !important;
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    /* Snowsight-style agent chat cards */
+    .agent-messages .user-message-card {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-radius: 12px;
+        margin: 8px 0 8px auto;
+        padding: 12px 16px;
+        max-width: 85%;
+        box-shadow: 0 2px 12px rgba(59,130,246,0.4);
+    }
+    .agent-messages .assistant-message-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
+        border-radius: 12px;
+        border-left: 4px solid #0ea5e9;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        margin: 8px 0;
+        padding: 16px 20px;
+        max-width: 85%;
+    }
+    .agent-messages .assistant-message-card .agent-sql-block {
+        background: #111 !important;
+        border-radius: 8px;
+        border-left: 4px solid #0ea5e9;
+    }
+    /* Typing indicator – animated dots while agent is responding */
+    .agent-messages .agent-typing-dots {
+        display: inline-flex;
+        gap: 2px;
+    }
+    .agent-messages .agent-typing-dot {
+        animation: agent-typing-blink 1.4s ease-in-out infinite;
+        color: #0ea5e9;
+    }
+    .agent-messages .agent-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .agent-messages .agent-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes agent-typing-blink {
+        0%, 60%, 100% { opacity: 0.3; }
+        30% { opacity: 1; }
+    }
     </style>
 </head>
 <body>
@@ -132,13 +182,45 @@ app.index_string = """<!DOCTYPE html>
 </body>
 </html>"""
 
+# Hierarchical nav: AI Assistant, Apples, Production OPs, TV Displays, Settings (Caching). PFR removed from nav.
+def _nav_item(label, path):
+    return dbc.NavItem(dbc.NavLink(label, href=path, className="text-white"))
+
+def _nav_dropdown(label, items):
+    return dbc.NavItem(
+        dbc.DropdownMenu(
+            [dbc.DropdownMenuItem(name, href=path) for name, path in items],
+            label=label,
+            nav=True,
+            in_navbar=True,
+            color="link",
+            className="text-white",
+        )
+    )
+
+nav_items = [
+    _nav_item("Home", "/"),
+    _nav_item("AI Assistant", "/ai-assistant"),
+    _nav_item("Forms", "/forms"),
+    _nav_dropdown("Apples", [
+        ("Packed Inventory Trends", "/production/packed-inventory-trends"),
+        ("Pallet Inventory", "/production/pallet-inventory"),
+    ]),
+    _nav_dropdown("Production OPs", [
+        ("Production Intra Day KPIs", "/production/intra-day-kpis"),
+    ]),
+    _nav_dropdown("TV Displays", [
+        ("Apple Airport", "/tv"),
+    ]),
+    _nav_dropdown("Settings", [
+        ("Caching", "/caching"),
+    ]),
+]
+
 navbar = dbc.Navbar(
     dbc.Container([
         html.A("Columbia Fruit Analytics", className="navbar-brand text-white fw-bold fs-3"),
-        dbc.Nav([
-            dbc.NavLink(page["name"], href=page["relative_path"])
-            for page in page_registry.values()
-        ], className="ms-auto")
+        dbc.Nav(nav_items, className="ms-auto", navbar=True),
     ], fluid=True),
     color="dark",
     dark=True,
@@ -168,10 +250,8 @@ from callbacks.agent_chat import *  # noqa: F401
     Input('_pages_location', 'pathname')
 )
 def toggle_navbar(pathname):
-    # Show navbar only on Home; report pages use page_header "← Back" instead
-    if pathname in (None, "/"):
-        return {'display': 'block'}
-    return {'display': 'none'}
+    # Show navbar on all pages so users can use the hierarchical nav from anywhere
+    return {'display': 'block'}
 
 
 @app.server.route("/health")

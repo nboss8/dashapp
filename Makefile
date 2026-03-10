@@ -1,4 +1,4 @@
-.PHONY: run prod-test run-agent deploy logs restart status dbt-parse dbt-run dbt-test
+.PHONY: run prod-test prod-test-bare run-agent docker-up docker-down deploy logs restart status dbt-parse dbt-run dbt-test
 
 # Local development (Flask debug server)
 run:
@@ -8,14 +8,30 @@ run:
 run-agent:
 	python agent_service.py
 
-# Production test: gunicorn on TCP (override socket for local testing)
+# Production-like test: Docker (works on Windows and Linux)
 prod-test:
+	docker compose up
+
+# Production test: native gunicorn (Linux only)
+prod-test-bare:
 	gunicorn -c gunicorn.conf.py server:server --bind 127.0.0.1:8050
 
+# Docker convenience
+docker-up:
+	docker compose up -d
+
+docker-down:
+	docker compose down
+
 # Deploy on server: pull + restart (run from /opt/dashapp)
+# Uses Docker if available, else systemctl
 deploy:
 	git pull
-	sudo systemctl restart dashapp
+	@if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then \
+		docker compose up -d --build; \
+	else \
+		sudo systemctl restart dashapp; \
+	fi
 
 # View service logs
 logs:

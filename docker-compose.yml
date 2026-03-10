@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    ports: ["8050:8050"]
+    env_file: .env
+    environment:
+      GUNICORN_BIND: 0.0.0.0:8050
+      REPORT_CACHE_DIR: /app/cache
+      AGENT_SERVICE_URL: http://agent:8051
+    volumes:
+      - dashapp_cache:/app/cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8050/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  agent:
+    build: .
+    command: python agent_service.py
+    ports: ["8051:8051"]
+    env_file: .env
+
+volumes:
+  dashapp_cache:

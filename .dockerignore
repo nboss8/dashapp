@@ -1,0 +1,11 @@
+venv/
+.venv_dbt_311/
+.env
+__pycache__/
+*.pyc
+.git
+.gitignore
+.cursor
+debug*.log
+dbt/target/
+dbt/logs/

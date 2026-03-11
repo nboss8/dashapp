@@ -7,10 +7,12 @@ import pandas as pd
 from dash import callback, Input, Output, State, no_update, dcc, ctx
 
 from services.trends_data import (
-    get_filter_options,
     _apply_filters,
     build_on_hand_line_chart,
     build_aging_stack_chart,
+    build_avg_age_line_chart,
+    build_on_hand_vs_avg_age_chart,
+    build_on_hand_with_age_chart,
 )
 from services.cache_manager import get_cached_data
 
@@ -57,19 +59,7 @@ def _load_filter_options(_n):
         )
     except Exception as e:
         logger.warning("Trends filter options failed (cache not ready): %s", e)
-        try:
-            opts = get_filter_options()
-            return (
-                opts.get("source", default),
-                opts.get("crop_year", default),
-                opts.get("variety_abbr", default),
-                opts.get("report_group", default),
-                opts.get("pool", default),
-                opts.get("grower_number", default),
-            )
-        except Exception as e2:
-            logger.warning("Trends get_filter_options fallback failed: %s", e2)
-            return default, default, default, default, default, default
+        return default, default, default, default, default, default
 
 
 @callback(
@@ -86,9 +76,30 @@ def _sync_filters(crop_sel, source, crop_year, variety, report_group, pool, grow
     return _store_from_dropdowns(crop_sel, source, crop_year, variety, report_group, pool, grower)
 
 
+def _empty_figure(message="No data"):
+    """Return a minimal valid Plotly figure for dcc.Graph (avoids 500 on callback error)."""
+    import plotly.graph_objects as go
+    fig = go.Figure(layout=dict(
+        paper_bgcolor="#1a1a1a",
+        plot_bgcolor="#1a1a1a",
+        font=dict(color="#fff", size=12),
+        height=340,
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+    ))
+    fig.add_annotation(
+        text=message, xref="paper", yref="paper",
+        x=0.5, y=0.5, showarrow=False, font=dict(color="#888", size=14),
+    )
+    return fig
+
+
 @callback(
     Output("trends-line-chart", "figure"),
     Output("trends-aging-chart", "figure"),
+    Output("trends-avg-age-chart", "figure"),
+    Output("trends-on-hand-vs-age-chart", "figure"),
+    Output("trends-on-hand-with-age-chart", "figure"),
     Input("trends-interval", "n_intervals"),
     Input("trends-filters-store", "data"),
     Input("trends-yoy", "value"),
@@ -99,18 +110,50 @@ def _update_trends(_n, filters, yoy_mode, metric):
     yoy = yoy_mode or "none"
     use_eq = metric == "eqs"
     filters = filters or {}
+    empty_fig = _empty_figure("Loading…")
     try:
         payload = get_cached_data("trends", "default")
     except Exception as e:
         logger.exception("Trends cache fetch failed: %s", e)
-        return {}, {}
+        return empty_fig, empty_fig, empty_fig, empty_fig, empty_fig
     trends_df = payload.get("trends_df")
     if trends_df is None or not isinstance(trends_df, pd.DataFrame):
         trends_df = pd.DataFrame()
+    logger.info(
+        "[TRENDS] Payload trends_df: rows=%s, columns=%s",
+        len(trends_df),
+        list(trends_df.columns) if hasattr(trends_df, "columns") else None,
+    )
+    if not trends_df.empty and hasattr(trends_df, "columns"):
+        sample_cols = [c for c in ["date", "on_hand_end_of_day"] if c in trends_df.columns]
+        if sample_cols:
+            logger.info(
+                "[TRENDS] Sample (first 5): %s",
+                trends_df.head(5)[sample_cols].to_dict() if sample_cols else None,
+            )
+        if "on_hand_end_of_day" in trends_df.columns:
+            payload_sum = trends_df["on_hand_end_of_day"].sum()
+            date_key = "date" if "date" in trends_df.columns else "DATE"
+            per_date = trends_df.groupby(date_key)["on_hand_end_of_day"].sum()
+            logger.info(
+                "[TRENDS] Payload totals: sum=%s, per_date head=%s tail=%s",
+                payload_sum,
+                per_date.head(5).tolist() if not per_date.empty else None,
+                per_date.tail(5).tolist() if not per_date.empty else None,
+            )
     filtered = _apply_filters(trends_df, filters)
-    fig_line = build_on_hand_line_chart(filtered, filters, yoy, use_eq=use_eq)
-    fig_aging = build_aging_stack_chart(filtered, filters, use_eq=use_eq)
-    return fig_line, fig_aging
+    logger.info("[TRENDS] After filters: len(trends_df)=%s len(filtered)=%s", len(trends_df), len(filtered))
+    try:
+        fig_line = build_on_hand_line_chart(filtered, filters, yoy, use_eq=use_eq)
+        fig_aging = build_aging_stack_chart(filtered, filters, use_eq=use_eq)
+        fig_avg_age = build_avg_age_line_chart(filtered, filters, yoy, use_eq=use_eq)
+        fig_on_hand_vs_age = build_on_hand_vs_avg_age_chart(filtered, filters, yoy, use_eq=use_eq)
+        fig_on_hand_with_age = build_on_hand_with_age_chart(filtered, filters, yoy, use_eq=use_eq)
+        return fig_line, fig_aging, fig_avg_age, fig_on_hand_vs_age, fig_on_hand_with_age
+    except Exception as e:
+        logger.exception("Trends chart build failed: %s", e)
+        err_fig = _empty_figure("Error loading chart")
+        return err_fig, err_fig, err_fig, err_fig, err_fig
 
 
 @callback(

@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # Early main-process detection (critical for Windows spawn mode)
-if multiprocessing.current_process().name == "MainProcess":
+# WERKZEUG_RUN_MAIN: reloader child that serves HTTP (Flask debug=True)
+if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    os.environ["IS_MAIN_DASH_PROCESS"] = "true"
+elif multiprocessing.current_process().name == "MainProcess":
     os.environ["IS_MAIN_DASH_PROCESS"] = "true"
 else:
     os.environ["IS_MAIN_DASH_PROCESS"] = "false"
@@ -48,6 +51,7 @@ app.index_string = """<!DOCTYPE html>
     <title>{%title%}</title>
     {%favicon%}
     {%css%}
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
     /* Dash 4.0 dropdown dark theme - override CSS variables */
     #pidk-day-label-dropdown,
@@ -67,6 +71,7 @@ app.index_string = """<!DOCTYPE html>
     #tv-date-dropdown,
     .tv-date-dropdown,
     .inv-dropdown,
+    .ab-dropdown,
     .trends-dropdown {
         --Dash-Fill-Inverse-Strong: #1a1a1a;
         --Dash-Stroke-Strong: #555;
@@ -200,11 +205,14 @@ def _nav_dropdown(label, items):
 
 nav_items = [
     _nav_item("Home", "/"),
-    _nav_item("AI Assistant", "/ai-assistant"),
     _nav_item("Forms", "/forms"),
     _nav_dropdown("Apples", [
         ("Packed Inventory Trends", "/production/packed-inventory-trends"),
         ("Pallet Inventory", "/production/pallet-inventory"),
+        ("Age Analysis", "/production/age-analysis"),
+        ("Apple Bins", "/production/apple-bins"),
+        ("Apple Receiving QC", "/production/apple-receiving-qc"),
+        ("Room Insights & Yield", "/production/room-insights"),
     ]),
     _nav_dropdown("Production OPs", [
         ("Production Intra Day KPIs", "/production/intra-day-kpis"),
@@ -232,6 +240,11 @@ app.layout = dbc.Container([
     dcc.Download(id="pfr-download-zip"),
     dcc.Download(id="ag-grid-csv-download"),
     dcc.Download(id="inv-csv-download"),
+    dcc.Download(id="ab-csv-download"),
+    dcc.Download(id="ab-summary-csv-download"),
+    dcc.Download(id="arcqc-csv-download"),
+    dcc.Download(id="ri-csv-download"),
+    dcc.Store(id="ab-summary-export-data", data={}),
     html.Div(page_container, id="page-content", className="mt-4")
 ], fluid=True, className="p-0")
 
@@ -241,6 +254,10 @@ from dash import callback
 from callbacks.pidk import *  # noqa: F401
 from callbacks.pfr import *  # noqa: F401
 from callbacks.inventory import *  # noqa: F401
+from callbacks.age_analysis import *  # noqa: F401
+from callbacks.apple_bins import *  # noqa: F401
+from callbacks.apple_receiving_qc import *  # noqa: F401
+from callbacks.room_insights import *  # noqa: F401
 from callbacks.trends import *  # noqa: F401
 from callbacks.tv import *  # noqa: F401
 from callbacks.agent_chat import *  # noqa: F401
@@ -262,5 +279,4 @@ def health():
 if __name__ == "__main__":
     from services.cache_manager import load_persistent_cache
     load_persistent_cache()
-    logger.info("✅ Persistent cache warm-up triggered from app.py (all slugs ready)")
     app.run(debug=True, dev_tools_ui=False, host="0.0.0.0", port=8050)
